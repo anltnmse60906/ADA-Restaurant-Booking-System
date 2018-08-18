@@ -1,7 +1,9 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {SearchResultListComponent} from "./search-result-list/search-result-list.component";
+import {RestaurantComponent} from "./restaurant/restaurant.component";
+import {ConfirmBookingComponent} from "./restaurant/confirm-booking/confirm-booking.component";
+import {SearchResultsComponent} from "./restaurant/search-results/search-results.component";
 
 const appRoutes: Routes = [
   {
@@ -9,8 +11,21 @@ const appRoutes: Routes = [
     component: HomeComponent
   },
   {
-    path:"restaurants",
-    component:SearchResultListComponent
+    path: "restaurants",
+    component: RestaurantComponent, children: [
+      {
+        path: ":id",
+        component: ConfirmBookingComponent
+      },
+      {
+        path: "",
+        component: SearchResultsComponent
+      },
+      {
+        path: ":id/confirm",
+        component: ConfirmBookingComponent
+      }
+    ]
   }
 ];
 
