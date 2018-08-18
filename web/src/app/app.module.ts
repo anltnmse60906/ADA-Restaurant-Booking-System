@@ -8,6 +8,9 @@ import {AppRoutingModule} from "./app-routing.module";
 import { SearchResultListComponent } from './search-result-list/search-result-list.component';
 import { SearchResultItemComponent } from './search-result-list/search-result-item/search-result-item.component';
 import {FormsModule} from "@angular/forms";
+import { AuthComponent } from './auth/auth.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 @NgModule({
@@ -17,6 +20,9 @@ import {FormsModule} from "@angular/forms";
     HomeComponent,
     SearchResultListComponent,
     SearchResultItemComponent,
+    AuthComponent,
+    SigninComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
