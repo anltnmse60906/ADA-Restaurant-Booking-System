@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header text-center">
+    Find Your Restaurant
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="row text-center">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="restaurant">Date</label>
+            <input placeholder="Date Time" type="text"
+                   class="form-control">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="restaurant">For</label>
+            <input type="number" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row center-block">
+        <div class="offset-md-2 col-8 form-group text-center">
+          <label for="restaurant">Restaurant</label>
+          <input type="text" id="restaurant" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-primary" (click)="onFindRestaurant()">Find</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

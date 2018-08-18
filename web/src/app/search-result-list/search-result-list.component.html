@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-header text-center text-lg-center">
+    Restaurant Search Result
+  </div>
+  <div class="card-body">
+    <div class="col primary-tbl" *ngFor="let res of restaurants">
+      <div class="col-5 vcenter">
+        <div class="form-group text-center">
+          <h4>{{res.name}}</h4>
+          <p>{{res.location}}</p>
+        </div>
+      </div>
+      <div class="col-7 vcenter">
+        <a *ngFor="let time of res.availableTime" class="btn btn-primary">{{time}}</a>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
