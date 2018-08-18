@@ -12,7 +12,6 @@ const appRoutes: Routes = [
     path: "",
     component: HomeComponent
   },
-  ,
   {
     path: 'signin',
     component: SigninComponent
