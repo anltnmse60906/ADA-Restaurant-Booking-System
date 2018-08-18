@@ -4,11 +4,22 @@ import {HomeComponent} from "./home/home.component";
 import {RestaurantComponent} from "./restaurant/restaurant.component";
 import {ConfirmBookingComponent} from "./restaurant/confirm-booking/confirm-booking.component";
 import {SearchResultsComponent} from "./restaurant/search-results/search-results.component";
+import {SigninComponent} from './auth/signin/signin.component';
+import {SignupComponent} from './auth/signup/signup.component';
 
 const appRoutes: Routes = [
   {
     path: "",
     component: HomeComponent
+  },
+  ,
+  {
+    path: 'signin',
+    component: SigninComponent
+  },
+  {
+    path: 'signup',
+    component: SignupComponent
   },
   {
     path: "restaurants",

@@ -1,16 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './header/header.component';
+import {HomeComponent} from './home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
-import { RestaurantComponent } from './restaurant/restaurant.component';
-import { SearchResultsComponent } from './restaurant/search-results/search-results.component';
+import {RestaurantComponent} from './restaurant/restaurant.component';
+import {SearchResultsComponent} from './restaurant/search-results/search-results.component';
 import {FormsModule} from "@angular/forms";
-import { ConfirmBookingComponent } from './restaurant/confirm-booking/confirm-booking.component';
-import { SearchResultDetailComponent } from './restaurant/search-results/search-result-detail/search-result-detail.component';
+import {ConfirmBookingComponent} from './restaurant/confirm-booking/confirm-booking.component';
+import {SearchResultDetailComponent} from './restaurant/search-results/search-result-detail/search-result-detail.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AuthComponent} from './auth/auth.component';
+import {SigninComponent} from './auth/signin/signin.component';
+import {SignupComponent} from './auth/signup/signup.component';
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     SearchResultsComponent,
     ConfirmBookingComponent,
     SearchResultDetailComponent,
+    AuthComponent,
+    SigninComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,4 +38,5 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   providers: [FormsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
