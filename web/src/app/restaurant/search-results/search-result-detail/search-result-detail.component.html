@@ -1,4 +1,4 @@
-<div class="row primary-tbl" (click)="onItemClick(restaurant)">
+<div class="primary-tbl col-10 offset-1" (click)="onItemClick(restaurant)">
   <div class="col-5 vcenter">
     <div class="form-group text-center">
       <h4>{{restaurant.name}}</h4>
@@ -6,6 +6,6 @@
     </div>
   </div>
   <div class="col-7 vcenter">
-    <a *ngFor="let time of restaurant.availableTime" class="btn btn-primary">{{time}}</a>
+    <a *ngFor="let time of restaurant.availableTime" class="btn btn-primary m-1">{{time}}</a>
   </div>
 </div>
