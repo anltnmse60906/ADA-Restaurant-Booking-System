@@ -6,6 +6,7 @@ import {ConfirmBookingComponent} from "./restaurant/confirm-booking/confirm-book
 import {SearchResultsComponent} from "./restaurant/search-results/search-results.component";
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
+import {SubmitBookingComponent} from "./restaurant/confirm-booking/submit-booking/submit-booking.component";
 
 const appRoutes: Routes = [
   {
@@ -32,8 +33,8 @@ const appRoutes: Routes = [
         component: SearchResultsComponent
       },
       {
-        path: ":id/confirm",
-        component: ConfirmBookingComponent
+        path: ":id/submit",
+        component: SubmitBookingComponent
       }
     ]
   }

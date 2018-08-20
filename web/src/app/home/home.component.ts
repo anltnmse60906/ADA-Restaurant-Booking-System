@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, Routes} from "@angular/router";
+import {NgbCalendar, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,12 @@ import {ActivatedRoute, Router, Routes} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-  mydate = new Date();
+  model;
+
 
   constructor(private router: Router,
-              private routes: ActivatedRoute) {
+              private routes: ActivatedRoute,
+              private calendar: NgbCalendar,) {
   }
 
   ngOnInit() {
@@ -19,5 +22,8 @@ export class HomeComponent implements OnInit {
 
   onFindRestaurant() {
     this.router.navigate(['restaurants'], {relativeTo: this.routes})
+  }
+  selectToday() {
+    this.model = this.calendar.getToday();
   }
 }

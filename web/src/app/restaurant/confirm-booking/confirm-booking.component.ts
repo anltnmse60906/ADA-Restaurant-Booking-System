@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-confirm-booking',
@@ -13,7 +14,10 @@ export class ConfirmBookingComponent implements OnInit {
   date: { year: number, month: number };
 
 
-  constructor(private modalService: NgbModal, private calendar: NgbCalendar) {
+  constructor(private modalService: NgbModal,
+              private calendar: NgbCalendar,
+              private router: Router,
+              private routes: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -22,8 +26,9 @@ export class ConfirmBookingComponent implements OnInit {
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
+      this.router.navigate(["submit"], {relativeTo: this.routes})
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
 

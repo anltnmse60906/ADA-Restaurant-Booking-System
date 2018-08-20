@@ -14,6 +14,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
+import { SubmitBookingComponent } from './restaurant/confirm-booking/submit-booking/submit-booking.component';
 
 
 @NgModule({
@@ -28,12 +29,13 @@ import {SignupComponent} from './auth/signup/signup.component';
     AuthComponent,
     SigninComponent,
     SignupComponent,
+    SubmitBookingComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   providers: [FormsModule],
   bootstrap: [AppComponent]
