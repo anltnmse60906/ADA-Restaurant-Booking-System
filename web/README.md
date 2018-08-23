@@ -25,3 +25,30 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+Coding Style:
+
+Formatting:
+
+1. 2 Spaces for indentation
+
+2. 80 characters per line
+
+3. Use single quotes
+
+4. Opening braces go on the same line
+
+5. Declare one variable per var statement
+
+Naming Conventions:
+
+6. Use lowerCamelCase for variables, properties and function names
+
+7. Use UpperCamelCase for class names
+
+8. Use Uppercase for constants
+
+9. Use the === operator
+
+10. Use multi-line ternary operator
+
