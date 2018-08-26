@@ -13,7 +13,7 @@
             <!--<ngb-datepicker id="date" #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>-->
             <div class="input-group">
               <input id="date" class="form-control" placeholder="yyyy-mm-dd"
-                     name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                     name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                   <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
@@ -25,7 +25,19 @@
         <div class="col-6">
           <div class="form-group">
             <label for="restaurant">For</label>
-            <input type="number" class="form-control">
+            <!-- <input type="number" class="form-control"> -->
+            <select name="" id="" class="form-control">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
           </div>
         </div>
       </div>
