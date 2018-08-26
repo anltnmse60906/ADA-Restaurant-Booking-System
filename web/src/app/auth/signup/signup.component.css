@@ -1,0 +1,65 @@
+.form-simple input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0; }
+  
+  .form-simple input[type="mail"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0; }
+  
+  .form-simple input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+  
+  .help-block ul {
+    margin: 0  !important;
+    padding: 0 !important; }
+    .help-block ul li {
+      list-style: none; }
+  
+      .form-simple input[type=text]{margin-bottom:-1px;border-bottom-right-radius:0;border-bottom-left-radius:0}.form-simple input[type=mail]{margin-bottom:-1px;border-radius:0}.form-simple input[type=password]{margin-bottom:10px;border-top-left-radius:0;border-top-right-radius:0}.help-block ul{margin:0!important;padding:0!important}.help-block ul li{list-style:none}
+  
+      .has-icon-left .form-control {
+        padding-right : 2.5rem;
+      }
+      .form-control-position {
+        position : absolute;
+        top : 4px;
+        left : 0;
+        z-index : 2;
+        display : block;
+        width : 2.5rem;
+        height : 2.5rem;
+        line-height : 2.5rem;
+        text-align : center;
+      }
+  
+  
+  .has-icon-left .form-control-position {
+    left : auto;
+    right : inherit;
+  }
+  
+  /*---------------------------------
+  Input Icon
+  ---------------------------------*/
+  .position-relative .form-control {
+    padding-left : -webkit-calc(2.75rem + 2px);
+    padding-left :    -moz-calc(2.75rem + 2px);
+    padding-left :         calc(2.75rem + 2px);
+  }
+  .position-relative .form-control.form-control-lg ~ .form-control-position {
+    top : 10px;
+  }
+  .position-relative .form-control.form-control-sm ~ .form-control-position {
+    top : -3px;
+  }
+  
+  .logo-custom {
+    max-width: 70px;
+  }
+  
