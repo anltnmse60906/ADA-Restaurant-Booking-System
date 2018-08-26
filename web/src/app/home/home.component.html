@@ -32,7 +32,13 @@
       <div class="row center-block">
         <div class="offset-md-2 col-8 form-group text-center">
           <label for="restaurant">Restaurant</label>
-          <input type="text" id="restaurant" class="form-control">
+          <input type="text" id="restaurant" class="form-control" ng-model="searchText"> 
+          <!-- <ul>
+            <li ng-repeat="let item of restaurant | filter:searchText ">
+              {{ item }}
+            </li>
+          </ul> -->
+
         </div>
       </div>
       <div class="row">
