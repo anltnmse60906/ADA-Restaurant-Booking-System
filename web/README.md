@@ -28,7 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ##AngularJS & ExpressJS Coding Style:
 
-Follow [Airbnb Javascript Style Guide] (https://github.com/airbnb/javascript)
+Follow [Airbnb Javascript Style Guide](https://github.com/airbnb/javascript)
 
 
 1. Use `const` for all of your references;avoid using `var`.
