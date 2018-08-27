@@ -9,7 +9,7 @@
           <div class="form-group">
             <label for="date">Date</label>
             <!--<input placeholder="Date Time" type="text"-->
-                   <!--class="form-control">-->
+            <!--class="form-control">-->
             <!--<ngb-datepicker id="date" #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>-->
             <div class="input-group">
               <input id="date" class="form-control" placeholder="yyyy-mm-dd"
@@ -24,17 +24,129 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="restaurant">For</label>
+            <label>For</label>
             <input type="number" class="form-control">
           </div>
         </div>
       </div>
-      <div class="row center-block">
-        <div class="offset-md-2 col-8 form-group text-center">
-          <label for="restaurant">Restaurant</label>
-          <input type="text" id="restaurant" class="form-control">
+
+      <div class="row"></div>
+      <div class="row">
+        <div class="col-5">
+          <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+            <div *ngFor="let y of topLeft;let colId = index">
+              <label class="res-table" for="{{'topLeft_' +colId }}">
+                <div class="shape rectangular">
+                  <input id="{{'topLeft_' +colId }}" type="checkbox">
+                </div>
+                <div class="chair chair-top"></div>
+                <div class="chair chair-left"></div>
+                <div class="chair chair-right"></div>
+                <div class="chair chair-bottom"></div>
+                <div class="table-number">Table</div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-1  text-vertical text-lg-center">Entrance</div>
+        <div class="col-6">
+          <div
+            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+            <div *ngFor="let y of topRight;let colId = index">
+              <label class="res-table" for="{{'topRight_' +colId }}">
+                <div class="shape rectangular">
+                  <input id="{{'topRight_' +colId }}" type="checkbox">
+                </div>
+                <div class="chair chair-top"></div>
+                <div class="chair chair-left"></div>
+                <div class="chair chair-right"></div>
+                <div class="chair chair-bottom"></div>
+                <div class="table-number">Table</div>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
+      <br/>
+      <hr/>
+      <div class="row">
+        <div class="col-6" style="border: 1px solid">
+          Bar area
+        </div>
+        <div class="col-1 text-vertical text-lg-center">
+          Entrance
+        </div>
+        <div class="col-5">
+          <div
+            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+            <div *ngFor="let y of barOpposite;let colId = index">
+              <label class="res-table" for="{{'barOpposite' +colId }}">
+                <div class="shape rectangular">
+                  <input id="{{'barOpposite' +colId }}" type="checkbox">
+                </div>
+                <div class="chair chair-top"></div>
+                <div class="chair chair-left"></div>
+                <div class="chair chair-right"></div>
+                <div class="chair chair-bottom"></div>
+                <div class="table-number">Table</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <br/>
+          <span><----- Toilet</span>
+          <hr/>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5"></div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <div
+            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+            <div *ngFor="let y of leftKitchen;let colId = index">
+              <label class="res-table" for="{{'leftKitchen_' +colId }}">
+                <div class="shape rectangular">
+                  <input id="{{'leftKitchen_' +colId }}" type="checkbox">
+                </div>
+                <div class="chair chair-top"></div>
+                <div class="chair chair-left"></div>
+                <div class="chair chair-right"></div>
+                <div class="chair chair-bottom"></div>
+                <div class="table-number">Table</div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-1 text-vertical text-lg-center">Entrance</div>
+        <div class="col-3">
+          <div
+            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+            <div *ngFor="let y of rightKitchen;let colId = index">
+              <label class="res-table" for="{{'rightKitchen_' +colId }}">
+                <div class="shape rectangular">
+                  <input id="{{'rightKitchen_' +colId }}" type="checkbox">
+                </div>
+                <div class="chair chair-top"></div>
+                <div class="chair chair-left"></div>
+                <div class="chair chair-right"></div>
+                <div class="chair chair-bottom"></div>
+                <div class="table-number">Table</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <hr/>
+      <div class="row text-lg-center">
+        <div class="col"><span>Kitchen</span></div>
+      </div>
+      <hr/>
+      <br/>
       <div class="row">
         <div class="col text-center">
           <button type="button" class="btn btn-primary" (click)="onFindRestaurant()">Find</button>
