@@ -1,25 +1,50 @@
-// import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from "../../shared/user.model"
+import {AuthenService} from "../../services/auth.service";
+import {AIPResponse} from "../../shared/response.model";
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
+
 export class SigninComponent implements OnInit {
-  @ViewChild('loginForm') public formLogin: NgForm;
+  loginForm: FormGroup;
 
   constructor(
     private route: Router,
     private router: ActivatedRoute,
-  ) { }
+    private authenService: AuthenService
+  ) {
+  }
 
   ngOnInit() {
+    this.loginForm = new FormGroup({
+      password: new FormControl("", Validators.required),
+      email: new FormControl("",
+        [Validators.required,
+          Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+        ]),
+    });
   }
-  onSubmit (form: any) {
-    this.route.navigate(['/main'], {relativeTo: this.router})
+
+  onSubmit(form: any) {
+    const user = new User(this.loginForm.value.email, this.loginForm.value.password);
+    this.authenService.signIn(user)
+      .subscribe(
+        (data: Object) => {
+          let test = new AIPResponse().fromJSON(data);
+          localStorage.setItem("token", test.token);
+          localStorage.setItem("userId", test.userId);
+          this.route.navigateByUrl('/');
+        }, error => {
+          console.log(error);
+        });
+    this.loginForm.reset();
   }
+
 
 }

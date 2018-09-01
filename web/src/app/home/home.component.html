@@ -5,32 +5,48 @@
   <div class="card-body">
     <form>
       <div class="row text-center">
-        <div class="col-6">
-          <div class="form-group">
-            <label for="date">Date</label>
-            <!--<input placeholder="Date Time" type="text"-->
-            <!--class="form-control">-->
-            <!--<ngb-datepicker id="date" #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>-->
-            <div class="input-group">
-              <input id="date" class="form-control" placeholder="yyyy-mm-dd"
-                     name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                  <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-                </button>
-              </div>
-            </div>
+
+        <div class="input-group col-4">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </button>
           </div>
+          <input id="date" class="form-control" placeholder="Today"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
         </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label>For</label>
-            <input type="number" class="form-control">
+        <div class="input-group col-4">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </button>
           </div>
+          <select class="custom-select" name="" id="">
+            <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            <option> teste</option>
+            <option>teste</option>
+            <option>teste</option>
+            <option>teste</option>
+            <option>teste</option>
+          </select>
+        </div>
+        <div class="input-group col-4">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </button>
+          </div>
+          <select class="custom-select" name="" id="">
+            <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            <option> teste</option>
+            <option>teste</option>
+            <option>teste</option>
+            <option>teste</option>
+            <option>teste</option>
+          </select>
         </div>
       </div>
-
-      <div class="row"></div>
+      <br>
       <div class="row">
         <div class="col-5">
           <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">

@@ -47,28 +47,34 @@
                   </div>
                   <div class="card-content">
                     <div class="card-body">
-                      <form class="form-horizontal form-simple" action="index.html" novalidate>
-                        <fieldset class="form-group position-relative has-icon-left mb-1">
-                          <input type="text" class="form-control form-control-lg" id="user-name" placeholder="User Name">
-                          <div class="form-control-position">
-                            <i class="ft-user"></i>
-                          </div>
-                        </fieldset>
-                        <fieldset class="form-group position-relative has-icon-left mb-1">
-                          <input type="email" class="form-control form-control-lg" id="user-email" placeholder="Your Email Address"
+                      <form class="form-horizontal form-simple" [formGroup]="myForm" (submit)="onSubmit()">
+                        <fieldset class="form-group position-relative has-icon-left">
+                          <input type="email" class="form-control form-control-lg" id="email" placeholder="Your Email Address" formControlName="email"
                           required>
                           <div class="form-control-position">
                             <i class="ft-mail"></i>
                           </div>
                         </fieldset>
                         <fieldset class="form-group position-relative has-icon-left">
-                          <input type="password" class="form-control form-control-lg" id="user-password" placeholder="Enter Password"
+                          <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First name" formControlName="firstName">
+                          <div class="form-control-position">
+                            <i class="ft-user"></i>
+                          </div>
+                        </fieldset>
+                        <fieldset class="form-group position-relative has-icon-left">
+                          <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last name" formControlName="lastName">
+                          <div class="form-control-position">
+                            <i class="ft-user"></i>
+                          </div>
+                        </fieldset>
+                        <fieldset class="form-group position-relative has-icon-left">
+                          <input type="password" class="form-control form-control-lg" id="password" placeholder="Enter Password" formControlName="password"
                           required>
                           <div class="form-control-position">
                             <i class="fa fa-key"></i>
                           </div>
                         </fieldset>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="ft-unlock"></i> Register</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!myForm.valid"><i class="ft-unlock"></i> Register</button>
                       </form>
                     </div>
                     <!-- <p class="text-center">Already have an account ? <a [routerLink]="['/auth/signin']" class="card-link">Login</a></p> -->
@@ -81,4 +87,3 @@
       </div>
     </div>
     </div>
-    

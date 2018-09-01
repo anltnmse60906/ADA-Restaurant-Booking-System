@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthenService} from "../services/auth.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-web-header',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authenService: AuthenService, private router: Router, private routes: ActivatedRoute) {
+  }
 
   ngOnInit() {
   }
 
+  isLoggedIn() {
+    return this.authenService.isLoggedIn();
+  }
+
+  onLogout() {
+    localStorage.clear();
+    this.router.navigateByUrl("/");
+  }
 }
