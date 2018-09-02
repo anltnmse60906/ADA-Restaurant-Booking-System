@@ -36,9 +36,9 @@ export class SigninComponent implements OnInit {
     this.authenService.signIn(user)
       .subscribe(
         (data: Object) => {
-          let test = new AIPResponse().fromJSON(data);
-          localStorage.setItem("token", test.token);
-          localStorage.setItem("userId", test.userId);
+          let aipResponse = new AIPResponse().fromJSON(data);
+          localStorage.setItem("token", aipResponse.token);
+          localStorage.setItem("userId", aipResponse.userId);
           this.route.navigateByUrl('/');
         }, error => {
           console.log(error);

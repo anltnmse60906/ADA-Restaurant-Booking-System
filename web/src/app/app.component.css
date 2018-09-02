@@ -1,1 +1,51 @@
 @import '~font-awesome/css/font-awesome.css';
+
+
+
+
+
+.shopping-cart {
+  margin: 20px 0;
+  float: right;
+  background: #ffe56b;
+  width: 320px;
+  position: relative;
+  border-radius: 3px;
+  padding: 20px;
+
+}
+.shopping-cart-header {
+  border-bottom: 1px solid #4fe84f;
+  padding-bottom: 15px;
+}
+.shopping-cart-header > .shopping-cart-total {
+  float: right;
+}
+
+.shopping-cart-items {
+  padding-top: 20px;
+}
+.shopping-cart-items > li {
+  margin-bottom: 18px;
+}
+
+.shopping-cart-items > img {
+  float: left;
+  margin-right: 12px;
+}
+
+.shopping-cart-items > .item-name {
+  display: block;
+  padding-top: 10px;
+  font-size: 16px;
+}
+
+.shopping-cart-items > .item-price {
+  color: #6394F8;
+  margin-right: 8px;
+}
+
+.shopping-cart-items > .item-quantity {
+  color: #4fe84f;
+}
+

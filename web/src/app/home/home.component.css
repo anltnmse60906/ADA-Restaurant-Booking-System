@@ -1,129 +1,8 @@
-.icon {
-  position: absolute;
-  left: 18px;
-  top: 9px;
-  font-size: 30px;
-}
-
-.tab-content {
-  /*pre {*/
-  max-height: 500px;
-  overflow-y: auto;
-  /*}*/
-}
-
-.code-block {
-  /*pre {*/
-  height: 250px;
-  overflow-y: auto;
-  /*}*/
-}
-
-.code-block-sm {
-  /*pre {*/
-  height: 200px;
-  overflow-y: auto;
-  /*}*/
-}
-
-.drag-block {
-  width: 200px;
-  height: 200px;
-  background-color: #20a8d8;
-  color: white;
-  padding: 75px 0px;
-  line-height: 50px;
-  text-align: center;
-}
-
-.drag-block-lg {
-  width: 300px;
-  height: 215px;
-  background-color: #f86c6b;
-  padding-top: 20px;
-  color: white;
-  text-align: center;
-  overflow-y: auto;
-}
-
-.drag-block-handle {
-  width: 100px;
-  height: 43px;
-  margin-top: -20px;
-  padding-top: 10px;
-  margin-bottom: 10px;
-}
-
-.ng-draggable {
-  cursor: move;
-  background-color: #20a8d8;
-}
-
-.drag-boundary {
-  width: 400px;
-  height: 400px;
-  overflow: hidden;
-  border: solid 1px #4dbd74;;
-  position: relative;
-}
-
-.label {
-  color: white;
-  background-color: #4dbd74;;
-  width: 100px;
-  text-align: center;
-  right: 0px;
-  position: absolute;
-
-}
-
-.top-b {
-  border-top-color: #f86c6b !important;
-}
-
-.bottom-b {
-  border-bottom-color: #f86c6b !important;
-}
-
-.left-b {
-  border-left-color: #f86c6b !important;
-}
-
-.right-b {
-  border-right-color: #f86c6b !important;
-}
-
-.grid-container {
-  position: relative;
-  height: 500px;
-  width: 500px;
-}
-
-.drag-grid {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #f8cb00;
-  color: white;
-  line-height: 50px;
-  text-align: center;
-}
-
-.grid {
-  width: 50px;
-  height: 50px;
-  min-height: 1px;
-  background-color: #20c997;
-  color: white;
-  text-align: center;
-  line-height: 50px;
-  border: 1px dashed #067002;
-}
 
 .shape {
   display: flex;
   /*flex: 0 0 50px;*/
-  background-color: #2aabd2;
+  background-color: #1565c0;
   height: 100px;
   width: 100px;
   /*margin: 15px;*/
@@ -139,15 +18,16 @@
   padding: 10px;
   margin: 5px
 }
-.shape input[type="checkbox"]{
+
+.shape input[type="checkbox"] {
   /*position: absolute;*/
   /*opacity: 0;*/
 
 }
-.shape input[type="checkbox"]:checked + .shape{
+
+.shape input[type="checkbox"]:checked + .shape {
   background-color: #bada55 !important;
 }
-
 
 .chair {
   border: 1px solid #000;
@@ -156,16 +36,27 @@
 
 .chair-top {
   top: 0px;
-  left: 25%;
-  width: 50%;
   height: 10px;
 }
 
+
+
 .chair-bottom {
   bottom: 0px;
+  height: 10px;
+}
+
+.single-center {
   left: 25%;
   width: 50%;
-  height: 10px;
+}
+.double-right {
+  right: 15%;
+  width: 25%;
+}
+.double-left {
+  left: 15%;
+  width: 25%;
 }
 
 .chair-left {
@@ -192,8 +83,20 @@
   transform: translate(-50%, -50%);
 }
 
-.text-vertical{
+.text-vertical {
   writing-mode: vertical-rl;
   text-orientation: upright;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

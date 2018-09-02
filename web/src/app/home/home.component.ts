@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, Routes} from "@angular/router";
-import {NgbCalendar, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgbCalendar} from "@ng-bootstrap/ng-bootstrap";
+import {TableService} from "../services/table.service";
+import {Table} from "../shared/table.model";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -11,23 +14,39 @@ export class HomeComponent implements OnInit {
 
   model;
 
-  gridSize = 50;
+  topLeft: Table[] = [];
+  topRight: Table[] = [];
+  rightBar: Table[] = [];
+  leftKitchen: Table[] = [];
+  rightKitchen: Table[] = [];
 
-  topLeft = [0, 50, 100, 150, 200, 250];
-  topRight = [0, 50, 100, 150, 200, 250, 150, 200, 250];
-  barOpposite = [0, 50, 100, 150];
-  leftKitchen = [0, 50, 100, 150, 100, 150, 150, 100, 150, 150, 100, 150, 150, 100, 150];
-  rightKitchen = [0, 50, 100,];
-
-  tables = ["table 1", "table 2"];
-  selectedTbl;
+  myCheckBoxes: FormControl = new FormControl();
 
   constructor(private router: Router,
               private routes: ActivatedRoute,
-              private calendar: NgbCalendar,) {
+              private calendar: NgbCalendar,
+              private tableService: TableService) {
   }
 
   ngOnInit() {
+    this.tableService.getTables().subscribe((tables: Table[]) => {
+      for (const tbl of tables) {
+        if (tbl.location === "top-right") {
+          this.topRight.push(tbl);
+        } else if (tbl.location === "top-left") {
+          this.topLeft.push(tbl);
+        } else if (tbl.location === "right-bar") {
+          this.rightBar.push(tbl);
+        } else if (tbl.location === "left-kitchen") {
+          this.leftKitchen.push(tbl);
+        } else if (tbl.location === "right-kitchen") {
+          this.rightKitchen.push(tbl);
+        }
+      }
+    });
+    this.myCheckBoxes.valueChanges.subscribe(value => {
+      console.log('my chebox has changed', value);
+    })
   }
 
   onFindRestaurant() {
@@ -35,27 +54,5 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/restaurants', 1]);
   }
 
-  selectToday() {
-    this.model = this.calendar.getToday();
-  }
-
-  onStart(event) {
-    console.log('started output:', event);
-    console.log(event.x);
-    console.log(event.y);
-  }
-
-  onStop(event) {
-    console.log('stopped output:', event);
-    console.log(event.x);
-    console.log(event.y);
-  }
-
-  onClick(event, tbl: string) {
-    console.log('stopped output:', event);
-    console.log(event.x);
-    console.log(event.y);
-    this.selectedTbl = tbl;
-  }
 
 }

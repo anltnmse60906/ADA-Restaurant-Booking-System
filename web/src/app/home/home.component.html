@@ -15,10 +15,12 @@
           <input id="date" class="form-control" placeholder="Today"
                  name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
         </div>
+
+
         <div class="input-group col-4">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+              <i class="fas fa-user"></i>
             </button>
           </div>
           <select class="custom-select" name="" id="">
@@ -50,17 +52,8 @@
       <div class="row">
         <div class="col-5">
           <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let y of topLeft;let colId = index">
-              <label class="res-table" for="{{'topLeft_' +colId }}">
-                <div class="shape rectangular">
-                  <input id="{{'topLeft_' +colId }}" type="checkbox">
-                </div>
-                <div class="chair chair-top"></div>
-                <div class="chair chair-left"></div>
-                <div class="chair chair-right"></div>
-                <div class="chair chair-bottom"></div>
-                <div class="table-number">Table</div>
-              </label>
+            <div *ngFor="let table of topLeft">
+              <app-table-element [TableElement]="table"></app-table-element>
             </div>
           </div>
         </div>
@@ -68,17 +61,8 @@
         <div class="col-6">
           <div
             style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let y of topRight;let colId = index">
-              <label class="res-table" for="{{'topRight_' +colId }}">
-                <div class="shape rectangular">
-                  <input id="{{'topRight_' +colId }}" type="checkbox">
-                </div>
-                <div class="chair chair-top"></div>
-                <div class="chair chair-left"></div>
-                <div class="chair chair-right"></div>
-                <div class="chair chair-bottom"></div>
-                <div class="table-number">Table</div>
-              </label>
+            <div *ngFor="let table of topRight;">
+              <app-table-element [TableElement]="table"></app-table-element>
             </div>
           </div>
         </div>
@@ -95,17 +79,8 @@
         <div class="col-5">
           <div
             style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let y of barOpposite;let colId = index">
-              <label class="res-table" for="{{'barOpposite' +colId }}">
-                <div class="shape rectangular">
-                  <input id="{{'barOpposite' +colId }}" type="checkbox">
-                </div>
-                <div class="chair chair-top"></div>
-                <div class="chair chair-left"></div>
-                <div class="chair chair-right"></div>
-                <div class="chair chair-bottom"></div>
-                <div class="table-number">Table</div>
-              </label>
+            <div *ngFor="let table of rightBar;let colId = index">
+              <app-table-element [TableElement]="table"></app-table-element>
             </div>
           </div>
         </div>
@@ -123,17 +98,8 @@
         <div class="col-8">
           <div
             style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let y of leftKitchen;let colId = index">
-              <label class="res-table" for="{{'leftKitchen_' +colId }}">
-                <div class="shape rectangular">
-                  <input id="{{'leftKitchen_' +colId }}" type="checkbox">
-                </div>
-                <div class="chair chair-top"></div>
-                <div class="chair chair-left"></div>
-                <div class="chair chair-right"></div>
-                <div class="chair chair-bottom"></div>
-                <div class="table-number">Table</div>
-              </label>
+            <div *ngFor="let table of leftKitchen;let colId = index">
+              <app-table-element [TableElement]="table"></app-table-element>
             </div>
           </div>
         </div>
@@ -141,17 +107,8 @@
         <div class="col-3">
           <div
             style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let y of rightKitchen;let colId = index">
-              <label class="res-table" for="{{'rightKitchen_' +colId }}">
-                <div class="shape rectangular">
-                  <input id="{{'rightKitchen_' +colId }}" type="checkbox">
-                </div>
-                <div class="chair chair-top"></div>
-                <div class="chair chair-left"></div>
-                <div class="chair chair-right"></div>
-                <div class="chair chair-bottom"></div>
-                <div class="table-number">Table</div>
-              </label>
+            <div *ngFor="let table of rightKitchen;let colId = index">
+              <app-table-element [TableElement]="table"></app-table-element>
             </div>
           </div>
         </div>
@@ -172,3 +129,4 @@
   </div>
 
 </div>
+

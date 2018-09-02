@@ -3,6 +3,7 @@ export class AIPResponse {
   public message?: string;
   public token?: string;
   public userId?: string;
+  public obj?: Array<Object>;
 
   constructor() {
   }

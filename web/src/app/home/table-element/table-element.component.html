@@ -1,0 +1,17 @@
+<!--<label class="res-table" for="{{'topLeft_' +colId }}">-->
+<label class="res-table">
+  <div class="shape rectangular" [ngClass]="{'selected':table.selected === true}">
+    <input type="checkbox" [checked]="table.selected" (change)="changeValue(table)">
+  </div>
+  <div *ngIf="table.capacity === 4">
+    <div class="chair chair-bottom double-right"></div>
+    <div class="chair chair-bottom double-left"></div>
+    <div class="chair chair-top double-right"></div>
+    <div class="chair chair-top double-left"></div>
+  </div>
+  <div *ngIf="table.capacity === 2">
+    <div class="chair chair-bottom single-center"></div>
+    <div class="chair chair-top single-center"></div>
+  </div>
+  <div class="table-number">{{table.name}}</div>
+</label>

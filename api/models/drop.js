@@ -1,7 +1,15 @@
-const User = require('./User')
+const User = require('./User');
+const Table = require('./Table');
 
-User.deleteMany()
-  .then(() => {
-    console.log('Deleted users');
-    process.exit();
-  });
+Table.deleteMany().then(() => {
+  console.log('Deleted Table success');
+
+  User.deleteMany()
+    .then(() => {
+      console.log('Deleted users');
+      process.exit();
+    });
+});
+
+
+

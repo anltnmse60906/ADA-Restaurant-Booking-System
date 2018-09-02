@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 @Component({
   selector: 'app-search-result-detail',
   templateUrl: './search-result-detail.component.html',
-  styleUrls: ['./search-result-detail.component.css']
+  styleUrls: ['./search-result-detail.component.css',]
 })
 export class SearchResultDetailComponent implements OnInit {
   @Input("RestaurantDetail") restaurant: Restaurant;

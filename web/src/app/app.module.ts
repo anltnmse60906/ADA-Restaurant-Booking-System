@@ -17,6 +17,9 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {SubmitBookingComponent} from './restaurant/confirm-booking/submit-booking/submit-booking.component';
 import {AuthenService} from "./services/auth.service"
 import {HttpClientModule} from "@angular/common/http";
+import {TableService} from "./services/table.service";
+import { TableElementComponent } from './home/table-element/table-element.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -32,6 +35,8 @@ import {HttpClientModule} from "@angular/common/http";
     SigninComponent,
     SignupComponent,
     SubmitBookingComponent,
+    TableElementComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,8 @@ import {HttpClientModule} from "@angular/common/http";
   ],
   providers: [
     FormsModule,
-    AuthenService
+    AuthenService,
+    TableService
   ],
   bootstrap: [AppComponent]
 })
