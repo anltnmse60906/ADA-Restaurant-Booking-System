@@ -37,7 +37,7 @@ const appRoutes: Routes = [
         component: SubmitBookingComponent
       }
     ]
-  }
+  },
 ];
 
 @NgModule({
