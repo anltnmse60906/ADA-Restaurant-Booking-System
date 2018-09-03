@@ -1,7 +1,11 @@
-<div class="card">
+<!-- <div class="card">
   <div class="card-header text-center">
     Find Your Restaurant
+    
+
   </div>
+
+
   <div class="card-body">
     <form>
       <div class="row text-center">
@@ -49,6 +53,7 @@
         </div>
       </div>
       <br>
+
       <div class="row">
         <div class="col-5">
           <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
@@ -128,5 +133,120 @@
     </form>
   </div>
 
-</div>
+</div> -->
 
+
+<div class="container">
+
+    <h1 class="my-2 text-center text-lg-left">Thumbnail Gallery</h1>
+
+    <div class="row text-center text-lg-center box">
+      <form class="example-container" [formGroup]="options" style="">
+        <div class="form-group">      
+            <select class="form-control" id="mealtype">
+              <option disabled>Select the type of meal</option>
+              <option>Breakfast</option>
+              <option>Lunch</option>
+              <option>Dinner</option>
+            </select>
+        </div>     
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group-prepend ">
+                <button class="btn btn-outline-secondary Search" type="button"><i class="fa fa-search" aria-hidden="true"></i>  Search</button>
+              </div>     
+            </form>
+    </div>
+  </div>
+<hr>
+
+
+
+<div class="row">
+    <div class="col-5">
+      <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+        <div *ngFor="let table of topLeft">
+          <app-table-element [TableElement]="table"></app-table-element>
+        </div>
+      </div>
+    </div>
+    <div class="col-1  text-vertical text-lg-center">Entrance</div>
+    <div class="col-6">
+      <div
+        style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+        <div *ngFor="let table of topRight;">
+          <app-table-element [TableElement]="table"></app-table-element>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <hr/>
+  <div class="row">
+    <div class="col-6" style="border: 1px solid">
+      Bar area
+    </div>
+    <div class="col-1 text-vertical text-lg-center">
+      Entrance
+    </div>
+    <div class="col-5">
+      <div
+        style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+        <div *ngFor="let table of rightBar;let colId = index">
+          <app-table-element [TableElement]="table"></app-table-element>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-6">
+        <br/>
+        <span><----- Toilet</span>
+        <hr/>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <div
+          style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+          <div *ngFor="let table of leftKitchen;let colId = index">
+            <app-table-element [TableElement]="table"></app-table-element>
+          </div>
+        </div>
+      </div>
+      <div class="col-1 text-vertical text-lg-center">Entrance</div>
+      <div class="col-3">
+        <div
+          style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+          <div *ngFor="let table of rightKitchen;let colId = index">
+            <app-table-element [TableElement]="table"></app-table-element>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <hr/>
+
+    <div class="row text-lg-center">
+        <div class="col"><span>Kitchen</span></div>
+      </div>
+      <hr/>
+      <br/>
+      <div class="row">
+        <!-- <div class="col text-center">
+          <button type="button" class="btn btn-primary" (click)="onFindRestaurant()">Find</button>
+        </div> -->
+      </div>
+    
+  

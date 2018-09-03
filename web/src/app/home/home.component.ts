@@ -5,6 +5,9 @@ import {TableService} from "../services/table.service";
 import {Table} from "../shared/table.model";
 import {FormControl} from "@angular/forms";
 
+
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -54,5 +57,6 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/restaurants', 1]);
   }
 
+  
 
 }
