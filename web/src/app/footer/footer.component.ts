@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Recipe} from "../../../../../angular-restaurant/src/app/recipes/recipe.model";
 import {TableService} from "../services/table.service";
 import {Table} from "../shared/table.model";
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-footer',
