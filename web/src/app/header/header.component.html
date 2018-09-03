@@ -15,7 +15,7 @@
 </nav> -->
 
 
-<nav class="navbar navbar-expand navbar-light bg-light">
+<!-- <nav class="navbar navbar-expand navbar-light bg-light">
   <a class="navbar-brand" href="#">Restaurant Booking Application</a>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="nav navbar-nav ml-auto">
@@ -35,4 +35,37 @@
       </li>
     </ul>
   </div>
+</nav>  -->
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand link" routerLink="/"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+
+    <i class="fa fa-cutlery"></i>  Restaurant Booking System
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item" *ngIf="!isLoggedIn()">
+        <a class="nav-link" routerLink="signin">Log in</a>
+      </li>
+      <li class="nav-item" *ngIf="!isLoggedIn()">
+        <a class="nav-link" routerLink="signup">Sign Up</a>
+      </li>
+      <li ngbDropdown class="d-inline-block" *ngIf="isLoggedIn()" >
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Tran Nhut Le</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item">Booking history</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" (click)="onLogout()">Log out</button>
+        </div>
+      </li>
+    </ul>
+
+    
+  </div>
 </nav>
+
+
+
