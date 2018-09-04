@@ -12,11 +12,13 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
       unique: true
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
     }
   })
 ;
-
-
 
 
 const User = (module.exports = mongoose.model('User', userSchema));

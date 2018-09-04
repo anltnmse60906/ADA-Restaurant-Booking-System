@@ -8,18 +8,17 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RestaurantComponent} from './restaurant/restaurant.component';
 import {SearchResultsComponent} from './restaurant/search-results/search-results.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ConfirmBookingComponent} from './restaurant/confirm-booking/confirm-booking.component';
+import {ConfirmBookingComponent} from './confirm-booking/confirm-booking.component';
 import {SearchResultDetailComponent} from './restaurant/search-results/search-result-detail/search-result-detail.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
-import {SubmitBookingComponent} from './restaurant/confirm-booking/submit-booking/submit-booking.component';
+import {SubmitBookingComponent} from './confirm-booking/submit-booking/submit-booking.component';
 import {AuthenService} from "./services/auth.service"
 import {HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
 import { TableElementComponent } from './home/table-element/table-element.component';
-import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -36,7 +35,6 @@ import { FooterComponent } from './footer/footer.component';
     SignupComponent,
     SubmitBookingComponent,
     TableElementComponent,
-    FooterComponent,
   ],
   imports: [
     BrowserModule,

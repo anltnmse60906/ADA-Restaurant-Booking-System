@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center text-lg-center">
+      Booking confirmation
+    </div>
+    <div class="card-body">
+
+      <div class="alert alert-primary" role="alert" [ngClass]="{'show':bookingSuccess,'hide':!bookingSuccess}">
+        This is a primary alert—check it out!
+      </div>
+
+      <div class="form-row form-group">
+        <div class="col">
+          <h4 class="reservation-restaurant text-center">Reserved tables</h4>
+
+        </div>
+        <div class="col">
+          <h4 class="reservation-restaurant">Booking for {{getSection()}} </h4>
+          <h4 class="reservation-time">{{getBookingDate()}}</h4>
+          <h4 class="reservation-people">{{getPeople()}} people</h4>
+        </div>
+      </div>
+      <form [formGroup]="confirmBookingForm" (submit)="onSubmit()">
+        <div class="form-row form-group">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="firstName.errors.required">
+                First name is required.
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="lastName.errors.required">
+                Last name is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row  form-group">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Email" formControlName="email">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="email.errors.required">
+                Email is required.
+              </div>
+              <div *ngIf="email.errors.pattern">
+                Email is invalid.
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Phone number" formControlName="phoneNumber">
+          </div>
+        </div>
+        <div class="form-row  form-group">
+          <div class="col">
+            <textarea class="form-control" row="1" placeholder="Add a special request"
+                      formControlName="requirement"></textarea>
+          </div>
+        </div>
+        <div class="form-row  form-group">
+          <div class="col text-center">
+            <button type="button" class="btn btn-outline-dark mr-3">Back to select the table</button>
+            <input type="submit" class="btn btn-primary" value="Complete reservation"
+                   [disabled]="!confirmBookingForm.valid">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Confirm the booking</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="row">
+          <div class="col-4 text-center">
+            <h4>Aug</h4>
+            <h4>15</h4>
+            <h4>Wed</h4>
+          </div>
+          <div class="col-8">
+            <div class="row">
+              <div class="col-1"><span>at</span></div>
+              <div class="col"><h5>15:00</h5></div>
+              <div class="col-1"><span>for</span></div>
+              <div class="col"><h5>2 people</h5></div>
+            </div>
+            <div class="row">
+              <div class="col-1"><span>At</span></div>
+              <div class="col"><h5>Punchbowl Restaurant</h5></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="c('Save click')">Confirm</button>
+    </div>
+  </ng-template>
+</div>
+<!--<pre>{{closeResult}}</pre>-->

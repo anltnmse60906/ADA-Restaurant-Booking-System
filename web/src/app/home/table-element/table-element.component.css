@@ -1,3 +1,8 @@
-.selected{
+.selected {
   background-color: #ff5735 !important;
 }
+
+.disable {
+  background-color: #24302a !important;
+}
+

@@ -18,20 +18,21 @@ const httpOption = {
 
 export class TableService {
   currentRestaurantTables: Table[];
+
   private tableUrl = "tables/";
   @Output() change: EventEmitter<Table[]> = new EventEmitter<Table[]>();
 
   constructor(public http: HttpClient) {
   }
 
-  getTables() {
-    return this.http.get(environment.backEndHost + this.tableUrl, httpOption)
+  getTables(section, bookingDate) {
+    return this.http.get(environment.backEndHost + this.tableUrl + "?section=" + section + "&bookingDate=" + bookingDate, httpOption)
       .pipe(map((response) => {
         let aipResponse = new AIPResponse().fromJSON(response);
         const tables = aipResponse.obj;
         let tranformedTables: Table[] = [];
         for (let m of  Array.from(tables)) {
-          tranformedTables.push(new Table(m["name"], m["capacity"], m["location"], m["isSmoking"]))
+          tranformedTables.push(new Table(m["_id"], m["name"], m["capacity"], m["location"], m["isSmoking"], m["isBooked"]))
         }
         this.currentRestaurantTables = tranformedTables;
         return tranformedTables;
@@ -54,5 +55,20 @@ export class TableService {
     this.change.emit(this.currentRestaurantTables);
   }
 
+  getSelectedTables() {
+    let selectedTables: Table[] = [];
+    for (let t of this.currentRestaurantTables) {
+      if (t.selected) {
+        selectedTables.push(t);
+      }
+    }
+    return selectedTables;
+  }
+
+  confirmBooking(queryParam, formData) {
+    return this.http.post(environment.backEndHost + this.tableUrl + "create-new-booking?" + queryParam, formData, httpOption)
+      .pipe(map(response => response))
+      .pipe(catchError((error) => throwError(error)));
+  }
 }
 

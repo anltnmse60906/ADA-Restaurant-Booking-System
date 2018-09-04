@@ -224,7 +224,7 @@ Table.create([
     isSmoking: true
   },
 ]).then((user) => {
-  console.log(`created ${user} user`);
+  console.log(`created ${user} table`);
   process.exit();
 }).catch((error) => {
   console.error(error);

@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit {
       password: new FormControl("", Validators.required),
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
+      phoneNumber: new FormControl("", Validators.required),
     });
   }
 
@@ -30,9 +31,10 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     const user = new User(
       this.myForm.value.email,
+      this.myForm.value.password,
+      this.myForm.value.phoneNumber,
       this.myForm.value.lastName,
       this.myForm.value.firstName,
-      this.myForm.value.password
     );
     this.authenService.signUp(user).subscribe(data => console.log(data), error => console.log(error));
     this.myForm.reset();

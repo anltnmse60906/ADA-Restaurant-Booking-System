@@ -1,89 +1,73 @@
-<!-- <div class="col-md-6 col-md-offset-3">
-  <h2>Register</h2>
-  <form name="form" >
-      <div class="form-group" >
-          <label for="firstName">First Name</label>
-          <input type="text" class="form-control" name="firstName" required />
-      </div>
-      <div class="form-group" >
-          <label for="lastName">Last Name</label>
-          <input type="text" class="form-control" name="lastName" required />
-          
-      </div>
-      <div class="form-group" >
-          <label for="username">Username/E-mail</label>
-          <input type="text" class="form-control" name="username"  required />
-          
-      </div>
-      <div class="form-group" >
-          <label for="password">Password</label>
-          <input type="password" class="form-control" name="password"  required />
-         
-      </div>
-      <div class="form-group">
-          <button  class="btn btn-primary">Register</button>
-        
-      </div>
-  </form>
-</div> -->
-
 <div class="horizontal-layout horizontal-menu 1-column   menu-expanded blank-page blank-page">
-    <div class="app-content container center-layout mt-2">
-      <div class="content-wrapper">
-        <div class="content-header row">
-        </div>
-        <div class="content-body">
-          <section class="flexbox-container">
-            <div class="col-12 d-flex align-items-center justify-content-center">
-              <div class="col-md-4 col-10 box-shadow-2 p-0">
-                <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
-                  <div class="card-header border-0">
-                    <div class="card-title text-center">
-                      <img class="logo-custom" src="../../../../assets/images/tumvi-logo.png" alt="branding logo">
-                    </div>
-                    <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                      <span>Create Account</span>
-                    </h6>
+  <div class="app-content container center-layout mt-2">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+        <section class="flexbox-container">
+          <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="col-md-4 col-10 box-shadow-2 p-0">
+              <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
+                <div class="card-header border-0">
+                  <div class="card-title text-center">
+                    <img class="logo-custom" src="../../../../assets/images/tumvi-logo.png" alt="branding logo">
                   </div>
-                  <div class="card-content">
-                    <div class="card-body">
-                      <form class="form-horizontal form-simple" [formGroup]="myForm" (submit)="onSubmit()">
-                        <fieldset class="form-group position-relative has-icon-left">
-                          <input type="email" class="form-control form-control-lg" id="email" placeholder="Your Email Address" formControlName="email"
-                          required>
-                          <div class="form-control-position">
-                            <i class="ft-mail"></i>
-                          </div>
-                        </fieldset>
-                        <fieldset class="form-group position-relative has-icon-left">
-                          <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First name" formControlName="firstName">
-                          <div class="form-control-position">
-                            <i class="ft-user"></i>
-                          </div>
-                        </fieldset>
-                        <fieldset class="form-group position-relative has-icon-left">
-                          <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last name" formControlName="lastName">
-                          <div class="form-control-position">
-                            <i class="ft-user"></i>
-                          </div>
-                        </fieldset>
-                        <fieldset class="form-group position-relative has-icon-left">
-                          <input type="password" class="form-control form-control-lg" id="password" placeholder="Enter Password" formControlName="password"
-                          required>
-                          <div class="form-control-position">
-                            <i class="fa fa-key"></i>
-                          </div>
-                        </fieldset>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!myForm.valid"><i class="ft-unlock"></i> Register</button>
-                      </form>
-                    </div>
-                    <!-- <p class="text-center">Already have an account ? <a [routerLink]="['/auth/signin']" class="card-link">Login</a></p> -->
+                  <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
+                    <span>Create Account</span>
+                  </h6>
+                </div>
+                <div class="card-content">
+                  <div class="card-body">
+                    <form class="form-horizontal form-simple" [formGroup]="myForm" (submit)="onSubmit()">
+                      <fieldset class="form-group position-relative has-icon-left">
+                        <input type="email" class="form-control form-control-lg" id="email"
+                               placeholder="Your Email Address" formControlName="email"
+                               required>
+                        <div class="form-control-position">
+                          <i class="fa fa-envelope"></i>
+                        </div>
+                      </fieldset>
+                      <fieldset class="form-group position-relative has-icon-left">
+                        <input type="text" class="form-control form-control-lg" name="phoneNumber" id="phoneNumber" formControlName="phoneNumber"
+                               placeholder="Enter Phone Number">
+                        <div class="form-control-position">
+                          <i class="fa fa-phone"></i>
+                        </div>
+                      </fieldset>
+                      <fieldset class="form-group position-relative has-icon-left">
+                        <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First name"
+                               formControlName="firstName">
+                        <div class="form-control-position">
+                          <i class="fa fa-address-card"></i>
+                        </div>
+                      </fieldset>
+                      <fieldset class="form-group position-relative has-icon-left">
+                        <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last name"
+                               formControlName="lastName">
+                        <div class="form-control-position">
+                          <i class="fa fa-address-card"></i>
+                        </div>
+                      </fieldset>
+                      <fieldset class="form-group position-relative has-icon-left">
+                        <input type="password" class="form-control form-control-lg" id="password"
+                               placeholder="Enter Password" formControlName="password"
+                               required>
+                        <div class="form-control-position">
+                          <i class="fa fa-key"></i>
+                        </div>
+                      </fieldset>
+                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!myForm.valid"><i
+                        class="ft-unlock"></i> Register
+                      </button>
+                    </form>
                   </div>
+                  <!-- <p class="text-center">Already have an account ? <a [routerLink]="['/auth/signin']" class="card-link">Login</a></p> -->
                 </div>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
-    </div>
+  </div>
+</div>

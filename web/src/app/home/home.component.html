@@ -1,252 +1,121 @@
-<!-- <div class="card">
-  <div class="card-header text-center">
-    Find Your Restaurant
-    
-
-  </div>
-
-
-  <div class="card-body">
-    <form>
-      <div class="row text-center">
-
-        <div class="input-group col-4">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-            </button>
-          </div>
-          <input id="date" class="form-control" placeholder="Today"
-                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
-        </div>
-
-
-        <div class="input-group col-4">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <i class="fas fa-user"></i>
-            </button>
-          </div>
-          <select class="custom-select" name="" id="">
-            <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-            <option>10:00</option>
-            <option>10:15</option>
-            <option>10:30</option>
-            <option>10:45</option>
-            <option>11:00</option>
-          </select>
-        </div>
-        <div class="input-group col-4">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-            </button>
-          </div>
-          <select class="custom-select" name="" id="">
-            <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-            <option> teste</option>
-            <option>teste</option>
-            <option>teste</option>
-            <option>teste</option>
-            <option>teste</option>
-          </select>
-        </div>
-      </div>
-      <br>
-
-      <div class="row">
-        <div class="col-5">
-          <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let table of topLeft">
-              <app-table-element [TableElement]="table"></app-table-element>
-            </div>
-          </div>
-        </div>
-        <div class="col-1  text-vertical text-lg-center">Entrance</div>
-        <div class="col-6">
-          <div
-            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let table of topRight;">
-              <app-table-element [TableElement]="table"></app-table-element>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br/>
-      <hr/>
-      <div class="row">
-        <div class="col-6" style="border: 1px solid">
-          Bar area
-        </div>
-        <div class="col-1 text-vertical text-lg-center">
-          Entrance
-        </div>
-        <div class="col-5">
-          <div
-            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let table of rightBar;let colId = index">
-              <app-table-element [TableElement]="table"></app-table-element>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <br/>
-          <span><----- Toilet</span>
-          <hr/>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-5"></div>
-      </div>
-      <div class="row">
-        <div class="col-8">
-          <div
-            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let table of leftKitchen;let colId = index">
-              <app-table-element [TableElement]="table"></app-table-element>
-            </div>
-          </div>
-        </div>
-        <div class="col-1 text-vertical text-lg-center">Entrance</div>
-        <div class="col-3">
-          <div
-            style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-            <div *ngFor="let table of rightKitchen;let colId = index">
-              <app-table-element [TableElement]="table"></app-table-element>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br/>
-      <hr/>
-      <div class="row text-lg-center">
-        <div class="col"><span>Kitchen</span></div>
-      </div>
-      <hr/>
-      <br/>
-      <div class="row">
-        <div class="col text-center">
-          <button type="button" class="btn btn-primary" (click)="onFindRestaurant()">Find</button>
-        </div>
-      </div>
-    </form>
-  </div>
-
-</div> -->
-
-
 <div class="container">
 
-    <h1 class="my-2 text-center text-lg-left">Thumbnail Gallery</h1>
-
-    <div class="row text-center text-lg-center box">
-      <form class="example-container" [formGroup]="options" style="">
-        <div class="form-group">      
-            <select class="form-control" id="mealtype">
-              <option disabled>Select the type of meal</option>
-              <option>Breakfast</option>
-              <option>Lunch</option>
-              <option>Dinner</option>
-            </select>
-        </div>     
-            <div class="form-group">
-              <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd"
-                       name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-                </div>
-              </div>
-            </div>
-
-            <div class="input-group-prepend ">
-                <button class="btn btn-outline-secondary Search" type="button"><i class="fa fa-search" aria-hidden="true"></i>  Search</button>
-              </div>     
-            </form>
+  <h1 class="my-2 text-center text-lg-left">Thumbnail Gallery</h1>
+  <div class="row text-center text-lg-center box">
+    <!--<form class="example-container" (ngSubmit)="onSubmit()">-->
+    <div class="form-group">
+      <select class="form-control" [ngModel]="selectedSection" name="section" (ngModelChange)="onChangeSection($event)">
+        <option value="" disabled>Select the type of meal</option>
+        <option [id]="1" [value]="1">Breakfast</option>
+        <option [id]="2" [value]="2">Lunch</option>
+        <option [id]="3" [value]="3">Dinner</option>
+      </select>
     </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control"
+               [minDate]="startDate" [ngModel]="model" value="{{model}}" ngbDatepicker #d="ngbDatepicker"
+               (ngModelChange)="onChangeBookingDate($event)"
+               (click)="d.toggle()"
+               name="bookingDate">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group-prepend ">
+      <button class="btn btn-outline-secondary Search" type="submit" (click)="onSubmit(model,selectedSection)"><i
+        class="fa fa-search"
+        aria-hidden="true"></i>
+        Search
+      </button>
+    </div>
+    <!--</form>-->
   </div>
+</div>
 <hr>
 
 
+<div class="row">
+  <div class="col-5">
+    <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+      <div *ngFor="let table of topLeft">
+        <app-table-element [TableElement]="table"></app-table-element>
+      </div>
+    </div>
+  </div>
+  <div class="col-1  text-vertical text-lg-center">Entrance</div>
+  <div class="col-6">
+    <div
+      style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+      <div *ngFor="let table of topRight;">
+        <app-table-element [TableElement]="table"></app-table-element>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<hr/>
+<div class="row">
+  <div class="col-6" style="border: 1px solid">
+    Bar area
+  </div>
+  <div class="col-1 text-vertical text-lg-center">
+    Entrance
+  </div>
+  <div class="col-5">
+    <div
+      style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+      <div *ngFor="let table of rightBar;let colId = index">
+        <app-table-element [TableElement]="table"></app-table-element>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
-    <div class="col-5">
-      <div style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-        <div *ngFor="let table of topLeft">
-          <app-table-element [TableElement]="table"></app-table-element>
-        </div>
-      </div>
-    </div>
-    <div class="col-1  text-vertical text-lg-center">Entrance</div>
-    <div class="col-6">
-      <div
-        style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-        <div *ngFor="let table of topRight;">
-          <app-table-element [TableElement]="table"></app-table-element>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br/>
-  <hr/>
-  <div class="row">
-    <div class="col-6" style="border: 1px solid">
-      Bar area
-    </div>
-    <div class="col-1 text-vertical text-lg-center">
-      Entrance
-    </div>
-    <div class="col-5">
-      <div
-        style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-        <div *ngFor="let table of rightBar;let colId = index">
-          <app-table-element [TableElement]="table"></app-table-element>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-      <div class="col-6">
-        <br/>
-        <span><----- Toilet</span>
-        <hr/>
-      </div>
-      <div class="col-1"></div>
-      <div class="col-5"></div>
-    </div>
-    <div class="row">
-      <div class="col-8">
-        <div
-          style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-          <div *ngFor="let table of leftKitchen;let colId = index">
-            <app-table-element [TableElement]="table"></app-table-element>
-          </div>
-        </div>
-      </div>
-      <div class="col-1 text-vertical text-lg-center">Entrance</div>
-      <div class="col-3">
-        <div
-          style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
-          <div *ngFor="let table of rightKitchen;let colId = index">
-            <app-table-element [TableElement]="table"></app-table-element>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="col-6">
     <br/>
+    <span><----- Toilet</span>
     <hr/>
+  </div>
+  <div class="col-1"></div>
+  <div class="col-5"></div>
+</div>
+<div class="row">
+  <div class="col-8">
+    <div
+      style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+      <div *ngFor="let table of leftKitchen;let colId = index">
+        <app-table-element [TableElement]="table"></app-table-element>
+      </div>
+    </div>
+  </div>
+  <div class="col-1 text-vertical text-lg-center">Entrance</div>
+  <div class="col-3">
+    <div
+      style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
+      <div *ngFor="let table of rightKitchen;let colId = index">
+        <app-table-element [TableElement]="table"></app-table-element>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<hr/>
 
-    <div class="row text-lg-center">
-        <div class="col"><span>Kitchen</span></div>
-      </div>
-      <hr/>
-      <br/>
-      <div class="row">
-        <!-- <div class="col text-center">
-          <button type="button" class="btn btn-primary" (click)="onFindRestaurant()">Find</button>
-        </div> -->
-      </div>
-    
-  
+<div class="row text-lg-center">
+  <div class="col"><span>Kitchen</span></div>
+</div>
+<hr/>
+<br/>
+
+<nav class="navbar navbar-expand navbar-light bg-light fixed-bottom" *ngIf="selectedTables.length >0">
+  <div class="navbar-brand"></div>
+  <div class="mr-3">
+    <span>Selected tables <b>({{selectedTables.length}})</b>: <b>{{totalCustomers}} people</b></span>
+  </div>
+  <button class="btn btn-primary" (click)="onConfirmBooking()">Confirm Booking</button>
+</nav>

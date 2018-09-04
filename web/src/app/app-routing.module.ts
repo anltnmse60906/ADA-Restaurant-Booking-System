@@ -2,11 +2,11 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 import {RestaurantComponent} from "./restaurant/restaurant.component";
-import {ConfirmBookingComponent} from "./restaurant/confirm-booking/confirm-booking.component";
+import {ConfirmBookingComponent} from "./confirm-booking/confirm-booking.component";
 import {SearchResultsComponent} from "./restaurant/search-results/search-results.component";
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
-import {SubmitBookingComponent} from "./restaurant/confirm-booking/submit-booking/submit-booking.component";
+import {SubmitBookingComponent} from "./confirm-booking/submit-booking/submit-booking.component";
 
 const appRoutes: Routes = [
   {
@@ -22,20 +22,24 @@ const appRoutes: Routes = [
     component: SignupComponent
   },
   {
+    path: "confirm",
+    component: ConfirmBookingComponent
+  },
+  {
     path: "restaurants",
     component: RestaurantComponent, children: [
-      {
-        path: ":id",
-        component: ConfirmBookingComponent
-      },
+      // {
+      //   path: ":id",
+      //   component: ConfirmBookingComponent
+      // },
       {
         path: "",
         component: SearchResultsComponent
       },
-      {
-        path: ":id/submit",
-        component: SubmitBookingComponent
-      }
+      // {
+      //   path: ":id/submit",
+      //   component: SubmitBookingComponent
+      // }
     ]
   },
 ];
