@@ -5,6 +5,7 @@ import {TableService} from "../services/table.service";
 import {Table} from "../shared/table.model";
 import {NgbDateAdapter, NgbDateNativeAdapter,} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from "@angular/common";
+import {params} from "../shared/common.params";
 
 
 @Component({
@@ -18,9 +19,9 @@ import {DatePipe} from "@angular/common";
 })
 export class HomeComponent implements OnInit {
 
-  model;
+  private _bookingDate: Date;
   today = new Date;
-  selectedSection = 1;
+  private _selectedSection;
 
   startDate = {
     year: this.today.getFullYear(),
@@ -37,25 +38,31 @@ export class HomeComponent implements OnInit {
   selectedTables: Table[] = [];
   totalCustomers: number = 0;
 
+  private _currentBookingDate: Date;
+  private _currentSection: string;
+
   constructor(private router: Router, private routes: ActivatedRoute,
               private calendar: NgbCalendar,
               private tableService: TableService, private datePipe: DatePipe,) {
   }
 
   ngOnInit() {
-    this.model = new Date();
-    localStorage.setItem("selectedBookingDay", new Date().toString());
-    localStorage.setItem("selectedSection", this.selectedSection.toString());
+    this._bookingDate = new Date();
 
-    if (this.today.getHours() > 8 && this.today.getHours() < 12) {
-      this.selectedSection = 1
-    } else if (this.today.getHours() > 11 && this.today.getHours() < 16) {
-      this.selectedSection = 2
+    localStorage.setItem("selectedBookingDay", new Date().toString());
+    localStorage.setItem("selectedSection", this._selectedSection);
+
+    this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
+    this._currentBookingDate = this._bookingDate;
+
+    this._selectedSection = 1;
+    if (this.today.getHours() > 11 && this.today.getHours() < 16) {
+      this._selectedSection = 2
     } else if (this.today.getHours() > 15 && this.today.getHours() < 20) {
-      this.selectedSection = 3
+      this._selectedSection = 3
     }
 
-    this.tableService.getTables(this.selectedSection, this.datePipe.transform(this.today, "dd-MM-yyyy")).subscribe((tables: Table[]) => {
+    this.tableService.getTables(this._selectedSection, this.datePipe.transform(this.today, params.dateTimePattern)).subscribe((tables: Table[]) => {
       this.parseTable(tables);
     });
 
@@ -71,19 +78,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onSubmit(model, section) {
-    this.tableService.getTables(this.selectedSection, this.datePipe.transform(this.model, "dd-MM-yyyy")).subscribe((tables: Table[]) => {
+  onSubmit() {
+    this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
+    this._currentBookingDate = this._bookingDate;
+
+    this.tableService.getTables(this._selectedSection, this.datePipe.transform(this._bookingDate, params.dateTimePattern)).subscribe((tables: Table[]) => {
       this.parseTable(tables);
     });
   }
 
   onChangeSection(event) {
-    this.selectedSection = event;
+    this._selectedSection = event;
     localStorage.setItem("selectedSection", event);
   }
 
   onChangeBookingDate(event) {
-    this.model = new Date(event);
+    this._bookingDate = new Date(event);
     localStorage.setItem("selectedBookingDay", event);
   }
 
@@ -106,9 +116,26 @@ export class HomeComponent implements OnInit {
       }
     }
   }
+
   onConfirmBooking() {
     localStorage.setItem("max-people", this.totalCustomers.toString());
     this.router.navigateByUrl("/confirm")
   }
 
+
+  sectionNumberToString(section: number) {
+    if (section === 1) {
+      return "Breakfast";
+    } else if (section === 2) {
+      return "Lunch";
+    } else if (section === 3) {
+      return "Dinner";
+    }
+    return "";
+  }
+
+  //
+  // getBookingDate() {
+  //   return this.datePipe.transform(this._bookingDate, params.dateTimePattern);
+  // }
 }

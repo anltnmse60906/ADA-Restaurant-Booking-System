@@ -51,7 +51,6 @@ export class ConfirmBookingComponent implements OnInit {
     if (localStorage.getItem("selectedBookingDay")) {
       return this.datePipe.transform(localStorage.getItem("selectedBookingDay"), "fullDate");
     }
-
   }
 
   getSection() {
