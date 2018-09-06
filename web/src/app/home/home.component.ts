@@ -6,6 +6,7 @@ import {Table} from "../shared/table.model";
 import {NgbDateAdapter, NgbDateNativeAdapter,} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from "@angular/common";
 import {params} from "../shared/common.params";
+import {AuthenService} from "../services/auth.service";
 
 
 @Component({
@@ -43,14 +44,13 @@ export class HomeComponent implements OnInit {
 
   constructor(private router: Router, private routes: ActivatedRoute,
               private calendar: NgbCalendar,
-              private tableService: TableService, private datePipe: DatePipe,) {
+              private tableService: TableService,
+              private authenService: AuthenService,
+              private datePipe: DatePipe,) {
   }
 
   ngOnInit() {
     this._bookingDate = new Date();
-
-    localStorage.setItem("selectedBookingDay", new Date().toString());
-    localStorage.setItem("selectedSection", this._selectedSection);
 
     this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
     this._currentBookingDate = this._bookingDate;
@@ -66,7 +66,8 @@ export class HomeComponent implements OnInit {
       this.parseTable(tables);
     });
 
-    this.tableService.change.subscribe((currentRestaurantTables: Table[]) => {
+    // this function will be trigged when we updateConfirmFooter the selected table
+    this.tableService.updateConfirmFooter.subscribe((currentRestaurantTables: Table[]) => {
       this.totalCustomers = 0;
       this.selectedTables = [];
       for (let t of currentRestaurantTables) {
@@ -81,20 +82,19 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
     this._currentBookingDate = this._bookingDate;
-
+    this.tableService.removeSelectedTables();
     this.tableService.getTables(this._selectedSection, this.datePipe.transform(this._bookingDate, params.dateTimePattern)).subscribe((tables: Table[]) => {
       this.parseTable(tables);
     });
+
   }
 
   onChangeSection(event) {
     this._selectedSection = event;
-    localStorage.setItem("selectedSection", event);
   }
 
   onChangeBookingDate(event) {
     this._bookingDate = new Date(event);
-    localStorage.setItem("selectedBookingDay", event);
   }
 
   parseTable(tables: Table[]) {
@@ -118,10 +118,70 @@ export class HomeComponent implements OnInit {
   }
 
   onConfirmBooking() {
-    localStorage.setItem("max-people", this.totalCustomers.toString());
-    this.router.navigateByUrl("/confirm")
-  }
 
+    if (this.authenService.isLoggedIn()) {
+      localStorage.setItem("max-people", this.totalCustomers.toString());
+      localStorage.setItem("selectedBookingDay", this.datePipe.transform(this._bookingDate, params.dateTimePattern));
+      localStorage.setItem("selectedSection", this._selectedSection);
+
+
+      let selectedTables = this.tableService.getSelectedTablesList();
+      let total = selectedTables.length;
+      let count = 0;
+      let isFailed = false;
+      let reservedSuccessfullyTables = [];
+      for (let t of selectedTables) {
+        let data = {
+          bookingTable: t,
+          section: this._selectedSection,
+          bookingDate: this.datePipe.transform(this._bookingDate, params.dateTimePattern)
+        };
+        this.tableService.reserveTable("", data).subscribe((response) => {
+          console.log(response);
+          let success = response["obj"].success;
+          count++;
+          if (!success) {
+            //show message when select table is reserved
+
+            let otherReservedTable = this.tableService.getSelectedTableById(response["obj"].data.tableId._id);
+            // this.tableService.selectTable(otherReservedTable);
+            otherReservedTable.isBooked = true;
+            otherReservedTable.selected = false;
+            this.tableService.updateSelectedTable(otherReservedTable);
+            alert("Table " + response["obj"].data.tableId.name + " is reserved");
+            isFailed = true;
+          } else {
+            console.log("table is reserved successfully: " + response["obj"].data);
+            reservedSuccessfullyTables.push(response["obj"].data);
+          }
+          if (total === count) {
+            // alert("reserved successfully");
+            //TODO Go to nextpage for edit
+            if (isFailed) {
+              for (let t of reservedSuccessfullyTables) {
+                let otherReservedTable = this.tableService.getSelectedTableById(t.tableId);
+                this.tableService.selectTable(otherReservedTable);
+                let obj = {
+                  bookingId: t._id
+                };
+                this.tableService.deleteReservedTable("", obj).subscribe((response) => {
+                  console.log(response);
+                })
+              }
+            } else {
+              this.router.navigateByUrl("booking/confirm");
+            }
+          }
+        });
+      }
+    } else {
+      // this.router.navigate(['signin'], { queryParams: { returnUrl: state.url }});
+      this.tableService.updateSelectedTableBeforeLogin(this.tableService.getSelectedTablesList());
+      this.router.navigate(['signin'],);
+    }
+
+
+  }
 
   sectionNumberToString(section: number) {
     if (section === 1) {

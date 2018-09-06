@@ -20,10 +20,11 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    localStorage.clear();
+    this.authenService.logOut();
     this.router.navigateByUrl("/");
   }
-  getUserDisplayName(){
+
+  getUserDisplayName() {
 
   }
 }

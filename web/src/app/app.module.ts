@@ -19,6 +19,7 @@ import {AuthenService} from "./services/auth.service"
 import {HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
 import { TableElementComponent } from './home/table-element/table-element.component';
+import {AuthGuard} from "./services/auth-guard.service";
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { TableElementComponent } from './home/table-element/table-element.compon
   providers: [
     FormsModule,
     AuthenService,
-    TableService
+    TableService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

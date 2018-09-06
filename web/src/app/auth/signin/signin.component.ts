@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from "../../shared/user.model"
 import {AuthenService} from "../../services/auth.service";
-import {AIPResponse} from "../../shared/response.model";
+import {params} from "../../shared/common.params";
 
 @Component({
   selector: 'app-signin',
@@ -13,10 +13,11 @@ import {AIPResponse} from "../../shared/response.model";
 
 export class SigninComponent implements OnInit {
   loginForm: FormGroup;
+  returnUrl: string = "";
 
   constructor(
-    private route: Router,
-    private router: ActivatedRoute,
+    private router: Router,
+    private routes: ActivatedRoute,
     private authenService: AuthenService
   ) {
   }
@@ -26,20 +27,21 @@ export class SigninComponent implements OnInit {
       password: new FormControl("", Validators.required),
       email: new FormControl("",
         [Validators.required,
-          Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+          Validators.pattern(params.emailPattern)
         ]),
     });
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.routes.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onSubmit(form: any) {
     const user = new User(this.loginForm.value.email, this.loginForm.value.password);
     this.authenService.signIn(user)
       .subscribe(
-        (data: Object) => {
-          let aipResponse = new AIPResponse().fromJSON(data);
-          localStorage.setItem("token", aipResponse.token);
-          localStorage.setItem("userId", aipResponse.userId);
-          this.route.navigateByUrl('/');
+        (data) => {
+          localStorage.setItem("token", data["token"]);
+          localStorage.setItem("userId", data["userId"]);
+          this.router.navigateByUrl(this.returnUrl);
         }, error => {
           console.log(error);
         });

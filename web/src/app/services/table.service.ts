@@ -3,9 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
-import {AIPResponse} from "../shared/response.model";
 import {Table} from "../shared/table.model";
-import {forEach} from "@angular/router/src/utils/collection";
+import {params} from "../shared/common.params";
 
 
 const httpOption = {
@@ -18,25 +17,77 @@ const httpOption = {
 
 export class TableService {
   currentRestaurantTables: Table[];
+  selectedTableBeforeLogin: Table[];
+  @Output() updateConfirmFooter: EventEmitter<Table[]> = new EventEmitter<Table[]>();
 
-  private tableUrl = "tables/";
-  @Output() change: EventEmitter<Table[]> = new EventEmitter<Table[]>();
 
   constructor(public http: HttpClient) {
   }
 
   getTables(section, bookingDate) {
-    return this.http.get(environment.backEndHost + this.tableUrl + "?section=" + section + "&bookingDate=" + bookingDate, httpOption)
+    const token = localStorage.getItem("token") ? "&token=" + localStorage.getItem("token") : "";
+    return this.http.get(environment.backEndHost + params.tableUrl + "?section=" + section + "&bookingDate=" + bookingDate + token, httpOption)
       .pipe(map((response) => {
-        let aipResponse = new AIPResponse().fromJSON(response);
-        const tables = aipResponse.obj;
+        const tables = response["obj"].tableList;
+        const reservedTables = response["obj"].reservedTables;
+        const reservedTablesByUserId = response["obj"].reservedTablesByUserId;
         let tranformedTables: Table[] = [];
-        for (let m of  Array.from(tables)) {
-          tranformedTables.push(new Table(m["_id"], m["name"], m["capacity"], m["location"], m["isSmoking"], m["isBooked"]))
+        for (let m of  tables) {
+          let booked = false;
+          let selected = false;
+          if (this.selectedTableBeforeLogin && this.selectedTableBeforeLogin.length !== 0) {
+            for (let reservedTable of this.selectedTableBeforeLogin) {
+              if (reservedTable._id === m._id) {
+                selected = true;
+                booked = false;
+              }
+            }
+          }
+          if (reservedTables) {
+            for (let reservedTable of reservedTables) {
+              if (reservedTable.tableId._id === m._id) {
+                selected = false;
+                booked = true;
+              }
+            }
+          }
+          if (reservedTablesByUserId) {
+            for (let reservedTable of reservedTablesByUserId) {
+              if (reservedTable.tableId._id === m._id) {
+                selected = true;
+                booked = false;
+              }
+            }
+          }
+          tranformedTables.push(new Table(m["_id"], m["name"], m["capacity"], m["location"], m["isSmoking"], booked, selected))
         }
         this.currentRestaurantTables = tranformedTables;
+
+        this.updateConfirmFooter.emit(this.currentRestaurantTables);
+
         return tranformedTables;
       }))
+      .pipe(catchError((error) => throwError(error)));
+  }
+
+  confirmBooking(queryParam, formData) {
+    const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
+    return this.http.post(environment.backEndHost + params.tableAuthUrl + "create-new-booking" + queryParam + token, formData, httpOption)
+      .pipe(map(response => response))
+      .pipe(catchError((error) => throwError(error)));
+  }
+
+  reserveTable(queryParam, formData) {
+    const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
+    return this.http.post(environment.backEndHost + params.tableAuthUrl + "reserve-table" + queryParam + token, formData, httpOption)
+      .pipe(map(response => response))
+      .pipe(catchError((error) => throwError(error)));
+  }
+
+  deleteReservedTable(queryParam, formData) {
+    const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
+    return this.http.post(environment.backEndHost + params.tableAuthUrl + "delete-reserved-table" + queryParam + token, formData, httpOption)
+      .pipe(map(response => response))
       .pipe(catchError((error) => throwError(error)));
   }
 
@@ -52,10 +103,10 @@ export class TableService {
       i++;
     }
     // calling to footer for updating
-    this.change.emit(this.currentRestaurantTables);
+    this.updateConfirmFooter.emit(this.currentRestaurantTables);
   }
 
-  getSelectedTables() {
+  getSelectedTablesList(): Table[] {
     let selectedTables: Table[] = [];
     for (let t of this.currentRestaurantTables) {
       if (t.selected) {
@@ -65,10 +116,39 @@ export class TableService {
     return selectedTables;
   }
 
-  confirmBooking(queryParam, formData) {
-    return this.http.post(environment.backEndHost + this.tableUrl + "create-new-booking?" + queryParam, formData, httpOption)
-      .pipe(map(response => response))
-      .pipe(catchError((error) => throwError(error)));
+  removeSelectedTables() {
+    let selectedTables = this.getSelectedTablesList();
+    for (let i = 0; i < selectedTables.length; i++) {
+      let selectedTable = selectedTables[i];
+      selectedTable.selected = false;
+      selectedTables[i] = selectedTable;
+    }
+    this.updateConfirmFooter.emit(this.currentRestaurantTables);
+  }
+
+  getSelectedTableById(id: string): Table {
+    let selectedTables = this.getSelectedTablesList();
+    for (let table of selectedTables) {
+      if (table._id === id) {
+        return table
+      }
+    }
+  }
+
+  updateSelectedTable(updatedTable: Table) {
+    let count = 0;
+    for (let table of this.currentRestaurantTables) {
+      if (table._id === updatedTable._id) {
+        this.currentRestaurantTables[count] = updatedTable;
+        return;
+      }
+      count++;
+    }
+    this.updateConfirmFooter.emit(this.currentRestaurantTables);
+  }
+
+  updateSelectedTableBeforeLogin(selectedTable: Table[]) {
+    this.selectedTableBeforeLogin = selectedTable;
   }
 }
 

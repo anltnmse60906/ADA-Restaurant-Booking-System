@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../services/table.service";
 import {DatePipe} from "@angular/common";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {params} from "../shared/common.params"
+import {Table} from "../shared/table.model";
 
 @Component({
   selector: 'app-confirm-booking',
@@ -12,6 +14,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   providers: [DatePipe]
 })
 export class ConfirmBookingComponent implements OnInit {
+  selectedTables: Table[];
   closeResult: string;
   confirmBookingForm: FormGroup;
   bookingSuccess = false;
@@ -25,6 +28,9 @@ export class ConfirmBookingComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.selectedTables = this.tableService.getSelectedTablesList();
+
     this.confirmBookingForm = new FormGroup({
       email: new FormControl("",
         [Validators.required,
@@ -68,7 +74,7 @@ export class ConfirmBookingComponent implements OnInit {
   }
 
   onSubmit() {
-    let selectedTables = this.tableService.getSelectedTables();
+    let selectedTables = this.tableService.getSelectedTablesList();
     let total = selectedTables.length;
     let count = 0;
     for (let t of selectedTables) {
@@ -80,10 +86,9 @@ export class ConfirmBookingComponent implements OnInit {
         requirement: this.confirmBookingForm.value.requirement,
         bookingTable: t,
         section: localStorage.getItem("selectedSection"),
-        bookingDate: this.datePipe.transform(localStorage.getItem("selectedBookingDay"), "dd-MM-yyyy"),
-        userId: localStorage.getItem("userId")
+        bookingDate: localStorage.getItem("selectedBookingDay")
       };
-      this.tableService.confirmBooking("token=" + localStorage.getItem("token"), data).subscribe((response) => {
+      this.tableService.confirmBooking("", data).subscribe((response) => {
         console.log(response);
         count++;
         if (total === count) {

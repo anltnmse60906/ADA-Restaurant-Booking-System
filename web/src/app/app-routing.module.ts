@@ -6,7 +6,7 @@ import {ConfirmBookingComponent} from "./confirm-booking/confirm-booking.compone
 import {SearchResultsComponent} from "./restaurant/search-results/search-results.component";
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
-import {SubmitBookingComponent} from "./confirm-booking/submit-booking/submit-booking.component";
+import {AuthGuard} from "./services/auth-guard.service";
 
 const appRoutes: Routes = [
   {
@@ -22,7 +22,8 @@ const appRoutes: Routes = [
     component: SignupComponent
   },
   {
-    path: "confirm",
+    path: "booking/confirm",
+    canActivate: [AuthGuard],
     component: ConfirmBookingComponent
   },
   {

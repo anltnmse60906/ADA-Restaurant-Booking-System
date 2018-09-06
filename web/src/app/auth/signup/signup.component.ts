@@ -36,7 +36,13 @@ export class SignupComponent implements OnInit {
       this.myForm.value.lastName,
       this.myForm.value.firstName,
     );
-    this.authenService.signUp(user).subscribe(data => console.log(data), error => console.log(error));
+
+    // TODO show message when create the account sucessfully
+    this.authenService.signUp(user).subscribe(
+      (data) => {
+        // console.log(data)
+      },
+      error => console.log(error));
     this.myForm.reset();
   }
 }

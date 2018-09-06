@@ -6,19 +6,29 @@
     <div class="card-body">
 
       <div class="alert alert-primary" role="alert" [ngClass]="{'show':bookingSuccess,'hide':!bookingSuccess}">
-        This is a primary alert—check it out!
+        Your table is reserved successfully!!!
       </div>
 
-      <div class="form-row form-group">
-        <div class="col">
-          <h4 class="reservation-restaurant text-center">Reserved tables</h4>
-
-        </div>
-        <div class="col">
+      <div class="form-group">
+        <div class="form-row">
           <h4 class="reservation-restaurant">Booking for {{getSection()}} </h4>
-          <h4 class="reservation-time">{{getBookingDate()}}</h4>
-          <h4 class="reservation-people">{{getPeople()}} people</h4>
         </div>
+        <div class="form-row">
+          <div class="col">
+            <h4 class="reservation-time">{{getBookingDate()}}</h4>
+          </div>
+          <div class="col">
+            <div class="form-row text-center">
+              <span class="btn btn-outline-primary mr-3" *ngFor="let t of selectedTables">{{t.name}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <h4 class="reservation-people">{{getPeople()}} people</h4>
+          </div>
+        </div>
+
       </div>
       <form [formGroup]="confirmBookingForm" (submit)="onSubmit()">
         <div class="form-row form-group">
