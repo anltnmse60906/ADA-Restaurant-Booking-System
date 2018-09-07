@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserDisplayName() {
-
+    if (localStorage.getItem("lastName") && localStorage.getItem("firstName")) {
+      return localStorage.getItem("firstName") + localStorage.getItem("firstName");
+    }
   }
 }

@@ -131,9 +131,10 @@
   align-items: center;
   font-family: "Gill Sans", sans-serif;
   margin:0 auto;
-  
-  
-  
+}
 
+.text-center-flex{
+  align-items: center;
+  justify-content: center;
 }
 

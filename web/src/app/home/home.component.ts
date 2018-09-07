@@ -24,11 +24,7 @@ export class HomeComponent implements OnInit {
   today = new Date;
   private _selectedSection;
 
-  startDate = {
-    year: this.today.getFullYear(),
-    month: this.today.getMonth() + 1,
-    day: this.today.getDay()
-  };
+  startDate = {};
 
   topLeft: Table[] = [];
   topRight: Table[] = [];
@@ -60,9 +56,16 @@ export class HomeComponent implements OnInit {
       this._selectedSection = 2
     } else if (this.today.getHours() > 15 && this.today.getHours() < 20) {
       this._selectedSection = 3
+    } else if (this.today.getHours() > 20 && this.today.getHours() <= 23) {
+      this._bookingDate.setDate(this._bookingDate.getDate() + 1);
     }
 
-    this.tableService.getTables(this._selectedSection, this.datePipe.transform(this.today, params.dateTimePattern)).subscribe((tables: Table[]) => {
+    this.startDate = {
+      year: this._bookingDate.getFullYear(),
+      month: this._bookingDate.getMonth() + 1,
+      day: this._bookingDate.getDate()
+    };
+    this.tableService.getTables(this._selectedSection, this.datePipe.transform(this._bookingDate, params.dateTimePattern)).subscribe((tables: Table[]) => {
       this.parseTable(tables);
     });
 
@@ -182,6 +185,7 @@ export class HomeComponent implements OnInit {
 
 
   }
+
 
   sectionNumberToString(section: number) {
     if (section === 1) {

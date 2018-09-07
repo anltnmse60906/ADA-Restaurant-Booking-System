@@ -5,34 +5,59 @@
     </div>
     <div class="card-body">
 
+      <div class="row alert alert-warning" role="alert" [ngClass]="{'show-flex':waitForConfirm,'hide':!waitForConfirm}">
+        <div class="col-10">
+          <div class="pull-left">Your table is reserved within Please confirm your reservation!!!
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="btn btn-danger pull-right"><b>{{minute}}</b> : <b>{{second}}</b></div>
+        </div>
+      </div>
+
       <div class="alert alert-primary" role="alert" [ngClass]="{'show':bookingSuccess,'hide':!bookingSuccess}">
         Your table is reserved successfully!!!
       </div>
 
-      <div class="form-group">
-        <div class="form-row">
-          <h4 class="reservation-restaurant">Booking for {{getSection()}} </h4>
-        </div>
-        <div class="form-row">
-          <div class="col">
-            <h4 class="reservation-time">{{getBookingDate()}}</h4>
-          </div>
-          <div class="col">
-            <div class="form-row text-center">
-              <span class="btn btn-outline-primary mr-3" *ngFor="let t of selectedTables">{{t.name}}</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col">
-            <h4 class="reservation-people">{{getPeople()}} people</h4>
-          </div>
-        </div>
+      <!--<div class="form-group">-->
+      <!--<div class="form-row">-->
+      <!--<h4 class="reservation-restaurant">Booking for {{getSection()}} </h4>-->
+      <!--</div>-->
+      <!--<div class="form-row">-->
+      <!--<div class="col">-->
+      <!--<h4 class="reservation-time">{{getBookingDate()}}</h4>-->
+      <!--</div>-->
+      <!--<div class="col">-->
+      <!--<div class="form-row text-center">-->
+      <!--<span class="btn btn-outline-primary mr-3" *ngFor="let t of selectedTables">{{t.tableName}}</span>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-row">-->
+      <!--<div class="col">-->
+      <!--<h4 class="reservation-people">{{getPeople()}} people</h4>-->
+      <!--</div>-->
+      <!--</div>-->
 
+      <!--</div>-->
+
+
+      <div class="text-center header-confirm-booking">
+        <div class="form-group text-center">Booking for
+          <span class="reservation-time">{{getSection()}} </span>on
+          <span class="reservation-time">{{getBookingDate()}}</span> for
+          <span class="reservation-people">{{getPeople()}} people</span>
+        </div>
+        <div class="form-group">
+          <div class="col">
+            <span class="btn btn-outline-primary mr-3" *ngFor="let t of selectedTables">{{t.tableName}}</span>
+          </div>
+        </div>
       </div>
-      <form [formGroup]="confirmBookingForm" (submit)="onSubmit()">
+      <form [formGroup]="confirmBookingForm" (submit)="onSubmit()" class="confirm-booking">
         <div class="form-row form-group">
           <div class="col">
+            <label class="label">First name</label>
             <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
             <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
                  class="alert alert-danger">
@@ -42,6 +67,7 @@
             </div>
           </div>
           <div class="col">
+            <label class="label">Last name</label>
             <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
             <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
                  class="alert alert-danger">
@@ -53,6 +79,7 @@
         </div>
         <div class="form-row  form-group">
           <div class="col">
+            <label class="label">Email</label>
             <input type="text" class="form-control" placeholder="Email" formControlName="email">
             <div *ngIf="email.invalid && (email.dirty || email.touched)"
                  class="alert alert-danger">
@@ -65,18 +92,27 @@
             </div>
           </div>
           <div class="col">
+            <label class="label">Phone number</label>
             <input type="text" class="form-control" placeholder="Phone number" formControlName="phoneNumber">
           </div>
         </div>
         <div class="form-row  form-group">
           <div class="col">
+            <label class="label">Special request</label>
             <textarea class="form-control" row="1" placeholder="Add a special request"
                       formControlName="requirement"></textarea>
           </div>
         </div>
         <div class="form-row  form-group">
-          <div class="col text-center">
-            <button type="button" class="btn btn-outline-dark mr-3">Back to select the table</button>
+          <div class="col text-center" [ngClass]="{'show':confirmSuccess,'hide':!confirmSuccess}">
+            <a type="button" class="btn btn-outline-dark mr-3" (click)="onBackToHomePage()">Back to
+              homepage
+            </a>
+            <input type="button" class="btn btn-primary" value="View booking history">
+          </div>
+          <div class="col text-center" [ngClass]="{'show':!confirmSuccess,'hide':confirmSuccess}">
+            <button type="button" class="btn btn-outline-dark mr-3" (click)="onCancelAllBookingTable(content)">Cancel
+            </button>
             <input type="submit" class="btn btn-primary" value="Complete reservation"
                    [disabled]="!confirmBookingForm.valid">
           </div>
@@ -84,41 +120,21 @@
       </form>
     </div>
   </div>
-
-  <ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Confirm the booking</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form>
-        <div class="row">
-          <div class="col-4 text-center">
-            <h4>Aug</h4>
-            <h4>15</h4>
-            <h4>Wed</h4>
-          </div>
-          <div class="col-8">
-            <div class="row">
-              <div class="col-1"><span>at</span></div>
-              <div class="col"><h5>15:00</h5></div>
-              <div class="col-1"><span>for</span></div>
-              <div class="col"><h5>2 people</h5></div>
-            </div>
-            <div class="row">
-              <div class="col-1"><span>At</span></div>
-              <div class="col"><h5>Punchbowl Restaurant</h5></div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="c('Save click')">Confirm</button>
-    </div>
-  </ng-template>
 </div>
-<!--<pre>{{closeResult}}</pre>-->
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Information</h4>
+    <button type="button" class="close" aria-label="Close" (click)="c()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>If you leave, your reserved tables will be canceled!!!</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onConfirm()">Confirm</button>
+  </div>
+</ng-template>

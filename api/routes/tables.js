@@ -314,11 +314,13 @@ router.get("/auth/users", (req, res) => {
     let currentDate = dateAEST(moment());
 
     Booking.find({
-      user: user._id,
+      user: {$eq: user._id},
       section: inputSection,
       bookingDate: {$eq: (inputDate).toISOString()},
+      status: BookingReserved,
       confirmDeadline: {$gt: currentDate.toISOString()}
-    }).populate("user").populate("tableId")
+      // }).populate("user").populate("tableId")
+    }).populate("tableId")
       .exec((err, tables) => {
         if (err) {
           return res.status(500).json({
@@ -328,8 +330,10 @@ router.get("/auth/users", (req, res) => {
         }
         return res.status(200).json({
           title: "User is not found",
-          obj: tables,
-          table: tables,
+          obj: {
+            reservedTable: tables,
+            user: user
+          }
         });
       });
   });
@@ -472,6 +476,80 @@ router.post("/auth/reserve-table", (req, res) => {
     });
   });
 });
+
+
+router.post("/auth/confirm-reserved-tables", (req, res) => {
+  var decoded = jwt.decode(req.query.token);
+
+  User.findById(decoded.user._id, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        title: "An error occured!",
+        error: err
+      });
+    }
+    if (!user) {
+      return res.status(500).json({
+        title: "User is not found",
+        error: {
+          message: "User is not found"
+        }
+      });
+    }
+    Booking.findById(req.body.bookingId)
+      .exec((err, booking) => {
+        if (err) {
+          return res.status(500).json({
+            title: "An error occured!",
+            error: err
+          });
+        }
+        if (!booking) {
+          return res.status(500).json({
+            title: "Booking is not found",
+            error: err
+          });
+        }
+        let currentDate = dateAEST(moment());
+        currentDate.add("10", "m");
+
+        if (currentDate.isSameOrBefore(dateAEST(booking.confirmDeadline)) || (booking.user._id.equals(user._id))) {
+
+          booking.lastName = req.body.lastName;
+          booking.firstName = req.body.firstName;
+          booking.phoneNumber = req.body.phoneNumber;
+          booking.email = req.body.phoneNumber;
+          booking.requirement = req.body.requirement;
+          booking.status = BookingConfirmed;
+
+          booking.save(function (err, updatedBooking) {
+            if (err) {
+              return res.status(500).json({
+                title: "An error occured!",
+                error: err
+              });
+            }
+            return res.status(200).json({
+              title: "Booking is confirmed successfully",
+              obj: {
+                success: true,
+                data: updatedBooking
+              }
+            });
+          });
+        } else {
+          return res.status(200).json({
+            title: "The table reservation time is expired",
+            obj: {
+              success: false,
+              data: booking
+            }
+          });
+        }
+      });
+  });
+});
+
 
 router.post("/auth/delete-reserved-table", (req, res) => {
   var decoded = jwt.decode(req.query.token);

@@ -18,8 +18,9 @@ import {SubmitBookingComponent} from './confirm-booking/submit-booking/submit-bo
 import {AuthenService} from "./services/auth.service"
 import {HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
-import { TableElementComponent } from './home/table-element/table-element.component';
+import {TableElementComponent} from './home/table-element/table-element.component';
 import {AuthGuard} from "./services/auth-guard.service";
+import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import {AuthGuard} from "./services/auth-guard.service";
     FormsModule,
     AuthenService,
     TableService,
-    AuthGuard
+    AuthGuard,
+    CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 })
