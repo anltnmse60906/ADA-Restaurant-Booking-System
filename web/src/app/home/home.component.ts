@@ -178,7 +178,6 @@ export class HomeComponent implements OnInit {
         });
       }
     } else {
-      // this.router.navigate(['signin'], { queryParams: { returnUrl: state.url }});
       this.tableService.updateSelectedTableBeforeLogin(this.tableService.getSelectedTablesList());
       this.router.navigate(['signin'],);
     }

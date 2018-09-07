@@ -138,3 +138,14 @@
   justify-content: center;
 }
 
+.confirm-booking {
+  border: 1px solid;
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+}
+
+.header-confirm-booking {
+  border: 1px solid;
+  border-radius: 15px 15px 0px 0px;
+  padding: 10px;
+}

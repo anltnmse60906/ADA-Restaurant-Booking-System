@@ -8,6 +8,7 @@ import {interval, Observable, Subject, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 import {ComponentCanDeactivate} from "../shared/component-can-deactivate";
 import {params} from "../shared/common.params";
+import {DialogModalComponent} from "../dialog-modal/dialog-modal.component";
 
 @Component({
   selector: 'app-confirm-booking',
@@ -84,12 +85,18 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
 
       if (this.minute === 0 && this.second === 0) {
         this.waitForConfirm = false;
+        this.subscription.unsubscribe();
 
         this.cancelAllBookingTable(() => {
+          if (this.modal) {
+            this.modal.close();
+          }
+          this.modal = this.modalService.open(DialogModalComponent, {keyboard: false});
+          this.modal.componentInstance.message = params.messages.overTenMinutes;
+          this.modal.componentInstance.navigateByUrl = "/";
           this.modalIsShow = true;
-          this.router.navigateByUrl("/");
+          // this.router.navigateByUrl("/");
         });
-        this.subscription.unsubscribe();
       }
     });
 
@@ -130,9 +137,12 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
 
   }
 
-  open(content) {
-    this.modal = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
-  }
+  // open(content) {
+  //   if (this.modal) {
+  //     this.modal.close();
+  //   }
+  //   this.modal = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  // }
 
   getBookingDate() {
     //'fullDate': equivalent to 'EEEE, MMMM d, y' (Monday, June 15, 2015).
@@ -158,6 +168,8 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
   onSubmit() {
     let total = this.selectedTables.length;
     let count = 0;
+    this.subscription.unsubscribe();
+
     for (let t of this.selectedTables) {
       let data = {
         lastName: this.confirmBookingForm.value.lastName,
@@ -200,9 +212,13 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
 
   onCancelAllBookingTable(content: NgbModalRef) {
     // const modalRef = this.modalService.open(this.content);
+
+    if (this.modal) {
+      this.modal.close();
+    }
+
     this.modal = this.modalService.open(content);
     this.modalIsShow = true;
-
     this.modal.result.then(() => {
       this.modalIsShow = false;
     })
@@ -215,12 +231,15 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
 
   onConfirm() {
     console.log("onConfirm");
+    this.subscription.unsubscribe();
     this.modalIsShow = true;
     this.cancelAllBookingTable(() => {
+      console.log("Delete table reservation successfully!!!")
     });
     this.router.navigateByUrl("/");
     this.modal.close();
   }
+
 
   getPeople() {
     return (localStorage.getItem("max-people")) ? localStorage.getItem("max-people") : "";

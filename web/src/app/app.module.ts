@@ -10,17 +10,20 @@ import {SearchResultsComponent} from './restaurant/search-results/search-results
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ConfirmBookingComponent} from './confirm-booking/confirm-booking.component';
 import {SearchResultDetailComponent} from './restaurant/search-results/search-result-detail/search-result-detail.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {SubmitBookingComponent} from './confirm-booking/submit-booking/submit-booking.component';
 import {AuthenService} from "./services/auth.service"
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
 import {TableElementComponent} from './home/table-element/table-element.component';
 import {AuthGuard} from "./services/auth-guard.service";
 import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
+import {Router} from "@angular/router";
+import {AuthenInterceptor} from "./services/authen-interceptor";
+import {DialogModalComponent} from './dialog-modal/dialog-modal.component';
 
 
 @NgModule({
@@ -37,6 +40,7 @@ import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
     SignupComponent,
     SubmitBookingComponent,
     TableElementComponent,
+    DialogModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,9 +55,20 @@ import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
     AuthenService,
     TableService,
     AuthGuard,
-    CanDeactivateGuard
+    CanDeactivateGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: function (router: Router, dialog: NgbModal) {
+        return new AuthenInterceptor(router, dialog);
+      },
+      multi: true,
+      deps: [Router, NgbModal]
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    DialogModalComponent
+  ]
 })
 export class AppModule {
 }
