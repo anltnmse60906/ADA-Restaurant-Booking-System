@@ -1,0 +1,25 @@
+<div class="card mb-3">
+  <h6 class="card-header">Booking for {{sectionNumberToCategorial(booking['section'])}}
+    <small class="pull-right">{{booking['createDate'] | date:'dd-MM-yyyy HH:mm'}}</small>
+  </h6>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <!--<p class="card-title">Booking for {{sectionNumberToCategorial(booking['section'])}} </p>-->
+        <p class="card-text">
+          <i class="fa fa-calendar-check-o mr-1"></i>
+          {{booking['bookingDate']| date:'fullDate'}}
+        </p>
+        <p class="card-text"><i class="fa fa-user-o mr-1"></i>Reservation for maximum {{getMaximumPeople()}} people</p>
+      </div>
+      <div class="col-4">
+        <span class="btn btn-outline-dark mr-3"
+              *ngFor="let t of bookings">{{t.tableId.name}}
+        </span>
+      </div>
+      <div class="col-2 text-right">
+        <a class="btn btn-outline-primary">view</a>
+      </div>
+    </div>
+  </div>
+</div>

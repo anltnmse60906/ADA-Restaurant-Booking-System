@@ -24,6 +24,9 @@ import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
 import {Router} from "@angular/router";
 import {AuthenInterceptor} from "./services/authen-interceptor";
 import {DialogModalComponent} from './dialog-modal/dialog-modal.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import {NgxPaginationModule} from "ngx-pagination";
+import { BookingHistoryElementComponent } from './booking-history/booking-history-element/booking-history-element.component';
 
 
 @NgModule({
@@ -41,6 +44,8 @@ import {DialogModalComponent} from './dialog-modal/dialog-modal.component';
     SubmitBookingComponent,
     TableElementComponent,
     DialogModalComponent,
+    BookingHistoryComponent,
+    BookingHistoryElementComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +53,7 @@ import {DialogModalComponent} from './dialog-modal/dialog-modal.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxPaginationModule,
     NgbModule.forRoot(),
   ],
   providers: [

@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this._bookingDate = new Date();
 
-    this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
+    this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
     this._currentBookingDate = this._bookingDate;
 
     this._selectedSection = 1;
@@ -82,8 +82,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this._currentSection = this.sectionNumberToString(parseInt(this._selectedSection, 10));
+  onSubmitFindTable() {
+    this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
     this._currentBookingDate = this._bookingDate;
     this.tableService.removeSelectedTables();
     this.tableService.getTables(this._selectedSection, this.datePipe.transform(this._bookingDate, params.dateTimePattern)).subscribe((tables: Table[]) => {
@@ -133,11 +133,12 @@ export class HomeComponent implements OnInit {
       let count = 0;
       let isFailed = false;
       let reservedSuccessfullyTables = [];
+
       for (let t of selectedTables) {
         let data = {
           bookingTable: t,
           section: this._selectedSection,
-          bookingDate: this.datePipe.transform(this._bookingDate, params.dateTimePattern)
+          bookingDate: this.datePipe.transform(this._bookingDate, params.dateTimePattern),
         };
         this.tableService.reserveTable("", data).subscribe((response) => {
           console.log(response);
@@ -151,6 +152,8 @@ export class HomeComponent implements OnInit {
             otherReservedTable.isBooked = true;
             otherReservedTable.selected = false;
             this.tableService.updateSelectedTable(otherReservedTable);
+
+            //TODO show message for table is reseved by other user
             alert("Table " + response["obj"].data.tableId.name + " is reserved");
             isFailed = true;
           } else {
@@ -183,18 +186,6 @@ export class HomeComponent implements OnInit {
     }
 
 
-  }
-
-
-  sectionNumberToString(section: number) {
-    if (section === 1) {
-      return "Breakfast";
-    } else if (section === 2) {
-      return "Lunch";
-    } else if (section === 3) {
-      return "Dinner";
-    }
-    return "";
   }
 
   //

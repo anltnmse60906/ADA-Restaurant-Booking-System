@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-      <form [formGroup]="confirmBookingForm" (submit)="onSubmit()" class="confirm-booking">
+      <form [formGroup]="confirmBookingForm" (submit)="onSubmitConfirmBooking()" class="confirm-booking">
         <div class="form-row form-group">
           <div class="col">
             <label class="label">First name</label>
@@ -108,7 +108,7 @@
             <a type="button" class="btn btn-outline-dark mr-3" (click)="onBackToHomePage()">Back to
               homepage
             </a>
-            <input type="button" class="btn btn-primary" value="View booking history">
+            <a class="btn btn-primary" routerLink="/booking/history">View booking history</a>
           </div>
           <div class="col text-center" [ngClass]="{'show':!confirmSuccess,'hide':confirmSuccess}">
             <button type="button" class="btn btn-outline-dark mr-3" (click)="onCancelAllBookingTable(content)">Cancel

@@ -77,6 +77,13 @@ export class TableService {
       .pipe(catchError((error) => throwError(error)));
   }
 
+  getBookingHistory(queryParam){
+    const token = localStorage.getItem("token") ? "&token=" + localStorage.getItem("token") : "";
+    return this.http.get(environment.backEndHost + params.tableAuthUrl + "users-booking-history?"  + queryParam + token, httpOption)
+      .pipe(map(response => response))
+      .pipe(catchError((error) => throwError(error)));
+  }
+
   confirmBooking(queryParam, formData) {
     const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
     return this.http.post(environment.backEndHost + params.tableAuthUrl + "confirm-reserved-tables" + queryParam + token, formData, httpOption)
@@ -156,6 +163,17 @@ export class TableService {
 
   updateSelectedTableBeforeLogin(selectedTable: Table[]) {
     this.selectedTableBeforeLogin = selectedTable;
+  }
+
+  sectionNumberToCategorical(section: number) {
+    if (section === 1) {
+      return "Breakfast";
+    } else if (section === 2) {
+      return "Lunch";
+    } else if (section === 3) {
+      return "Dinner";
+    }
+    return "";
   }
 }
 

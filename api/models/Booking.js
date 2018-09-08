@@ -13,6 +13,7 @@ const bookingSchema = new Schema({
   email: String,
   phoneNumber: String,
   requirement: String,
+  createDate: Date,
   confirmDeadline: Date,
   status: String,
   tableId: {type: Schema.Types.ObjectId, ref: "Table"},

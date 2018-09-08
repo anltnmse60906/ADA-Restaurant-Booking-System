@@ -92,6 +92,7 @@ router.get("", (req, res) => {
                   // Add to reserved list
                   reservedTables.push(booking);
                   if (booking.user.equals(user._id)) {
+                    //Add reserved table by current user
                     reservedTablesByUserId.push(booking);
                   }
                 } else {
@@ -117,7 +118,8 @@ router.get("", (req, res) => {
                   }
                 });
               }
-              //Remove Unconfirmed bookings
+
+              //Delete Unconfirmed bookings
               if (expiredConfirmBookings.length > 0) {
                 let deleteTotal = expiredConfirmBookings.length;
                 let count = 0;
@@ -339,6 +341,90 @@ router.get("/auth/users", (req, res) => {
   });
 });
 
+router.get("/auth/users-booking-history", (req, res) => {
+  var decoded = jwt.decode(req.query.token);
+  User.findById(decoded.user._id, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        title: "An error occured!",
+        error: err
+      });
+    }
+    if (!user) {
+      return res.status(500).json({
+        title: "User is not found",
+        error: {
+          message: "User is not found"
+        }
+      });
+    }
+    let itemsPerPage = 10;
+    let start = (req.query.p - 1) * itemsPerPage;
+    let end = start + itemsPerPage;
+
+    Booking.aggregate(
+      [
+        {
+          "$match":
+            {
+              user: {$eq: user._id},
+              status: BookingConfirmed,
+            }
+        },
+        {
+          "$group": {
+            "_id": {
+              section: "$section",
+              bookingDate: "$bookingDate",
+              createDate: "$createDate"
+            },
+          }
+        }
+      ]
+    )
+
+      .exec((err, bookingsByCreateDate) => {
+        if (err) {
+          return res.status(500).json({
+            title: "An error occured!",
+            error: err
+          });
+        }
+        let count = 0;
+        let bookingsGroupByCreateDate = [];
+        for (let b of bookingsByCreateDate) {
+
+          let booking = b._id;
+
+          Booking.find({
+            user: {$eq: user._id},
+            status: BookingConfirmed,
+            bookingDate: booking.bookingDate,
+            section: booking.section,
+            createDate: {$eq: dateAEST(booking.createDate).toISOString()}
+          })
+            .populate("tableId")
+            .exec((err, groupBookings) => {
+              count++;
+              bookingsGroupByCreateDate.push(groupBookings);
+              if (count === bookingsByCreateDate.length) {
+                let total = bookingsGroupByCreateDate.length;
+                bookingsGroupByCreateDate = bookingsGroupByCreateDate.slice(start, end);
+                return res.status(200).json({
+                  title: "User is not found",
+                  obj: {
+                    total: total,
+                    page: req.query.p,
+                    bookings: bookingsGroupByCreateDate
+                  }
+                });
+              }
+            });
+        }
+      });
+  });
+});
+
 
 router.post("/auth/reserve-table", (req, res) => {
   var decoded = jwt.decode(req.query.token);
@@ -496,57 +582,74 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
         }
       });
     }
-    Booking.findById(req.body.bookingId)
-      .exec((err, booking) => {
-        if (err) {
-          return res.status(500).json({
-            title: "An error occured!",
-            error: err
-          });
-        }
-        if (!booking) {
-          return res.status(500).json({
-            title: "Booking is not found",
-            error: err
-          });
-        }
-        let currentDate = dateAEST(moment());
-        currentDate.add("10", "m");
+    let reservedBookings = req.body.reservedBookings;
+    let createDate = dateAEST(moment());
+    let count = 0;
+    let isFailed = false;
 
-        if (currentDate.isSameOrBefore(dateAEST(booking.confirmDeadline)) || (booking.user._id.equals(user._id))) {
+    for (let reservedBooking of reservedBookings) {
 
-          booking.lastName = req.body.lastName;
-          booking.firstName = req.body.firstName;
-          booking.phoneNumber = req.body.phoneNumber;
-          booking.email = req.body.phoneNumber;
-          booking.requirement = req.body.requirement;
-          booking.status = BookingConfirmed;
+      Booking.findById(reservedBooking.bookingId)
+        .exec((err, booking) => {
+          if (err) {
+            return res.status(500).json({
+              title: "An error occured!",
+              error: err
+            });
+          }
+          if (!booking) {
+            return res.status(500).json({
+              title: "Booking is not found",
+              error: err
+            });
+          }
 
-          booking.save(function (err, updatedBooking) {
-            if (err) {
-              return res.status(500).json({
-                title: "An error occured!",
-                error: err
-              });
-            }
-            return res.status(200).json({
-              title: "Booking is confirmed successfully",
-              obj: {
-                success: true,
-                data: updatedBooking
+          let currentDate = dateAEST(moment());
+          currentDate.add("10", "m");
+
+          if (currentDate.isSameOrBefore(dateAEST(booking.confirmDeadline)) || (booking.user._id.equals(user._id))) {
+
+            booking.lastName = req.body.lastName;
+            booking.firstName = req.body.firstName;
+            booking.phoneNumber = req.body.phoneNumber;
+            booking.email = req.body.phoneNumber;
+            booking.requirement = req.body.requirement;
+            booking.status = BookingConfirmed;
+            booking.createDate = createDate;
+
+            booking.save(function (err, updatedBooking) {
+              count++;
+              if (err) {
+                isFailed = true;
+              }
+              if (count === reservedBookings.length) {
+
+                if (!isFailed) {
+                  return res.status(200).json({
+                    title: "Booking is confirmed successfully",
+                    obj: {
+                      success: true,
+                      data: updatedBooking
+                    }
+                  });
+                } else {
+                  return res.status(200).json({
+                    title: "The table reservation time is expired",
+                    obj: {
+                      success: false,
+                      data: booking
+                    }
+                  });
+                }
               }
             });
-          });
-        } else {
-          return res.status(200).json({
-            title: "The table reservation time is expired",
-            obj: {
-              success: false,
-              data: booking
-            }
-          });
-        }
-      });
+          } else {
+            isFailed = true;
+            count++
+          }
+        });
+    }
+
   });
 });
 

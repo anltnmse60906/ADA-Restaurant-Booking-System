@@ -74,8 +74,8 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
 
   ngOnInit() {
     this.expiredTime = new Date();
-    // this.expiredTime.setMinutes(this.expiredTime.getMinutes() + 10);
-    this.expiredTime.setSeconds(this.expiredTime.getSeconds() + 10);
+    this.expiredTime.setMinutes(this.expiredTime.getMinutes() + 10);
+    // this.expiredTime.setSeconds(this.expiredTime.getSeconds() + 10);
 
     this.subscription = interval(1000).pipe(map((x) => {
       this.diff = Math.abs(this.expiredTime.getTime() - new Date().getTime());
@@ -87,7 +87,10 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
         this.waitForConfirm = false;
         this.subscription.unsubscribe();
 
+        //update cancel booking for database
         this.cancelAllBookingTable(() => {
+
+          //close modal and navigate to the homepage
           if (this.modal) {
             this.modal.close();
           }
@@ -165,31 +168,46 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
     return ""
   }
 
-  onSubmit() {
+  onSubmitConfirmBooking() {
     let total = this.selectedTables.length;
-    let count = 0;
     this.subscription.unsubscribe();
 
+    let reservedBookings = [];
     for (let t of this.selectedTables) {
+
       let data = {
         lastName: this.confirmBookingForm.value.lastName,
         firstName: this.confirmBookingForm.value.firstName,
         email: this.confirmBookingForm.value.email,
         phoneNumber: this.confirmBookingForm.value.phoneNumber,
         requirement: this.confirmBookingForm.value.requirement,
-        bookingId: t._id
+        bookingId: t._id,
       };
-      this.tableService.confirmBooking("", data).subscribe((response) => {
-        console.log(response);
-        count++;
-        if (total === count) {
-          this.bookingSuccess = true;
-          this.waitForConfirm = false;
-          this.confirmSuccess = true;
-          this.confirmBookingForm.disable();
-        }
-      });
+      reservedBookings.push(data);
     }
+    this.tableService.confirmBooking("", {reservedBookings: reservedBookings}).subscribe((response) => {
+      console.log(response);
+      let success = response['obj'].success;
+
+      if (success) {
+        this.bookingSuccess = true;
+        this.waitForConfirm = false;
+        this.confirmSuccess = true;
+        this.modalIsShow = true;
+        this.confirmBookingForm.disable();
+      } else {
+
+        //close modal and navigate to the homepage
+        if (this.modal) {
+          this.modal.close();
+        }
+        this.modal = this.modalService.open(DialogModalComponent, {keyboard: false});
+        this.modal.componentInstance.message = params.messages.overTenMinutes;
+        this.modal.componentInstance.navigateByUrl = "/";
+        this.modalIsShow = true;
+        // this.router.navigateByUrl("/");
+      }
+    });
   }
 
   cancelAllBookingTable(callback) {

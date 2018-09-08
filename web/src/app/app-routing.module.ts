@@ -8,6 +8,7 @@ import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {AuthGuard} from "./services/auth-guard.service";
 import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
+import {BookingHistoryComponent} from "./booking-history/booking-history.component";
 
 const appRoutes: Routes = [
   {
@@ -26,7 +27,12 @@ const appRoutes: Routes = [
     path: "booking/confirm",
     canActivate: [AuthGuard],
     component: ConfirmBookingComponent,
-    canDeactivate: [CanDeactivateGuard]
+    canDeactivate: [CanDeactivateGuard],
+  },
+  {
+    path: "booking/history",
+    canActivate: [AuthGuard],
+    component: BookingHistoryComponent,
   },
   {
     path: "restaurants",
