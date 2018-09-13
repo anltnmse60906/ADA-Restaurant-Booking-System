@@ -7,6 +7,7 @@ var jwt = require("jsonwebtoken");
 var ObjectId = require('mongoose').Types.ObjectId;
 const momentTimezone = require('moment-timezone');
 const moment = require('moment');
+var emailService = require("../mail/email");
 
 
 const DateTimeTemplate = "DD-MM-YYYY";
@@ -382,7 +383,6 @@ router.get("/auth/users-booking-history", (req, res) => {
         }
       ]
     )
-
       .exec((err, bookingsByCreateDate) => {
         if (err) {
           return res.status(500).json({
@@ -586,10 +586,12 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
     let createDate = dateAEST(moment());
     let count = 0;
     let isFailed = false;
+    let tableNumber = [];
+    let totalPeople = 0;
 
     for (let reservedBooking of reservedBookings) {
 
-      Booking.findById(reservedBooking.bookingId)
+      Booking.findById(reservedBooking.bookingId).populate("tableId")
         .exec((err, booking) => {
           if (err) {
             return res.status(500).json({
@@ -606,16 +608,33 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
 
           let currentDate = dateAEST(moment());
           currentDate.add("10", "m");
-
+          let email = "";
           if (currentDate.isSameOrBefore(dateAEST(booking.confirmDeadline)) || (booking.user._id.equals(user._id))) {
 
-            booking.lastName = req.body.lastName;
-            booking.firstName = req.body.firstName;
-            booking.phoneNumber = req.body.phoneNumber;
-            booking.email = req.body.phoneNumber;
-            booking.requirement = req.body.requirement;
+            booking.lastName = reservedBooking.lastName;
+            booking.firstName = reservedBooking.firstName;
+            booking.phoneNumber = reservedBooking.phoneNumber;
+            booking.email = reservedBooking.email;
+            booking.requirement = reservedBooking.requirement;
             booking.status = BookingConfirmed;
             booking.createDate = createDate;
+
+            email = reservedBooking.email;
+            tableNumber.push(booking.tableId.name);
+            totalPeople += booking.tableId.capacity;
+
+            let message = {
+              receiver: email,
+              lastName: booking.lastName,
+              firstName: booking.firstName,
+              phoneNumber: booking.phoneNumber,
+              requirement: booking.requirement,
+              createDate: dateAEST(booking.createDate).format("DD-MM-YYYY HH:mm"),
+              section: getSection(booking.section),
+              bookingDate: dateAEST(booking.bookingDate).format("dddd, MMMM DD YYYY"),
+              tables: tableNumber.toString(),
+              totalPeople: totalPeople
+            };
 
             booking.save(function (err, updatedBooking) {
               count++;
@@ -625,12 +644,26 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
               if (count === reservedBookings.length) {
 
                 if (!isFailed) {
-                  return res.status(200).json({
-                    title: "Booking is confirmed successfully",
-                    obj: {
-                      success: true,
-                      data: updatedBooking
-                    }
+
+
+                  emailService.sendEmails(message, (error) => {
+                    return res.status(200).json({
+                      title: "Booking is confirmed successfully",
+                      obj: {
+                        success: true,
+                        data: updatedBooking,
+                        email: error
+                      }
+                    });
+                  }, (success) => {
+                    return res.status(200).json({
+                      title: "Booking is confirmed successfully",
+                      obj: {
+                        success: true,
+                        data: updatedBooking,
+                        email: success
+                      }
+                    });
                   });
                 } else {
                   return res.status(200).json({
@@ -698,5 +731,16 @@ const checkMinutesExpired = (date, minutes) => {
   let currentDate = dateAEST(moment());
   currentDate.add(minutes, "m");
   return date.isBefore(currentDate);
+};
+const getSection = (selectedSection) => {
+  let s = parseInt(selectedSection);
+  if (s === 1) {
+    return "Breakfast";
+  } else if (s === 2) {
+    return "Lunch";
+  } else if (s === 3) {
+    return "Dinner";
+  }
+  return ""
 }
 module.exports = router;

@@ -150,7 +150,8 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
   getBookingDate() {
     //'fullDate': equivalent to 'EEEE, MMMM d, y' (Monday, June 15, 2015).
     if (localStorage.getItem("selectedBookingDay")) {
-      return this.datePipe.transform(localStorage.getItem("selectedBookingDay"), "fullDate");
+      // return this.datePipe.transform(localStorage.getItem("selectedBookingDay"), "fullDate");
+      return localStorage.getItem("selectedBookingDay");
     }
   }
 

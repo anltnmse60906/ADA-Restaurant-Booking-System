@@ -4,6 +4,7 @@ var User = require("../models/User");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 
+
 /* GET users listing. */
 router.post('/sign-up', (req, res) => {
   var user = new User({
