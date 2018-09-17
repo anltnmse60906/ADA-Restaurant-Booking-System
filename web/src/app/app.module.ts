@@ -5,11 +5,8 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
 import {HomeComponent} from './home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {RestaurantComponent} from './restaurant/restaurant.component';
-import {SearchResultsComponent} from './restaurant/search-results/search-results.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ConfirmBookingComponent} from './confirm-booking/confirm-booking.component';
-import {SearchResultDetailComponent} from './restaurant/search-results/search-result-detail/search-result-detail.component';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
@@ -34,10 +31,7 @@ import { BookingHistoryElementComponent } from './booking-history/booking-histor
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    RestaurantComponent,
-    SearchResultsComponent,
     ConfirmBookingComponent,
-    SearchResultDetailComponent,
     AuthComponent,
     SigninComponent,
     SignupComponent,
