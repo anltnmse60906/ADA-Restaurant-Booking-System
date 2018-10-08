@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from "../../shared/user.model"
 import {AuthenService} from "../../services/auth.service";
 import {params} from "../../shared/common.params";
+import { SweerAlertService } from '../../sweet-alert.service';
 
 @Component({
   selector: 'app-signin',
@@ -18,7 +19,8 @@ export class SigninComponent implements OnInit {
   constructor(
     private router: Router,
     private routes: ActivatedRoute,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private sweetAlertService: SweerAlertService
   ) {
   }
 
@@ -39,6 +41,7 @@ export class SigninComponent implements OnInit {
     this.authenService.signIn(user)
       .subscribe(
         (data) => {
+          this.sweetAlertService.okMessage("Login", "Login success");
           localStorage.setItem("token", data["token"]);
           localStorage.setItem("userId", data["userId"]);
           localStorage.setItem("lastName", data["lastName"]);

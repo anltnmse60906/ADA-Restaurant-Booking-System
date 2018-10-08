@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../shared/user.model";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
-import {environment,} from 'src/environments/environment';
+import {environment} from 'src/environments/environment';
 
 
 const httpOption = {
@@ -23,8 +23,8 @@ export class AuthenService {
   signUp(user: User) {
     const body = JSON.stringify(user);
     return this.http.post(environment.backEndHost + this.authenUrl + "sign-up", body, httpOption)
-      .pipe(map((response) => response))
-      .pipe(catchError((error) => throwError(error)));
+      // .pipe(map((response) => response))
+      // .pipe(catchError((error) => throwError(error)));
   }
 
   signIn(user: User) {
