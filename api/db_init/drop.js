@@ -1,6 +1,6 @@
-const User = require('./User');
-const Table = require('./Table');
-const Booking = require('./Booking');
+const User = require('../models/User');
+const Table = require('../models/Table');
+const Booking = require('../models/Booking');
 
 Table.deleteMany().then(() => {
   console.log('Deleted Table success');

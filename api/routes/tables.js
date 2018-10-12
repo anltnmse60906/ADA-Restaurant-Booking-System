@@ -273,15 +273,7 @@ getTableWithoutToken = (req, res) => {
     });
 }
 
-/*
-* List of table[]
-* Section
-* Date
-* Requirement
-* UserId
-*
-*
-* */
+
 router.use("/auth", (req, res, next) => {
   jwt.verify(req.query.token, "secret", (err, decoded) => {
     if (err) {
@@ -295,6 +287,7 @@ router.use("/auth", (req, res, next) => {
 });
 
 router.get("/auth/users", (req, res) => {
+
   var decoded = jwt.decode(req.query.token);
   User.findById(decoded.user._id, (err, user) => {
     if (err) {
@@ -382,8 +375,7 @@ router.get("/auth/users-booking-history", (req, res) => {
           }
         }
       ]
-    )
-      .exec((err, bookingsByCreateDate) => {
+    ).exec((err, bookingsByCreateDate) => {
         if (err) {
           return res.status(500).json({
             title: "An error occured!",
@@ -642,10 +634,7 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
                 isFailed = true;
               }
               if (count === reservedBookings.length) {
-
                 if (!isFailed) {
-
-
                   emailService.sendEmails(message, (error) => {
                     return res.status(200).json({
                       title: "Booking is confirmed successfully",
@@ -682,7 +671,6 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
           }
         });
     }
-
   });
 });
 
@@ -727,11 +715,7 @@ router.post("/auth/delete-reserved-table", (req, res) => {
 const dateAEST = date => {
   return momentTimezone(moment(date, DateTimeTemplate)).tz('Australia/Sydney')
 };
-const checkMinutesExpired = (date, minutes) => {
-  let currentDate = dateAEST(moment());
-  currentDate.add(minutes, "m");
-  return date.isBefore(currentDate);
-};
+
 const getSection = (selectedSection) => {
   let s = parseInt(selectedSection);
   if (s === 1) {

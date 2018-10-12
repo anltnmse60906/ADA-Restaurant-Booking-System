@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "seed": "node models/seed.js",
-    "drop": "node models/drop.js"
+    "seed": "node db_innit/seed.js",
+    "drop": "node db_innit/drop.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

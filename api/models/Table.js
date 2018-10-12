@@ -1,4 +1,4 @@
-const mongoose = require('./init');
+const mongoose = require('../db_init/init');
 const Schema = mongoose.Schema;
 
 const tableSchema = new Schema({

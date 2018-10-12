@@ -8,14 +8,12 @@ var passport = require("passport");
 
 
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tablesRouter = require('./routes/tables');
 
 var app = express();
 
 // view engine setup
-
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -25,7 +23,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tables', tablesRouter);
 

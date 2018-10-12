@@ -184,12 +184,6 @@ export class HomeComponent implements OnInit {
       this.tableService.updateSelectedTableBeforeLogin(this.tableService.getSelectedTablesList());
       this.router.navigate(['signin'],);
     }
-
-
   }
 
-  //
-  // getBookingDate() {
-  //   return this.datePipe.transform(this._bookingDate, params.dateTimePattern);
-  // }
 }
