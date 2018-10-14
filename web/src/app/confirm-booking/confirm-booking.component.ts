@@ -1,14 +1,13 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {NgbModal, NgbCalendar, NgbModalRef, NgbModalConfig,} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NgbModal, NgbCalendar, NgbModalConfig,} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../services/table.service";
 import {DatePipe} from "@angular/common";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {interval, Observable, Subject, Subscription} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 import {ComponentCanDeactivate} from "../shared/component-can-deactivate";
 import {params} from "../shared/common.params";
-import {DialogModalComponent} from "../dialog-modal/dialog-modal.component";
 
 @Component({
   selector: 'app-confirm-booking',
@@ -18,20 +17,17 @@ import {DialogModalComponent} from "../dialog-modal/dialog-modal.component";
 })
 
 
-export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
+export class ConfirmBookingComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   selectedTables: BookingForTable[] = [];
   confirmBookingForm: FormGroup;
   bookingSuccess = false;
   subscription: Subscription;
-
   expiredTime: Date;
   diff: number;
   minute: number;
   second: number;
   message = "";
   waitForConfirm = true;
-  @ViewChild("content") content;
-  modal: NgbModalRef;
   modalIsShow: boolean = false;
   confirmSuccess: boolean = false;
 
@@ -40,8 +36,6 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
               private calendar: NgbCalendar,
               private router: Router,
               private tableService: TableService,
-              private datePipe: DatePipe,
-              private routes: ActivatedRoute,
   ) {
     ngbModalConfig.backdrop = "static";
     ngbModalConfig.keyboard = false;
@@ -49,11 +43,7 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
   }
 
   canDeactivate(): boolean {
-    if (this.modalIsShow) {
-      return false;
-    } else {
-      return true
-    }
+    return !this.modalIsShow;
   }
 
   unloadNotification($event: any): boolean {
@@ -77,56 +67,47 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
     this.expiredTime.setMinutes(this.expiredTime.getMinutes() + 10);
     // this.expiredTime.setSeconds(this.expiredTime.getSeconds() + 10);
 
+    //initialise the timer for 10 minutes
     this.subscription = interval(1000).pipe(map((x) => {
       this.diff = Math.abs(this.expiredTime.getTime() - new Date().getTime());
     })).subscribe((x) => {
       this.minute = this.getMinutes(this.diff);
       this.second = this.getSeconds(this.diff);
 
-      if (this.minute === 0 && this.second === 0) {
+      // subscribe method when the time is up
+      if (this.minute === 0 && this.second === 0 || (this.expiredTime.getTime() - new Date().getTime()) <= 0) {
         this.waitForConfirm = false;
-        this.subscription.unsubscribe();
-
-        //update cancel booking for database
-        this.cancelAllBookingTable(() => {
-
-          //close modal and navigate to the homepage
-          if (this.modal) {
-            this.modal.close();
-          }
-          this.modal = this.modalService.open(DialogModalComponent, {keyboard: false});
-          this.modal.componentInstance.message = params.messages.overTenMinutes;
-          this.modal.componentInstance.navigateByUrl = "/";
-          this.modalIsShow = true;
-          // this.router.navigateByUrl("/");
-        });
+        this.onReservedBookingExpired();
       }
     });
 
-    // this.selectedTables = this.tableService.getSelectedTablesList();
+    // call to back-end to get the current reserved booking from this current user
     if (localStorage.getItem("selectedSection") && localStorage.getItem("selectedBookingDay")) {
       this.tableService.getReservedTableByUser(localStorage.getItem("selectedSection"), localStorage.getItem("selectedBookingDay"))
         .subscribe((response) => {
           let bookings = response["obj"].reservedTable;
           let user = response["obj"].user;
+
           if (bookings && bookings.length > 0) {
+            // Set selected tables
             for (let booking of bookings) {
               this.selectedTables.push(new BookingForTable(booking._id, booking.tableId.name));
             }
-
+            //Set user information to the form
             this.confirmBookingForm.get("email").setValue(user.email);
             this.confirmBookingForm.get("lastName").setValue(user.lastName);
             this.confirmBookingForm.get("firstName").setValue(user.firstName);
             this.confirmBookingForm.get("phoneNumber").setValue(user.phoneNumber);
-
           } else {
-            this.modalIsShow = true;
-            this.router.navigateByUrl("/");
+            //return to the home page when error occurred.
+            this.returnToHomePage();
           }
         });
     } else {
-      this.router.navigateByUrl("/");
+      this.returnToHomePage();
     }
+
+    //Initialise validation form
     this.confirmBookingForm = new FormGroup({
       email: new FormControl("",
         [Validators.required,
@@ -134,23 +115,22 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
         ]),
       lastName: new FormControl("", Validators.required),
       firstName: new FormControl("", Validators.required),
-      phoneNumber: new FormControl("", Validators.required),
-      requirement: new FormControl("", [Validators.maxLength(300)]),
+      phoneNumber: new FormControl("04-", [
+        Validators.required,
+        Validators.pattern("^04\-[0-9]{8}$"),
+      ]),
+      requirement: new FormControl("", [Validators.maxLength(500)]),
     })
 
   }
 
-  // open(content) {
-  //   if (this.modal) {
-  //     this.modal.close();
-  //   }
-  //   this.modal = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
-  // }
+  ngOnDestroy(): void {
+    console.log("onDetroy of confirm booking called");
+    this.subscription.unsubscribe()
+  }
 
   getBookingDate() {
-    //'fullDate': equivalent to 'EEEE, MMMM d, y' (Monday, June 15, 2015).
     if (localStorage.getItem("selectedBookingDay")) {
-      // return this.datePipe.transform(localStorage.getItem("selectedBookingDay"), "fullDate");
       return localStorage.getItem("selectedBookingDay");
     }
   }
@@ -169,13 +149,17 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
     return ""
   }
 
+  getPeople() {
+    return (localStorage.getItem("max-people")) ? localStorage.getItem("max-people") : "";
+  }
+
+  // This method is called when confirm booking
   onSubmitConfirmBooking() {
-    let total = this.selectedTables.length;
     this.subscription.unsubscribe();
 
+    // Prepare data for submit
     let reservedBookings = [];
     for (let t of this.selectedTables) {
-
       let data = {
         lastName: this.confirmBookingForm.value.lastName,
         firstName: this.confirmBookingForm.value.firstName,
@@ -186,10 +170,13 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
       };
       reservedBookings.push(data);
     }
+
+    // submit to server
     this.tableService.confirmBooking("", {reservedBookings: reservedBookings}).subscribe((response) => {
       console.log(response);
       let success = response['obj'].success;
 
+      // Show message when success
       if (success) {
         this.bookingSuccess = true;
         this.waitForConfirm = false;
@@ -197,16 +184,8 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
         this.modalIsShow = true;
         this.confirmBookingForm.disable();
       } else {
-
-        //close modal and navigate to the homepage
-        if (this.modal) {
-          this.modal.close();
-        }
-        this.modal = this.modalService.open(DialogModalComponent, {keyboard: false});
-        this.modal.componentInstance.message = params.messages.overTenMinutes;
-        this.modal.componentInstance.navigateByUrl = "/";
-        this.modalIsShow = true;
-        // this.router.navigateByUrl("/");
+        //show error message because of the bookings are expired and return to home page
+        this.onReservedBookingExpired();
       }
     });
   }
@@ -229,39 +208,28 @@ export class ConfirmBookingComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  onCancelAllBookingTable(content: NgbModalRef) {
-    // const modalRef = this.modalService.open(this.content);
-
-    if (this.modal) {
-      this.modal.close();
-    }
-
-    this.modal = this.modalService.open(content);
-    this.modalIsShow = true;
-    this.modal.result.then(() => {
-      this.modalIsShow = false;
-    })
+  onCancelAllBookingTable() {
+    this.modalIsShow = false;
+    this.router.navigateByUrl("/");
   }
 
   onBackToHomePage() {
-    this.modalIsShow = true;
-    this.router.navigateByUrl("/");
+    this.returnToHomePage();
   }
 
-  onConfirm() {
-    console.log("onConfirm");
+  onReservedBookingExpired() {
     this.subscription.unsubscribe();
-    this.modalIsShow = true;
-    this.cancelAllBookingTable(() => {
-      console.log("Delete table reservation successfully!!!")
+    this.cancelAllBookingTable(function () {
+      console.log("The tables have been deleted");
     });
+    this.modalIsShow = true;
+    alert(params.messages.overTenMinutes);
     this.router.navigateByUrl("/");
-    this.modal.close();
   }
 
-
-  getPeople() {
-    return (localStorage.getItem("max-people")) ? localStorage.getItem("max-people") : "";
+  returnToHomePage() {
+    this.modalIsShow = true;
+    this.router.navigateByUrl("/");
   }
 
   get firstName() {

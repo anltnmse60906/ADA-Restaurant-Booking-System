@@ -52,7 +52,4 @@ export class AuthenInterceptor implements HttpInterceptor {
     return throwError(err);
   }
 
-  onConfirm() {
-    console.log("asfdasfadsfasdf");
-  }
 }

@@ -11,7 +11,6 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
-import {SubmitBookingComponent} from './confirm-booking/submit-booking/submit-booking.component';
 import {AuthenService} from "./services/auth.service"
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
@@ -36,7 +35,6 @@ import { SweerAlertService } from './sweet-alert.service';
     AuthComponent,
     SigninComponent,
     SignupComponent,
-    SubmitBookingComponent,
     TableElementComponent,
     DialogModalComponent,
     BookingHistoryComponent,
