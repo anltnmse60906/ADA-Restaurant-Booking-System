@@ -1,5 +1,5 @@
 var nodeMailer = require("nodemailer");
-var clientSecret = require("../client_secret");
+var clientSecret = require("../client_secrete");
 
 const bodyEmailTemplate = (message) => {
 

@@ -1,15 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const cors = require('cors')
-var logger = require('morgan');
-var passport = require("passport");
+const cors = require('cors');
+const logger = require('morgan');
+const passport = require("passport");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 
-
-var usersRouter = require('./routes/users');
-var tablesRouter = require('./routes/tables');
+const usersRouter = require('./routes/users');
+const tablesRouter = require('./routes/tables');
 
 var app = express();
 
@@ -25,6 +26,10 @@ app.use(passport.session());
 
 app.use('/users', usersRouter);
 app.use('/tables', tablesRouter);
+
+// Add the document router
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

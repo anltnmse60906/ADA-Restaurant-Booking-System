@@ -72,14 +72,14 @@ export class TableService {
 
   getReservedTableByUser(section, bookingDate) {
     const token = localStorage.getItem("token") ? "&token=" + localStorage.getItem("token") : "";
-    return this.http.get(environment.backEndHost + params.tableAuthUrl + "users" + "?section=" + section + "&bookingDate=" + bookingDate + token, httpOption)
+    return this.http.get(environment.backEndHost + params.tableAuthUrl + "get-current-unconfirmed-bookings" + "?section=" + section + "&bookingDate=" + bookingDate + token, httpOption)
       .pipe(map(response => response))
       .pipe(catchError((error) => throwError(error)));
   }
 
   getBookingHistory(queryParam){
     const token = localStorage.getItem("token") ? "&token=" + localStorage.getItem("token") : "";
-    return this.http.get(environment.backEndHost + params.tableAuthUrl + "users-booking-history?"  + queryParam + token, httpOption)
+    return this.http.get(environment.backEndHost + params.tableAuthUrl + "users-booking-history-list?"  + queryParam + token, httpOption)
       .pipe(map(response => response))
       .pipe(catchError((error) => throwError(error)));
   }
@@ -100,7 +100,7 @@ export class TableService {
 
   deleteReservedTable(queryParam, formData) {
     const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
-    return this.http.post(environment.backEndHost + params.tableAuthUrl + "delete-reserved-table" + queryParam + token, formData, httpOption)
+    return this.http.post(environment.backEndHost + params.tableAuthUrl + "delete-reserved-booking" + queryParam + token, formData, httpOption)
       .pipe(map(response => response))
       .pipe(catchError((error) => throwError(error)));
   }
