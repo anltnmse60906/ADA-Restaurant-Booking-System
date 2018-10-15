@@ -3,10 +3,8 @@ const Booking = require("../../models/Booking");
 const utils = require("../../utils/utils");
 const moment = require('moment');
 
-
-const getBookingForAllTables = (req, res, next) => {
-
-  Table.find({}).exec((err, tables) => {
+const getAllTables = (req, res, next) => {
+  Table.find({}, "capacity isSmoking location name _id").exec((err, tables) => {
     if (err) {
       return res.status(500).json({
         title: "An error occurred!",
@@ -85,7 +83,7 @@ const deleteUnconfirmedBooking = (expiredConfirmBookings, next) => {
   }
 };
 
-const getBookingListOfTablesWithoutToken = (req, res) => {
+const getBookingListOfSection = (req, res, user) => {
 
   let inputSection = parseInt(req.query.section);
   let inputDate = utils.dateAEST(req.query.bookingDate);
@@ -95,7 +93,7 @@ const getBookingListOfTablesWithoutToken = (req, res) => {
   Booking.find({
     section: inputSection,
     bookingDate: {$eq: (inputDate).toISOString()},
-  }).populate("tableId")
+  }, "_id tableId status user").populate("tableId")
     .exec((err, bookings) => {
       if (err) {
         return res.status(500).json({
@@ -104,11 +102,13 @@ const getBookingListOfTablesWithoutToken = (req, res) => {
         });
       }
       let reservedTables = [];
+      let expiredConfirmBookings = [];
+      let reservedTablesByUserId = [];
 
       if (bookings.length === 0) {
 
         //Get the list of table because there is no booking at this current section
-        getBookingForAllTables(req, res, (tables) => {
+        getAllTables(req, res, (tables) => {
           return res.status(200).json({
             title: "Tables is returned successfully",
             obj: {
@@ -118,38 +118,34 @@ const getBookingListOfTablesWithoutToken = (req, res) => {
             }
           });
         });
-
       } else {
-        let expiredConfirmBookings = [];
-
         for (let booking of bookings) {
-          if (booking.status === utils.BookingReserved) {
-            //Check  the booking which is comfirmed
-            if (currentDate.isSameOrBefore(booking.confirmDeadline)) {
-              // Add to reserved list
-              reservedTables.push(booking);
-            } else {
-              // Delete the booking
-              expiredConfirmBookings.push(booking);
+          //Check  the booking which is confirmed
+          if (booking.status === utils.BookingConfirmed || booking.status === utils.BookingReserved && currentDate.isSameOrBefore(booking.confirmDeadline)) {
+            //  Add to reserved table
+            reservedTables.push(booking);
+
+            //If this booking is reserved by current user
+            if (user && booking.user.equals(user._id) && booking.status === utils.BookingReserved) {
+              reservedTablesByUserId.push(booking);
             }
           } else {
-            reservedTables.push(booking);
+            // Delete the booking
+            expiredConfirmBookings.push(booking);
           }
         }
 
-        getBookingForAllTables(req, res, (tables) => {
+        getAllTables(req, res, (tables) => {
 
           //Remove Unconfirmed bookings
           if (expiredConfirmBookings.length > 0) {
-
-
             deleteUnconfirmedBooking(expiredConfirmBookings, () => {
-
               return res.status(200).json({
                 title: "Tables is returned successfully",
                 obj: {
                   tableList: tables,
-                  reservedTables: reservedTables
+                  reservedTables: reservedTables,
+                  reservedTablesByUserId: reservedTablesByUserId
                 }
               });
             });
@@ -158,11 +154,12 @@ const getBookingListOfTablesWithoutToken = (req, res) => {
               title: "Tables is returned successfully",
               obj: {
                 tableList: tables,
-                reservedTables: reservedTables
+                reservedTables: reservedTables,
+                reservedTablesByUserId: reservedTablesByUserId
               }
             });
           }
-        });
+        })
       }
     });
 };
@@ -185,7 +182,6 @@ const addNewBooking = (req, res, table, user) => {
   });
 
   newBooking.save((err, newBooking) => {
-
     table.bookings.push(newBooking);
     table.save((err, __table) => {
       if (err) {
@@ -206,9 +202,7 @@ const addNewBooking = (req, res, table, user) => {
 };
 
 module.exports = {
-  getBookingForAllTables,
-  deleteUnconfirmedBooking,
-  getBookingListOfTablesWithoutToken,
+  getBookingListOfSection,
   findTableById,
   addNewBooking,
   findBookingById

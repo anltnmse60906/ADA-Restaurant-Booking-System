@@ -1,18 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var User = require("../models/User");
-var bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
-
+const express = require('express');
+const router = express.Router();
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const appSecret = 31340;
+require('dotenv').config();
 
 /* GET users listing. */
 router.post('/sign-up', (req, res) => {
-  var user = new User({
+  const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     phoneNumber: req.body.phoneNumber,
-    password: bcrypt.hashSync(req.body.password, 10)
+    password: bcrypt.hashSync(req.body.password, parseInt(process.env.APP_SECRET || appSecret))
   });
   user.save(function (err, result) {
     if (err) {
@@ -32,7 +33,7 @@ router.post("/sign-in", (req, res) => {
   User.findOne({email: req.body.email}, function (err, user) {
     if (err) {
       return res.status(500).json({
-        title: "An erorr occured",
+        title: "An error occurred",
         error: err
       });
     }
@@ -48,7 +49,7 @@ router.post("/sign-in", (req, res) => {
         error: {messages: "Invalid login credentials"}
       });
     }
-    var token = jwt.sign({user: user}, "secret", {expiresIn: 7200});
+    const token = jwt.sign({user: user}, process.env.APP_SECRET, {expiresIn: parseInt(process.env.TOKEN_EXPIRE_TIME || 7200)});
     res.status(200).json({
       message: "Success logged in",
       token: token,

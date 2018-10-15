@@ -31,10 +31,13 @@ export class TableService {
         const tables = response["obj"].tableList;
         const reservedTables = response["obj"].reservedTables;
         const reservedTablesByUserId = response["obj"].reservedTablesByUserId;
-        let tranformedTables: Table[] = [];
+        let transformedTables: Table[] = [];
+
         for (let m of  tables) {
           let booked = false;
           let selected = false;
+
+          // Set selected reserved booking before user login
           if (this.selectedTableBeforeLogin && this.selectedTableBeforeLogin.length !== 0) {
             for (let reservedTable of this.selectedTableBeforeLogin) {
               if (reservedTable._id === m._id) {
@@ -43,6 +46,7 @@ export class TableService {
               }
             }
           }
+          // Set selected reserved booking from server from current user
           if (reservedTables) {
             for (let reservedTable of reservedTables) {
               if (reservedTable.tableId._id === m._id) {
@@ -51,6 +55,7 @@ export class TableService {
               }
             }
           }
+          // Set selected reserved booking from other users
           if (reservedTablesByUserId) {
             for (let reservedTable of reservedTablesByUserId) {
               if (reservedTable.tableId._id === m._id) {
@@ -59,13 +64,13 @@ export class TableService {
               }
             }
           }
-          tranformedTables.push(new Table(m["_id"], m["name"], m["capacity"], m["location"], m["isSmoking"], booked, selected))
+          transformedTables.push(new Table(m["_id"], m["name"], m["capacity"], m["location"], m["isSmoking"], booked, selected))
         }
-        this.currentRestaurantTables = tranformedTables;
+        this.currentRestaurantTables = transformedTables;
 
         this.updateConfirmFooter.emit(this.currentRestaurantTables);
 
-        return tranformedTables;
+        return transformedTables;
       }))
       .pipe(catchError((error) => throwError(error)));
   }
@@ -86,7 +91,7 @@ export class TableService {
 
   confirmBooking(queryParam, formData) {
     const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
-    return this.http.post(environment.backEndHost + params.tableAuthUrl + "confirm-reserved-tables" + queryParam + token, formData, httpOption)
+    return this.http.post(environment.backEndHost + params.tableAuthUrl + "confirm-reserved-bookings" + queryParam + token, formData, httpOption)
       .pipe(map(response => response))
       .pipe(catchError((error) => throwError(error)));
   }
@@ -105,6 +110,7 @@ export class TableService {
       .pipe(catchError((error) => throwError(error)));
   }
 
+  // This function is called when user click select table for booking
   selectTable(table: Table) {
     let curTbl = table;
     curTbl.selected = (!table.selected);

@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Table = require("../models/Table");
-const User = require("../models/User");
 const Booking = require("../models/Booking");
 const jwt = require("jsonwebtoken");
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -10,104 +8,6 @@ const emailService = require("../mail/email");
 const userService = require("../middlewares/user/users");
 const tableService = require("../middlewares/table/tables");
 const utils = require("../utils/utils");
-
-
-router.get("", (req, res) => {
-
-  let inputSection = parseInt(req.query.section);
-  let inputDate = utils.dateAEST(req.query.bookingDate);
-  let currentDate = utils.dateAEST(moment());
-
-  if (req.query.token) {
-
-    userService.checkUserValidation(req, res, (err, user) => {
-
-      //Find the table
-      Booking.find({
-        section: inputSection,
-        bookingDate: {$eq: (inputDate).toISOString()},
-      }).populate("tableId")
-        .exec((err, bookings) => {
-          if (err) {
-            return res.status(500).json({
-              title: "An error occurred!",
-              error: err
-            });
-          }
-
-          if (bookings.length === 0) {
-            //Get the list of table because there is no booking at this current section
-            tableService.getBookingForAllTables(req, res, (tables) => {
-              return res.status(200).json({
-                title: "Tables is returned successfully",
-                obj: {
-                  tableList: tables,
-                  reservedTables: [],
-                  reservedTablesByUserId: []
-                }
-              });
-            });
-          } else {
-            let reservedTables = [];
-            let reservedTablesByUserId = [];
-            let expiredConfirmBookings = [];
-
-            for (let booking of bookings) {
-              if (booking.status === utils.BookingReserved) {
-
-                //Check  the booking which is confirmed
-                if (currentDate.isSameOrBefore(booking.confirmDeadline)) {
-
-                  // Add to reserved list
-                  reservedTables.push(booking);
-
-                  //If this booking is reserved by current user
-                  if (booking.user.equals(user._id)) {
-                    reservedTablesByUserId.push(booking);
-                  }
-                } else {
-                  // Add to unconfirmed booking list  for removing
-                  expiredConfirmBookings.push(booking);
-                }
-              } else {
-                reservedTables.push(booking);
-              }
-            }
-
-            // Get table list
-            tableService.getBookingForAllTables(req, res, (tables) => {
-
-              //Delete Unconfirmed bookings
-              if (expiredConfirmBookings.length > 0) {
-
-                tableService.deleteUnconfirmedBooking(expiredConfirmBookings, () => {
-                  return res.status(200).json({
-                    title: "Tables is returned successfully",
-                    obj: {
-                      tableList: tables,
-                      reservedTables: reservedTables,
-                      reservedTablesByUserId: reservedTablesByUserId
-                    }
-                  });
-                });
-              } else {
-                return res.status(200).json({
-                  title: "Tables is returned successfully",
-                  obj: {
-                    tableList: tables,
-                    reservedTables: reservedTables,
-                    reservedTablesByUserId: reservedTablesByUserId
-                  }
-                });
-              }
-            });
-          }
-        });
-    });
-  } else {
-    tableService.getBookingListOfTablesWithoutToken(req, res);
-  }
-});
 
 
 //Validation the token of user
@@ -122,6 +22,17 @@ router.use("/auth", (req, res, next) => {
     next();
   })
 });
+
+router.get("", (req, res) => {
+  if (req.query.token) {
+    userService.checkUserValidation(req, res, (err, user) => {
+      tableService.getBookingListOfSection(req, res,user)
+    });
+  } else {
+    tableService.getBookingListOfSection(req, res, null);
+  }
+});
+
 
 /*
 *
@@ -228,7 +139,7 @@ router.get("/auth/users-booking-history-list", (req, res) => {
               //Total of booking groups
               let total = bookingsGroupByCreateDate.length;
 
-              // Get list of booking for curent page
+              // Get list of booking for the current page
               bookingsGroupByCreateDate = bookingsGroupByCreateDate.slice(start, end);
 
               return res.status(200).json({
@@ -291,7 +202,6 @@ router.post("/auth/reserve-table", (req, res) => {
                 currentDate.add("10", "m");
 
                 booking.confirmDeadline = currentDate;
-
                 booking.save(function (err, updatedBooking) {
                   if (err) {
                     return res.status(500).json({
@@ -328,7 +238,7 @@ router.post("/auth/reserve-table", (req, res) => {
 });
 
 
-router.post("/auth/confirm-reserved-tables", (req, res) => {
+router.post("/auth/confirm-reserved-bookings", (req, res) => {
 
   userService.checkUserValidation(req, res, (err, user) => {
 
@@ -346,14 +256,12 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
 
       tableService.findBookingById(req, res, reservedBooking.bookingId, (booking) => {
 
-        let currentDate = utils.dateAEST(moment());
-        currentDate.add("10", "m");
-        let email = "";
+        let currentDate = utils.getTimeAfterNMinute(utils.TenMinute);
 
         // Check the reserved booking is not expired
         // and it has to be belong to the current user
         if (currentDate.isSameOrBefore(utils.dateAEST(booking.confirmDeadline))
-          || (booking.user._id.equals(user._id))) {
+          && (booking.user._id.equals(user._id))) {
 
           // update information  for  the booking for
           booking.lastName = reservedBooking.lastName;
@@ -364,13 +272,12 @@ router.post("/auth/confirm-reserved-tables", (req, res) => {
           booking.status = utils.BookingConfirmed;
           booking.createDate = createDate;
 
-          email = reservedBooking.email;
           tableNumber.push(booking.tableId.name);
           totalPeople += booking.tableId.capacity;
 
           // prepare the information need for the content of  e-mail
           let message = {
-            receiver: email,
+            receiver: booking.email,
             lastName: booking.lastName,
             firstName: booking.firstName,
             phoneNumber: booking.phoneNumber,
