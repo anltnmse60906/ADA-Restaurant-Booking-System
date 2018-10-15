@@ -8,11 +8,12 @@ const emailService = require("../mail/email");
 const userService = require("../middlewares/user/users");
 const tableService = require("../middlewares/table/tables");
 const utils = require("../utils/utils");
+require('dotenv').config();
 
 
 //Validation the token of user
 router.use("/auth", (req, res, next) => {
-  jwt.verify(req.query.token, "secret", (err, decoded) => {
+  jwt.verify(req.query.token, process.env.APP_SECRET || utils.AppSecrete, (err, decoded) => {
     if (err) {
       return res.status(401).json({
         title: "Not Authenticated",
@@ -23,7 +24,7 @@ router.use("/auth", (req, res, next) => {
   })
 });
 
-router.get("", (req, res) => {
+router.get("/get-bookings-of-section", (req, res) => {
   if (req.query.token) {
     userService.checkUserValidation(req, res, (err, user) => {
       tableService.getBookingListOfSection(req, res,user)
@@ -110,7 +111,7 @@ router.get("/auth/users-booking-history-list", (req, res) => {
     ).exec((err, bookingsByCreateDate) => {
       if (err) {
         return res.status(500).json({
-          title: "An error occured!",
+          title: "An error occurred!",
           error: err
         });
       }
@@ -128,8 +129,8 @@ router.get("/auth/users-booking-history-list", (req, res) => {
           bookingDate: booking.bookingDate,
           section: booking.section,
           createDate: {$eq: utils.dateAEST(booking.createDate).toISOString()}
-        })
-          .populate("tableId")
+        },"bookingDate confirmDeadline  createDate  createDate  firstName  lastName phoneNumber requirement section _id")
+          .populate("tableId","_id capacity name isSmoking location")
           .exec((err, groupBookings) => {
             count++;
             bookingsGroupByCreateDate.push(groupBookings);
@@ -143,7 +144,7 @@ router.get("/auth/users-booking-history-list", (req, res) => {
               bookingsGroupByCreateDate = bookingsGroupByCreateDate.slice(start, end);
 
               return res.status(200).json({
-                title: "User is not found",
+                title: "Get booking history successfully",
                 obj: {
                   total: total,
                   page: req.query.p,
@@ -175,14 +176,14 @@ router.post("/auth/reserve-table", (req, res) => {
 
       // Get get booking for specific table on section on date
       Booking.find({
-        tableId: {$eq: ObjectId(req.body.bookingTable._id)},
+        tableId: {$eq: ObjectId(table._id)},
         section: inputSection,
         bookingDate: {$eq: (inputDate).toISOString()},
       }).populate("user").populate("tableId")
         .exec((err, bookings) => {
           if (err) {
             return res.status(500).json({
-              title: "An error occured!",
+              title: "An error occurred!",
               error: err
             });
           }
@@ -198,14 +199,13 @@ router.post("/auth/reserve-table", (req, res) => {
               // The old unconfirmed bookings will be update to have the same "confirmedDeadline"
               // with the new ones
               if (currentDate.isSameOrAfter(utils.dateAEST(booking.confirmDeadline)) || (booking.user._id.equals(user._id))) {
-                let currentDate = utils.dateAEST(moment());
-                currentDate.add("10", "m");
+                let currentDate = utils.getTimeAfterNMinute(utils.TenMinute);
 
                 booking.confirmDeadline = currentDate;
                 booking.save(function (err, updatedBooking) {
                   if (err) {
                     return res.status(500).json({
-                      title: "An error occured!",
+                      title: "An error occurred!",
                       error: err
                     });
                   }
@@ -223,7 +223,7 @@ router.post("/auth/reserve-table", (req, res) => {
                 // This is used for showing the message in front-end
 
                 return res.status(200).json({
-                  title: "The table is reserved",
+                  title: "The table is reserved by other",
                   obj: {
                     success: false,
                     data: booking
@@ -260,7 +260,7 @@ router.post("/auth/confirm-reserved-bookings", (req, res) => {
 
         // Check the reserved booking is not expired
         // and it has to be belong to the current user
-        if (currentDate.isSameOrBefore(utils.dateAEST(booking.confirmDeadline))
+        if ((utils.dateAEST(booking.confirmDeadline).isSameOrBefore(currentDate))
           && (booking.user._id.equals(user._id))) {
 
           // update information  for  the booking for

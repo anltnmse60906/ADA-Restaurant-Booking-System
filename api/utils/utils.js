@@ -6,6 +6,8 @@ const FullDateTemplate = "dddd, MMMM DD YYYY";
 const BookingReserved = 1;
 const BookingConfirmed = 2;
 const TenMinute = "10";
+const AppSecrete = "3133233";
+const TokenExpiredTime = 7200;
 
 // Function to convert UTC JS Date object to a Moment.js object in AEST
 const dateAEST = date => {
@@ -13,8 +15,8 @@ const dateAEST = date => {
 };
 
 const getTimeAfterNMinute = (minute) => {
-  let currentDate = utils.dateAEST(moment());
-  currentDate.add(minute, "m");
+  let currentDate = dateAEST(moment());
+  return currentDate.add(minute, "m");
 };
 
 module.exports = {
@@ -24,5 +26,7 @@ module.exports = {
   DateTimeHourTemplate,
   FullDateTemplate,
   getTimeAfterNMinute,
-  TenMinute
+  TenMinute,
+  AppSecrete,
+  TokenExpiredTime
 };

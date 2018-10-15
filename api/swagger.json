@@ -11,39 +11,201 @@
   ],
   "basePath": "/",
   "paths": {
-    "/pet/{petId}": {
+    "/tables/get-bookings-of-section": {
       "get": {
         "tags": [
-          "pet"
+          "Tables"
         ],
-        "summary": "Find pet by ID",
-        "description": "Returns a single pet",
-        "operationId": "getPetById",
+        "summary": "Current section bookings",
+        "description": "This method is called in the home page from front-end. It is also called when user find a section on a specific date. Returns a list of booking for a specific section on one date",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "petId",
+            "name": "section",
             "in": "path",
-            "description": "ID of pet to return",
+            "description": "1/2/3 means Morning/Lunch/Dinner section",
             "required": true,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "bookingDate",
+            "in": "path",
+            "description": "the bookind date",
+            "required": true,
+            "type": "string",
+            "format": "DD/MM/YYYY"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "An unauthorised and authorised users could use this function; however, when an authorised use the token, it will return the selected table from this user",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Tables is returned successfully",
             "schema": {
-              "$ref": "#/definitions/Booking"
+              "$ref": "#/definitions/bookingsForSection"
             }
           },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
           "404": {
-            "description": "Pet not found"
+            "description": "User is not found"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/tables/auth/get-current-unconfirmed-bookings": {
+      "get": {
+        "tags": [
+          "Tables"
+        ],
+        "summary": "Get unconfirmed booking for this user",
+        "description": "This method is called when user in page \"confirm booking\" to return a list of table(s) is/are reserved by this current user. To access this API, user has to be authorised.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "section",
+            "in": "path",
+            "description": "1/2/3 means Morning/Lunch/Dinner section",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "bookingDate",
+            "in": "path",
+            "description": "the bookind date",
+            "required": true,
+            "type": "string",
+            "format": "DD/MM/YYYY"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tables is returned successfully",
+            "schema": {
+              "$ref": "#/definitions/reservedBooking"
+            }
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/tables/auth/users-booking-history-list": {
+      "get": {
+        "tags": [
+          "Tables"
+        ],
+        "summary": "Get booking history",
+        "description": "Get history booking and paging for booking history. It will group the history by sections in a specific day.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "p",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get booking history successfully",
+            "schema": {
+              "$ref": "#/definitions/historyBooking"
+            }
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/tables/auth/reserve-table": {
+      "post": {
+        "tags": [
+          "Tables"
+        ],
+        "summary": "Reserve table",
+        "description": "This method is called mullitple times in front-end if user booking many table.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "section",
+            "in": "formData",
+            "description": "1/2/3 means Morning/Lunch/Dinner section",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "bookingDate",
+            "in": "formData",
+            "description": "the bookind date",
+            "required": true,
+            "type": "string",
+            "format": "DD/MM/YYYY"
+          },
+          {
+            "in": "body",
+            "name": "bookingTable",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/table"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Table is reserved successfully",
+            "schema": {
+              "$ref": "#/definitions/info"
+            }
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
           }
         }
       }
@@ -85,6 +247,193 @@
       },
       "xml": {
         "name": "Booking"
+      }
+    },
+    "table": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isSmoking": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": "string",
+          "enum": [
+            "top-right",
+            "top-left",
+            "right-bar",
+            "left-kitchen",
+            "right-kitchen"
+          ]
+        }
+      }
+    },
+    "booking": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string",
+          "description": "the id of user"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tableId": {
+          "type": "object",
+          "$ref": "#/definitions/table"
+        }
+      }
+    },
+    "bookingDetail": {
+      "type": "object",
+      "properties": {
+        "bookingDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "confirmDeadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "requirement": {
+          "type": "string"
+        },
+        "section": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "tableId": {
+          "type": "object",
+          "$ref": "#/definitions/table"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "bookingsForSection": {
+      "type": "object",
+      "properties": {
+        "reservedTables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/booking"
+          }
+        },
+        "reservedTablesByUserId": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/booking"
+          }
+        },
+        "tableList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/booking"
+          }
+        }
+      }
+    },
+    "reservedBooking": {
+      "type": "object",
+      "properties": {
+        "reservedTables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/booking"
+          }
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/user"
+        }
+      }
+    },
+    "historyBooking": {
+      "type": "object",
+      "properties": {
+        "bookings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bookingDetail"
+          }
+        },
+        "page": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "info": {
+      "type": "object",
+      "properties": {
+        "sucess": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        }
       }
     }
   }

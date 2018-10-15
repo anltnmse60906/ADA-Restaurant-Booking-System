@@ -26,7 +26,7 @@ export class TableService {
 
   getTables(section, bookingDate) {
     const token = localStorage.getItem("token") ? "&token=" + localStorage.getItem("token") : "";
-    return this.http.get(environment.backEndHost + params.tableUrl + "?section=" + section + "&bookingDate=" + bookingDate + token, httpOption)
+    return this.http.get(environment.backEndHost + params.tableUrl +"get-bookings-of-section" + "?section=" + section + "&bookingDate=" + bookingDate + token, httpOption)
       .pipe(map((response) => {
         const tables = response["obj"].tableList;
         const reservedTables = response["obj"].reservedTables;

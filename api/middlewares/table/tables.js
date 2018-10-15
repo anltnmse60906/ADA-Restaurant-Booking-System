@@ -97,7 +97,7 @@ const getBookingListOfSection = (req, res, user) => {
     .exec((err, bookings) => {
       if (err) {
         return res.status(500).json({
-          title: "An error occured!",
+          title: "An error occurred!",
           error: err
         });
       }
@@ -165,20 +165,14 @@ const getBookingListOfSection = (req, res, user) => {
 };
 
 const addNewBooking = (req, res, table, user) => {
-  let currentDate = utils.dateAEST(moment());
-  currentDate.add("10", "m");
+  let currentDate = utils.getTimeAfterNMinute(utils.TenMinute);
   const newBooking = new Booking({
     user: user,
-    lastName: req.body.lastName,
-    firstName: req.body.firstName,
-    phoneNumber: req.body.phoneNumber,
-    email: req.body.phoneNumber,
     bookingDate: utils.dateAEST(req.body.bookingDate),
     section: req.body.section,
-    requirement: req.body.requirement,
     confirmDeadline: currentDate,
     status: utils.BookingReserved,
-    tableId: req.body.bookingTable._id
+    tableId: table._id
   });
 
   newBooking.save((err, newBooking) => {
