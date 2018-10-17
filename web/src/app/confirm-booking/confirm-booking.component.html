@@ -19,29 +19,6 @@
         Your table is reserved successfully!!!
       </div>
 
-      <!--<div class="form-group">-->
-      <!--<div class="form-row">-->
-      <!--<h4 class="reservation-restaurant">Booking for {{getSection()}} </h4>-->
-      <!--</div>-->
-      <!--<div class="form-row">-->
-      <!--<div class="col">-->
-      <!--<h4 class="reservation-time">{{getBookingDate()}}</h4>-->
-      <!--</div>-->
-      <!--<div class="col">-->
-      <!--<div class="form-row text-center">-->
-      <!--<span class="btn btn-outline-primary mr-3" *ngFor="let t of selectedTables">{{t.tableName}}</span>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div class="form-row">-->
-      <!--<div class="col">-->
-      <!--<h4 class="reservation-people">{{getPeople()}} people</h4>-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <!--</div>-->
-
-
       <div class="text-center header-confirm-booking">
         <div class="form-group text-center">Booking for
           <span class="reservation-time">{{getSection()}} </span>on
@@ -82,18 +59,27 @@
             <label class="label">Email</label>
             <input type="text" class="form-control" placeholder="Email" formControlName="email">
             <div *ngIf="email.invalid && (email.dirty || email.touched)"
-                 class="alert alert-danger">
-              <div *ngIf="email.errors.required">
-                Email is required.
-              </div>
-              <div *ngIf="email.errors.pattern">
-                Email is invalid.
-              </div>
+                       class="alert alert-danger">
+            <div *ngIf="email.errors.required">
+              Email is required.
             </div>
+            <div *ngIf="email.errors.pattern">
+              Email is invalid.
+            </div>
+          </div>
           </div>
           <div class="col">
             <label class="label">Phone number</label>
             <input type="text" class="form-control" placeholder="Phone number" formControlName="phoneNumber">
+            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="phoneNumber.errors.required">
+                Email is required.
+              </div>
+              <div *ngIf="phoneNumber.errors.pattern">
+                Australia phone number is not valid 04-XXXXXXXX
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-row  form-group">
@@ -101,6 +87,12 @@
             <label class="label">Special request</label>
             <textarea class="form-control" row="1" placeholder="Add a special request"
                       formControlName="requirement"></textarea>
+            <div *ngIf="requirement.invalid && (requirement.dirty || requirement.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="phoneNumber.errors.maxLength">
+                Requirement is too long (maximum 500 characters)
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-row  form-group">
@@ -122,19 +114,3 @@
   </div>
 </div>
 
-
-<ng-template #content let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Information</h4>
-    <button type="button" class="close" aria-label="Close" (click)="c()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p>{{message}}}</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c()">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="onConfirm()">Confirm</button>
-  </div>
-</ng-template>

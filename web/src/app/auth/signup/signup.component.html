@@ -18,25 +18,48 @@
                 </div>
                 <div class="card-content">
                   <div class="card-body">
-                    <form class="form-horizontal form-simple" [formGroup]="myForm" (submit)="onSubmit()">
+                    <form class="form-horizontal form-simple" [formGroup]="signUpForm" (submit)="onSubmit()">
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="email" class="form-control form-control-lg" id="email"
                                placeholder="Your Email Address" formControlName="email"
                                required>
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="email.errors.required">
+                            Email is required.
+                          </div>
+                          <div *ngIf="email.errors.pattern">
+                            Email is invalid.
+                          </div>
+                        </div>
                         <div class="form-control-position">
                           <i class="fa fa-envelope"></i>
                         </div>
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control form-control-lg" name="phoneNumber" id="phoneNumber" formControlName="phoneNumber"
-                               placeholder="Enter Phone Number">
+                        <input type="password" class="form-control form-control-lg" id="password"
+                               placeholder="Enter Password" formControlName="password"
+                               required>
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="password.errors.required">
+                            Password is required.
+                          </div>
+                        </div>
                         <div class="form-control-position">
-                          <i class="fa fa-phone"></i>
+                          <i class="fa fa-key"></i>
                         </div>
                       </fieldset>
+
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First name"
                                formControlName="firstName">
+                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="firstName.errors.required">
+                            First name is required.
+                          </div>
+                        </div>
                         <div class="form-control-position">
                           <i class="fa fa-address-card"></i>
                         </div>
@@ -44,19 +67,34 @@
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last name"
                                formControlName="lastName">
+                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="lastName.errors.required">
+                            First name is required.
+                          </div>
+                        </div>
                         <div class="form-control-position">
                           <i class="fa fa-address-card"></i>
                         </div>
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
-                        <input type="password" class="form-control form-control-lg" id="password"
-                               placeholder="Enter Password" formControlName="password"
-                               required>
+                        <input type="text" class="form-control form-control-lg" name="phoneNumber" id="phoneNumber"
+                               formControlName="phoneNumber"
+                               placeholder="Enter Phone Number">
+                        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="phoneNumber.errors.required">
+                            Email is required.
+                          </div>
+                          <div *ngIf="phoneNumber.errors.pattern">
+                            Australia phone number is not valid 04-XXXXXXXX
+                          </div>
+                        </div>
                         <div class="form-control-position">
-                          <i class="fa fa-key"></i>
+                          <i class="fa fa-phone"></i>
                         </div>
                       </fieldset>
-                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!myForm.valid"><i
+                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!signUpForm.valid"><i
                         class="ft-unlock"></i> Register
                       </button>
                     </form>

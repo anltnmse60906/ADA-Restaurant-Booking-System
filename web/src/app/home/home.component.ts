@@ -21,11 +21,10 @@ import {AuthenService} from "../services/auth.service";
 export class HomeComponent implements OnInit {
 
   private _bookingDate: Date;
-  today = new Date;
   private _selectedSection;
 
+  today = new Date;
   startDate = {};
-
   topLeft: Table[] = [];
   topRight: Table[] = [];
   rightBar: Table[] = [];
@@ -46,11 +45,18 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Initialise today
     this._bookingDate = new Date();
 
+    // Parse current number to categorial name
     this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
+
     this._currentBookingDate = this._bookingDate;
 
+    //Auto change section.
+    // 12:00 to 15:00 is afternoon section
+    // 16:00 to 19:00 is dinner section
+    // others are morning section
     this._selectedSection = 1;
     if (this.today.getHours() > 11 && this.today.getHours() < 16) {
       this._selectedSection = 2
@@ -60,16 +66,20 @@ export class HomeComponent implements OnInit {
       this._bookingDate.setDate(this._bookingDate.getDate() + 1);
     }
 
+    // Set value for datepicker
     this.startDate = {
       year: this._bookingDate.getFullYear(),
       month: this._bookingDate.getMonth() + 1,
       day: this._bookingDate.getDate()
     };
+
+    //call API to get table list
     this.tableService.getTables(this._selectedSection, this.datePipe.transform(this._bookingDate, params.dateTimePattern)).subscribe((tables: Table[]) => {
       this.parseTable(tables);
     });
 
-    // this function will be trigged when we updateConfirmFooter the selected table
+    // this function will be trigerred when we updateConfirmFooter the selected table
+    // when user selects a table this function is triggered to open/close footer
     this.tableService.updateConfirmFooter.subscribe((currentRestaurantTables: Table[]) => {
       this.totalCustomers = 0;
       this.selectedTables = [];
@@ -82,6 +92,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // Call server to get table list
   onSubmitFindTable() {
     this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
     this._currentBookingDate = this._bookingDate;
@@ -123,23 +134,27 @@ export class HomeComponent implements OnInit {
   onConfirmBooking() {
 
     if (this.authenService.isLoggedIn()) {
+      // Set data for displaying on next page
       localStorage.setItem("max-people", this.totalCustomers.toString());
       localStorage.setItem("selectedBookingDay", this.datePipe.transform(this._bookingDate, params.dateTimePattern));
       localStorage.setItem("selectedSection", this._selectedSection);
 
-
+      //this.tableService.getSelectedTablesList() will handle the number of selected table
       let selectedTables = this.tableService.getSelectedTablesList();
       let total = selectedTables.length;
       let count = 0;
       let isFailed = false;
       let reservedSuccessfullyTables = [];
 
+      // submit booking to server. One booking per time
       for (let t of selectedTables) {
         let data = {
           bookingTable: t,
           section: this._selectedSection,
           bookingDate: this.datePipe.transform(this._bookingDate, params.dateTimePattern),
         };
+
+        // Call to server to booking
         this.tableService.reserveTable("", data).subscribe((response) => {
           console.log(response);
           let success = response["obj"].success;
@@ -161,8 +176,10 @@ export class HomeComponent implements OnInit {
             reservedSuccessfullyTables.push(response["obj"].data);
           }
           if (total === count) {
-            // alert("reserved successfully");
-            //TODO Go to nextpage for edit
+
+            // if there is one booking is reserved by other user, it will call to server to
+            // remove all of the tables which are booked successfully
+            // In client, the view will be updated,
             if (isFailed) {
               for (let t of reservedSuccessfullyTables) {
                 let otherReservedTable = this.tableService.getSelectedTableById(t.tableId);
@@ -181,6 +198,7 @@ export class HomeComponent implements OnInit {
         });
       }
     } else {
+      // Update the selected bookings for tables before return to the login page
       this.tableService.updateSelectedTableBeforeLogin(this.tableService.getSelectedTablesList());
       this.router.navigate(['signin'],);
     }

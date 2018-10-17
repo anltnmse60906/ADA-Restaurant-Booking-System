@@ -44,13 +44,28 @@
                       <fieldset class="form-group position-relative has-icon-left mb-0">
                         <input type="text" class="form-control form-control-lg" id="username" name="username" formControlName="email"
                                placeholder="Your Username">
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="email.errors.required">
+                            Email is required.
+                          </div>
+                          <div *ngIf="email.errors.pattern">
+                            Email is invalid.
+                          </div>
+                        </div>
                         <div class="form-control-position">
                           <i class="fa fa-user"></i>
                         </div>
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="password" class="form-control form-control-lg" name="password" id="password" formControlName="password"
-                               placeholder="Enter Password">
+                               placeholder="Enter password">
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                             class="alert alert-danger">
+                          <div *ngIf="password.errors.required">
+                            Password is required.
+                          </div>
+                        </div>
                         <div class="form-control-position">
                           <i class="fa fa-key"></i>
                         </div>

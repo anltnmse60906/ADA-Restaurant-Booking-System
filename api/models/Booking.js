@@ -15,7 +15,7 @@ const bookingSchema = new Schema({
   requirement: String,
   createDate: Date,
   confirmDeadline: Date,
-  status: String,
+  status: Number,
   tableId: {type: Schema.Types.ObjectId, ref: "Table"},
 });
 

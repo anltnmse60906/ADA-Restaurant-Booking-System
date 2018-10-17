@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 import {TableService} from "../services/table.service";
 
 @Component({
@@ -9,7 +8,6 @@ import {TableService} from "../services/table.service";
 })
 export class BookingHistoryComponent implements OnInit {
   meals = [];
-  // asyncMeals: Observable<any>;
   p: number = 1;
   total: number;
   loading: boolean;
@@ -23,7 +21,7 @@ export class BookingHistoryComponent implements OnInit {
   ngOnInit() {
     this.getPage(1);
   }
-
+  // Paging
   getPage(page: number) {
     this.loading = true;
     const queryParam = "p=" + page;
