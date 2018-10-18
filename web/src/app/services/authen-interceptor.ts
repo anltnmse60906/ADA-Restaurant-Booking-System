@@ -35,7 +35,7 @@ export class AuthenInterceptor implements HttpInterceptor {
   private dialog: NgbModalRef;
 
   handleError(err: HttpErrorResponse): Observable<any> {
-    if (err.status === 400 || err.status === 401) {
+    if (err.status === 401) {
       // return of(err.message);
       if (this.dialog) {
         this.dialog.close();

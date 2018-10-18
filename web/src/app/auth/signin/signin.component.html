@@ -65,6 +65,12 @@
                           <div *ngIf="password.errors.required">
                             Password is required.
                           </div>
+                          <div *ngIf="password.errors.minlength">
+                            Password must be greater than 6 characters
+                          </div>
+                          <div *ngIf="password.errors.maxlength">
+                            Password must be smaller than 300 characters
+                          </div>
                         </div>
                         <div class="form-control-position">
                           <i class="fa fa-key"></i>

@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is all the API for the ADA-Restaurant-Booking-System",
+    "description": "This is all the APIs for the application ADA-Restaurant-Booking-System",
     "title": "ADA-Restaurant-Booking-System",
     "version": "v1"
   },
-  "host": "ada-restaurant-booking",
+  "host": "localhost:3000",
   "schemes": [
     "http"
   ],
@@ -24,7 +24,7 @@
         "parameters": [
           {
             "name": "section",
-            "in": "path",
+            "in": "query",
             "description": "1/2/3 means Morning/Lunch/Dinner section",
             "required": true,
             "type": "integer",
@@ -32,7 +32,7 @@
           },
           {
             "name": "bookingDate",
-            "in": "path",
+            "in": "query",
             "description": "the bookind date",
             "required": true,
             "type": "string",
@@ -40,7 +40,7 @@
           },
           {
             "name": "token",
-            "in": "path",
+            "in": "query",
             "description": "An unauthorised and authorised users could use this function; however, when an authorised use the token, it will return the selected table from this user",
             "type": "string",
             "required": true
@@ -75,7 +75,7 @@
         "parameters": [
           {
             "name": "section",
-            "in": "path",
+            "in": "query",
             "description": "1/2/3 means Morning/Lunch/Dinner section",
             "required": true,
             "type": "integer",
@@ -83,7 +83,7 @@
           },
           {
             "name": "bookingDate",
-            "in": "path",
+            "in": "query",
             "description": "the bookind date",
             "required": true,
             "type": "string",
@@ -91,7 +91,7 @@
           },
           {
             "name": "token",
-            "in": "path",
+            "in": "query",
             "type": "string",
             "required": true
           }
@@ -125,13 +125,13 @@
         "parameters": [
           {
             "name": "p",
-            "in": "path",
+            "in": "query",
             "type": "string",
             "required": true
           },
           {
             "name": "token",
-            "in": "path",
+            "in": "query",
             "type": "string",
             "required": true
           }
@@ -162,35 +162,22 @@
         "produces": [
           "application/json"
         ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
         "parameters": [
           {
             "name": "token",
-            "in": "path",
+            "in": "query",
             "type": "string",
             "required": true
           },
           {
-            "name": "section",
-            "in": "formData",
-            "description": "1/2/3 means Morning/Lunch/Dinner section",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "bookingDate",
-            "in": "formData",
-            "description": "the bookind date",
-            "required": true,
-            "type": "string",
-            "format": "DD/MM/YYYY"
-          },
-          {
+            "name": "body",
             "in": "body",
-            "name": "bookingTable",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/table"
+              "$ref": "#/definitions/inputObjForReserveBooking"
             }
           }
         ],
@@ -209,46 +196,200 @@
           }
         }
       }
+    },
+    "/tables/auth/confirm-reserved-bookings": {
+      "post": {
+        "tags": [
+          "Tables"
+        ],
+        "summary": "Confirm reserved bookings",
+        "description": "This method get an array of reserved booking list. The email provided from the used will be recived a email about the booking detail.",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "reservedBookings",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/userInfoForBooking"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking is confirmed successfully",
+            "schema": {
+              "$ref": "#/definitions/info"
+            }
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/tables/auth/delete-reserved-booking": {
+      "post": {
+        "tags": [
+          "Tables"
+        ],
+        "summary": "Delete reserved booking",
+        "description": "This api is called when 1. the user leaves the \"booking confirmed\" screen under 10 minutes. 2. when the user reserves a list of table, when a table is failed this api will be called to removed the booking",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "bookingId",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserved table is delete successfully"
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/users/sign-up": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register new account",
+        "description": "Register new account",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phoneNumber",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User signs up successfully"
+          },
+          "406": {
+            "description": "The email is registeed"
+          },
+          "409": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
+    },
+    "/users/sign-in": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Sign-in",
+        "description": "Sign in to confirm booking and view booking history",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User login successfully"
+          },
+          "400": {
+            "description": "Invalid login credentials"
+          },
+          "500": {
+            "description": "An error occurred!"
+          }
+        }
+      }
     }
   },
   "definitions": {
-    "Booking": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "petId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "quantity": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "shipDate": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "status": {
-          "type": "string",
-          "description": "Order Status",
-          "enum": [
-            "placed",
-            "approved",
-            "delivered"
-          ]
-        },
-        "complete": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "xml": {
-        "name": "Booking"
-      }
-    },
     "table": {
       "type": "object",
       "properties": {
@@ -339,6 +480,26 @@
         }
       }
     },
+    "userInfoForBooking": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "requirement": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
     "bookingsForSection": {
       "type": "object",
       "properties": {
@@ -391,6 +552,24 @@
         },
         "total": {
           "type": "integer"
+        }
+      }
+    },
+    "inputObjForReserveBooking": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "description": "1/2/3 means Morning/Lunch/Dinner section",
+          "type": "integer"
+        },
+        "bookingDate": {
+          "description": "the booking date",
+          "type": "string",
+          "format": "DD/MM/YYYY"
+        },
+        "bookingTable": {
+          "type": "object",
+          "$ref": "#/definitions/table"
         }
       }
     },

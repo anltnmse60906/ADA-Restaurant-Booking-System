@@ -4,7 +4,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from "../../shared/user.model"
 import {AuthenService} from "../../services/auth.service";
 import {params} from "../../shared/common.params";
-import { SweerAlertService } from '../../sweet-alert.service';
+import {SweerAlertService} from '../../dialog-modal/sweet-alert.service';
 
 @Component({
   selector: 'app-signin',
@@ -26,7 +26,12 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = new FormGroup({
-      password: new FormControl("", Validators.required),
+      password: new FormControl("",
+        [
+          Validators.required,
+          Validators.maxLength(300),
+          Validators.minLength(6),
+        ]),
       email: new FormControl("",
         [Validators.required,
           Validators.pattern(params.emailPattern)
@@ -41,6 +46,7 @@ export class SigninComponent implements OnInit {
     this.authenService.signIn(user)
       .subscribe(
         (data) => {
+          this.loginForm.reset();
           this.sweetAlertService.okMessage("Login", "Login success");
           localStorage.setItem("token", data["token"]);
           localStorage.setItem("userId", data["userId"]);
@@ -49,15 +55,16 @@ export class SigninComponent implements OnInit {
           this.router.navigateByUrl(this.returnUrl);
         }, error => {
           console.log(error);
+          this.sweetAlertService.onError('Sign-in Error', "Failed to sign in");
         });
-    this.loginForm.reset();
   }
 
 
-  get email(){
+  get email() {
     return this.loginForm.get('email');
   }
-  get password(){
+
+  get password() {
     return this.loginForm.get('password');
   }
 }

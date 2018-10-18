@@ -2,6 +2,7 @@ import {Validators} from "@angular/forms";
 
 export const params = {
     dateTimePattern: "dd-MM-yyyy",
+    ausPhoneNumberPattern: "^04-[0-9]{8}$",
     emailPattern: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
 
     tableUrl: "tables/",

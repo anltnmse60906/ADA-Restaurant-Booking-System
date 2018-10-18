@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var User = require("../models/User");
-var bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const express = require('express');
+const router = express.Router();
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const utils = require("../utils/utils");
 require('dotenv').config();
 
@@ -15,36 +15,53 @@ router.post('/sign-up', (req, res) => {
     phoneNumber: req.body.phoneNumber,
     password: bcrypt.hashSync(req.body.password, 10)
   });
-  user.save(function (err, result) {
+  User.findOne({email: req.body.email}, function (err, foundUser) {
     if (err) {
       return res.status(500).json({
-        title: "",
+        title: "An error occurred",
         error: err
       });
     }
-    res.status(201).json({
-      message: "User created",
-      obj: result
+    if (foundUser) {
+      return res.status(409).json({
+        title: "Email is registered",
+        error: {
+          messages: "Email is registered"
+        }
+      });
+    }
+    user.save(function (err, result) {
+      if (err) {
+        return res.status(500).json({
+          title: "An error occurred",
+          error: err
+        });
+      }
+      res.status(200).json({
+        message: "User signs up successfully",
+      })
     })
-  })
+
+  });
+
 });
 
 router.post("/sign-in", (req, res) => {
   User.findOne({email: req.body.email}, function (err, user) {
     if (err) {
       return res.status(500).json({
-        title: "An erorr occured",
+        title: "An error occurred",
         error: err
       });
     }
     if (!user) {
-      return res.status(401).json({
+      return res.status(400).json({
         title: "Login failed",
         error: {messages: "Invalid login credentials"}
       });
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
-      return res.status(401).json({
+      return res.status(400).json({
         title: "Login failed",
         error: {messages: "Invalid login credentials"}
       });

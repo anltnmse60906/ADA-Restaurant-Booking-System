@@ -300,30 +300,31 @@ router.post("/auth/confirm-reserved-bookings", (req, res) => {
                 // Sending an email, if the email gets error when sending email
                 // it will return sending email error flag to the front-end
                 emailService.sendEmails(message, (error) => {
+
+                  // Email is sent error
                   return res.status(200).json({
                     title: "Booking is confirmed successfully",
                     obj: {
                       success: true,
-                      data: updatedBooking,
                       email: error
                     }
                   });
                 }, (success) => {
+                  // Email is sent successful
                   return res.status(200).json({
                     title: "Booking is confirmed successfully",
                     obj: {
                       success: true,
-                      data: updatedBooking,
                       email: success
                     }
                   });
                 });
               } else {
+                // Email is sent fail and Confirming is failed
                 return res.status(200).json({
                   title: "Booking is confirmed failed",
                   obj: {
                     success: false,
-                    data: booking,
                     email: error
                   }
                 });

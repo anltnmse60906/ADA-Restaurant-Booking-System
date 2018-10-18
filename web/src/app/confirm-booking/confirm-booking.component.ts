@@ -111,13 +111,14 @@ export class ConfirmBookingComponent implements OnInit, OnDestroy, ComponentCanD
     this.confirmBookingForm = new FormGroup({
       email: new FormControl("",
         [Validators.required,
-          Validators.pattern(params.emailPattern)
+          Validators.pattern(params.emailPattern),
+          Validators.maxLength(300),
         ]),
-      lastName: new FormControl("", Validators.required),
-      firstName: new FormControl("", Validators.required),
+      lastName: new FormControl("", [Validators.required,Validators.maxLength(300),]),
+      firstName: new FormControl("", [Validators.required, Validators.maxLength(300),]),
       phoneNumber: new FormControl("04-", [
         Validators.required,
-        Validators.pattern("^04\-[0-9]{8}$"),
+        Validators.pattern(params.ausPhoneNumberPattern),
       ]),
       requirement: new FormControl("", [Validators.maxLength(500)]),
     })

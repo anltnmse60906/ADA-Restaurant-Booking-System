@@ -12,8 +12,6 @@ constructor() { }
       type: 'success',
       showConfirmButton: okButton,
       showCancelButton: cancelButton,
-      // confirmButtonText: accept,
-      // timer: newParams.timer
     });
   }
 

@@ -23,8 +23,8 @@ export class AuthenService {
   signUp(user: User) {
     const body = JSON.stringify(user);
     return this.http.post(environment.backEndHost + this.authenUrl + "sign-up", body, httpOption)
-      // .pipe(map((response) => response))
-      // .pipe(catchError((error) => throwError(error)));
+      .pipe(map((response) => response))
+      .pipe(catchError((error) => throwError(error)));
   }
 
   signIn(user: User) {

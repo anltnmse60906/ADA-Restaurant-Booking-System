@@ -23,7 +23,7 @@ import {DialogModalComponent} from './dialog-modal/dialog-modal.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import {NgxPaginationModule} from "ngx-pagination";
 import { BookingHistoryElementComponent } from './booking-history/booking-history-element/booking-history-element.component';
-import { SweerAlertService } from './sweet-alert.service';
+import { SweerAlertService } from './dialog-modal/sweet-alert.service';
 
 
 @NgModule({
