@@ -42,7 +42,7 @@ In short, what you need to do is that:
 5. Select `OAuth client ID`
 6. Select `Web application`
 7. On "Authorized redirect URIs", you have to pass the URL=`https://developers.google.com/oauthplayground`. This step is very important because we have to generate the "Refresh Token" from this website
-8. Go to [this website](https://developers.google.com/oauthplayground), 
+8. After you finish create your web-client, go to [this website](https://developers.google.com/oauthplayground), to generate the "Refresh Token"
 9. Make a configuration like this image 
 ![alt text](https://raw.githubusercontent.com/anltnmse60906/ADA-Restaurant-Booking-System/master/api/public/images/Screen%20Shot%202018-10-19%20at%201.01.02%20am.png)
 10. It goes to step 2, you click on "Exchange authorisation code for tokens"
@@ -57,11 +57,11 @@ There are 4 important information that we need for sending an email:
 ## 4. Setup environment variables
 Go to file `.env`, under the folder `/api/`
 
-`APP_SECRET` is the string for encrypt your token
+`APP_SECRET` is the string for encrypt your token, by default: `something secrete`
 
-`TOKEN_EXPIRE_TIME` is time for token expiration
+`TOKEN_EXPIRE_TIME` is time for token expiration, by default: `7200`
  
-`MONGO_DB_URL` is the host of MongoDB
+`MONGO_DB_URL` is the host of MongoDB, by default:`localhost:27017`
  
 ## 5. Install all the required library need for back-end and
 Install all the required libraries
@@ -71,6 +71,8 @@ npm install
 
 ## 6. Initialising the Table Map of the restaurant
 After finishing MongoDB and start the MongoDB, navigate to `api` folder to initialise the Tables layout of the restaurant.
+
+If you have not installed the `yarn` package, see the instruction here [yarn package installation](https://yarnpkg.com/lang/en/docs/install/) to install `yarn` package
 
 ```
 yarn seed
@@ -114,6 +116,9 @@ ng serve --port <YOUR PORT> (4201)
 ```
 
 
+# The document about the APIs published from the back-end
+After the back-end is deployed successfully, the document about the APIs is also viewed by this url: `yourbackendhost:PORT/api-docs/`, for example `http://localhost:3000/api-docs/`
+![alt API Document](https://raw.githubusercontent.com/anltnmse60906/ADA-Restaurant-Booking-System/master/api/public/images/Screen%20Shot%202018-10-19%20at%202.51.03%20am.png)
 
 
 
