@@ -22,20 +22,21 @@ git clone https://github.com/anltnmse60906/ADA-Restaurant-Booking-System
 ```
 #### Start MongoDB process
 
-## Set up database server
+##### Set up database server
 
 Run
 ```
 mongod
 ```
 
-### Open another terminal to run database shell
+##### Open another terminal to run database shell
 Run
 ```
 mongo
 ```
 
 #### Backend
+
 Change to the backend `api` folder.
 
 Initialise the table
@@ -50,8 +51,10 @@ yarn drop
 ```
 # Enter frontend folder
 cd api
+
 # Install backend dependency
 npm install
+
 # Start the server
 npm start
 ```
@@ -59,15 +62,15 @@ The server runs on port 4200.
 
 #### Frontend
 
-
-
 Change to the frontend `web` folder.
 
 ```
 # Enter frontend folder
 cd web
+
 # Install frontend dependency
 npm install
+
 # Build our app
 ng serve
 ```
