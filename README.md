@@ -37,22 +37,22 @@ In short, what you need to do is that:
 
 1. Go to [Google API Console](https://console.developers.google.com/apis/credentials) to create a web-client
 2. If you don't have any Google project, you have to create a Google project
-3. You have to make configuration on "OAuth consent screen"
-4. Create new credentials by click on "Create credentials"
-5. Select "OAuth client ID"
-6. Select "Web application"
-7. On "Authorized redirect URIs", you have to pass the URL="https://developers.google.com/oauthplayground". This step is very important because we have to generate the "Refresh Token" from this website
+3. You have to make configuration on `OAuth consent screen`
+4. Create new credentials by click on `Create credentials`
+5. Select `OAuth client ID`
+6. Select `Web application`
+7. On "Authorized redirect URIs", you have to pass the URL=`https://developers.google.com/oauthplayground`. This step is very important because we have to generate the "Refresh Token" from this website
 8. Go to [this website](https://developers.google.com/oauthplayground), 
 9. Make a configuration like this image 
 ![alt text](https://raw.githubusercontent.com/anltnmse60906/ADA-Restaurant-Booking-System/master/api/public/images/Screen%20Shot%202018-10-19%20at%201.01.02%20am.png)
 10. It goes to step 2, you click on "Exchange authorisation code for tokens"
 11. The "Refresh token" will be generate.
-12. Go to file "client_secrete.json" and pass your information
+12. Go to `client_secrete.json` file and pass your information
 There are 4 important information that we need for sending an email:
-      1. client_id: is your Client ID
-      2. client_secret: is your Client Secret
-      3. refresh_toke: is your Refresh Token
-      4. user_email: is the e-mail that you register your application (send from)
+      1. `client_id`: is your Client ID
+      2. `client_secret`: is your Client Secret
+      3. `refresh_toke`: is your Refresh Token
+      4. `user_email`: is the e-mail that you register your application (send from)
 
 ## 4. Setup environment variables
 Go to file `.env`, under the folder `/api/`
@@ -103,7 +103,7 @@ If you deploy a back-end on the other server, go to folder `web/src/enviroments`
 
 Change `backEndHost` to the host that you deploy back-end server. By default the back-end host is: `localhost:3000`
 
-##3. Deploy and start the front-end
+## 3. Deploy and start the front-end
 ```
 ng serve
 ```
@@ -112,6 +112,8 @@ By default, the front-end will run on port `:4200`, you could change to other po
 ```
 ng serve --port <YOUR PORT> (4201)
 ```
+
+
 
 
 
