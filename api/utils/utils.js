@@ -8,6 +8,8 @@ const BookingConfirmed = 2;
 const TenMinute = "10";
 const AppSecrete = "3133233";
 const TokenExpiredTime = 7200;
+const MongoDbURL = "localhost:27017";
+
 
 // Function to convert UTC JS Date object to a Moment.js object in AEST
 const dateAEST = date => {
@@ -28,5 +30,6 @@ module.exports = {
   getTimeAfterNMinute,
   TenMinute,
   AppSecrete,
-  TokenExpiredTime
+  TokenExpiredTime,
+  MongoDbURL
 };

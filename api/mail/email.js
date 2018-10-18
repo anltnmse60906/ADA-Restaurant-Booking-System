@@ -70,7 +70,7 @@ exports.sendEmails = (message, fail, success) => {
     secure: true,
     auth: {
       type: "OAuth2",
-      user: "anltnm93@gmail.com", // Your gmail address.
+      user: clientSecret.web.user_email, // Your gmail address.
       clientId: clientSecret.web.client_id,
       clientSecret: clientSecret.web.client_secret,
       refreshToken: clientSecret.web.refreshToken,

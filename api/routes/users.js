@@ -66,7 +66,7 @@ router.post("/sign-in", (req, res) => {
         error: {messages: "Invalid login credentials"}
       });
     }
-    var token = jwt.sign({user: user}, process.env.APP_SECRET || utils.AppSecrete, {expiresIn: utils.TokenExpiredTime});
+    var token = jwt.sign({user: user}, process.env.APP_SECRET || utils.AppSecrete, {expiresIn: parseInt(process.env.TOKEN_EXPIRE_TIME) || utils.TokenExpiredTime});
     res.status(200).json({
       message: "Success logged in",
       token: token,

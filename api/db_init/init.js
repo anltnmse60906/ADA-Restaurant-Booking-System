@@ -1,8 +1,10 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const utils = require("../utils/utils");
+require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect("mongodb://localhost:27017/ada-res-booking")
+mongoose.connect("mongodb://"+ process.env.MONGO_DB_URL || utils.AppSecrete + "/ada-res-booking")
 
   .then(() => {
     console.log('Successfully connected to database')
