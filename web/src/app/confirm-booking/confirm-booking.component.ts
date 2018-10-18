@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgbModal, NgbCalendar, NgbModalConfig,} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../services/table.service";
@@ -13,7 +13,8 @@ import {params} from "../shared/common.params";
   selector: 'app-confirm-booking',
   templateUrl: './confirm-booking.component.html',
   styleUrls: ['./confirm-booking.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None
 })
 
 
@@ -120,7 +121,7 @@ export class ConfirmBookingComponent implements OnInit, OnDestroy, ComponentCanD
         Validators.required,
         Validators.pattern(params.ausPhoneNumberPattern),
       ]),
-      requirement: new FormControl("", [Validators.maxLength(500)]),
+      requirement: new FormControl("", Validators.maxLength(500)),
     })
 
   }

@@ -4,6 +4,7 @@ import {AuthenService} from "../../services/auth.service";
 import {User} from "../../shared/user.model";
 import {SweerAlertService} from '../../dialog-modal/sweet-alert.service';
 import {params} from "../../shared/common.params";
+import {TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -34,7 +35,9 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  constructor(private authenService: AuthenService, private sweetAlertService: SweerAlertService) {
+  constructor(private authenService: AuthenService,
+              private sweetAlertService: SweerAlertService,
+              private translate: TranslateService) {
   }
 
   onSubmit() {
@@ -49,16 +52,26 @@ export class SignupComponent implements OnInit {
     // TODO show message when create the account sucessfully
     this.authenService.signUp(user).subscribe(
       (data: any) => {
-        this.sweetAlertService.okMessage('SignUp Ok', 'User Created');
-        this.signUpForm.reset();
+        this.translate.get(['Titles.SignUpSuccess',
+          "Messages.Success.SignUpSuccess",
+        ]).subscribe( (res) => {
+          this.sweetAlertService.okMessage(res['Titles.SignUpSuccess'],
+            res["Messages.Success.SignUpSuccess"]);
+          this.signUpForm.reset();
+        });
+
       },
       error => {
         console.log(error);
-        let message = "Failed to register new account";
-        if (error && error.status === 409) {
-          message = "Email has been registered";
-        }
-        this.sweetAlertService.onError('SignUp Error', message);
+        this.translate.get(["Titles.SignUpError",
+          "Messages.Error.SignUpFailed",
+          "Messages.Error.SignUpDuplicatedEmail"]).subscribe( (res) => {
+          let message = res['Messages.Error.SignUpFailed'];
+          if (error && error.status === 409) {
+            message = res["Messages.Error.SignUpDuplicatedEmail"];
+          }
+          this.sweetAlertService.onError(res['Titles.SignUpError'], message);
+        });
       });
   }
 

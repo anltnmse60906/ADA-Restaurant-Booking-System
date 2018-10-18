@@ -7,6 +7,7 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {AuthGuard} from "./services/auth-guard.service";
 import {CanDeactivateGuard} from "./services/can-deactivate-guard.service";
 import {BookingHistoryComponent} from "./booking-history/booking-history.component";
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   {
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     component: BookingHistoryComponent,
   },
+  { path: '**',  component: PageNotFoundComponent },
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import {User} from "../../shared/user.model"
 import {AuthenService} from "../../services/auth.service";
 import {params} from "../../shared/common.params";
 import {SweerAlertService} from '../../dialog-modal/sweet-alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-signin',
@@ -20,7 +21,8 @@ export class SigninComponent implements OnInit {
     private router: Router,
     private routes: ActivatedRoute,
     private authenService: AuthenService,
-    private sweetAlertService: SweerAlertService
+    private sweetAlertService: SweerAlertService,
+    private translate: TranslateService
   ) {
   }
 
@@ -55,7 +57,9 @@ export class SigninComponent implements OnInit {
           this.router.navigateByUrl(this.returnUrl);
         }, error => {
           console.log(error);
-          this.sweetAlertService.onError('Sign-in Error', "Failed to sign in");
+          this.translate.get(["Titles.SignInError","Messages.Error.SignInFailed"]).subscribe((res) => {
+            this.sweetAlertService.onError(res["Titles.SignInError"], res["Messages.Error.SignInFailed"]);
+          })
         });
   }
 

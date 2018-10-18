@@ -160,7 +160,6 @@ export class TableService {
     for (let table of this.currentRestaurantTables) {
       if (table._id === updatedTable._id) {
         this.currentRestaurantTables[count] = updatedTable;
-        return;
       }
       count++;
     }

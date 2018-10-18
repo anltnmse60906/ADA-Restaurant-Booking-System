@@ -6,14 +6,14 @@
       <div class="content-body">
         <section class="flexbox-container">
           <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-md-4 col-10 box-shadow-2 p-0">
+            <div class="box-shadow-2 p-0">
               <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
                 <div class="card-header border-0">
                   <div class="card-title text-center">
                     <img class="logo-custom" src="../../../../assets/images/tumvi-logo.png" alt="branding logo">
                   </div>
                   <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                    <span>Create Account</span>
+                    <span>{{'Titles.CreateAccount' | translate}}</span>
                   </h6>
                 </div>
                 <div class="card-content">
@@ -21,15 +21,15 @@
                     <form class="form-horizontal form-simple" [formGroup]="signUpForm" (submit)="onSubmit()">
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="email" class="form-control form-control-lg" id="email"
-                               placeholder="Your Email Address" formControlName="email"
+                               placeholder="{{'Placeholder.EnterEmail' | translate}}" formControlName="email"
                                required>
                         <div *ngIf="email.invalid && (email.dirty || email.touched)"
                              class="alert alert-danger">
                           <div *ngIf="email.errors.required">
-                            Email is required.
+                            {{'Messages.Error.EmailRequired' | translate}}
                           </div>
                           <div *ngIf="email.errors.pattern">
-                            Email is invalid.
+                            {{'Messages.Error.EmailInvalid' | translate}}
                           </div>
                         </div>
                         <div class="form-control-position">
@@ -38,18 +38,18 @@
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="password" class="form-control form-control-lg" id="password"
-                               placeholder="Enter Password" formControlName="password"
+                               placeholder="{{'Placeholder.EnterPassword' | translate}}" formControlName="password"
                                required>
                         <div *ngIf="password.invalid && (password.dirty || password.touched)"
                              class="alert alert-danger">
                           <div *ngIf="password.errors.required">
-                            Password is required.
+                            {{'Messages.Error.PasswordRequired' | translate}}
                           </div>
                           <div *ngIf="password.errors.minlength">
-                            Password must be greater than 6 characters
+                            {{'Messages.Error.PasswordMin' | translate}}
                           </div>
                           <div *ngIf="password.errors.maxlength">
-                            Password must be smaller than 300 characters
+                            {{'Messages.Error.PasswordMax' | translate}}
                           </div>
                         </div>
                         <div class="form-control-position">
@@ -58,12 +58,12 @@
                       </fieldset>
 
                       <fieldset class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First name"
-                               formControlName="firstName">
+                        <input type="text" class="form-control form-control-lg" id="firstName"
+                               placeholder="{{'Placeholder.EnterFirstName' | translate}}" formControlName="firstName">
                         <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
                              class="alert alert-danger">
                           <div *ngIf="firstName.errors.required">
-                            First name is required.
+                            {{'Messages.Error.FirstNameRequired' | translate}}
                           </div>
                         </div>
                         <div class="form-control-position">
@@ -71,12 +71,12 @@
                         </div>
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last name"
-                               formControlName="lastName">
+                        <input type="text" class="form-control form-control-lg" id="lastName"
+                               placeholder="{{'Placeholder.EnterLastName' | translate}}" formControlName="lastName">
                         <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
                              class="alert alert-danger">
                           <div *ngIf="lastName.errors.required">
-                            Last name is required.
+                            {{'Messages.Error.LastNameRequired' | translate}}
                           </div>
                         </div>
                         <div class="form-control-position">
@@ -86,22 +86,22 @@
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="text" class="form-control form-control-lg" name="phoneNumber" id="phoneNumber"
                                formControlName="phoneNumber"
-                               placeholder="Enter Phone Number">
+                               placeholder="{{'Placeholder.EnterPhoneNumber' | translate}}">
                         <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
                              class="alert alert-danger">
                           <div *ngIf="phoneNumber.errors.required">
-                            Phone number is required.
+                            {{'Messages.Error.PhoneNumberRequired' | translate}}
                           </div>
                           <div *ngIf="phoneNumber.errors.pattern">
-                            Australia phone number is not valid 04-XXXXXXXX
+                            {{'Messages.Error.PhoneNumberInvalid' | translate}}
                           </div>
                         </div>
                         <div class="form-control-position">
                           <i class="fa fa-phone"></i>
                         </div>
                       </fieldset>
-                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!signUpForm.valid"><i
-                        class="ft-unlock"></i> Register
+                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!signUpForm.valid">
+                        <i class="ft-unlock"></i> {{'Buttons.Register' | translate}}
                       </button>
                     </form>
                   </div>

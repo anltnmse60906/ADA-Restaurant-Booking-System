@@ -7,6 +7,7 @@ import {NgbDateAdapter, NgbDateNativeAdapter,} from '@ng-bootstrap/ng-bootstrap'
 import {DatePipe} from "@angular/common";
 import {params} from "../shared/common.params";
 import {AuthenService} from "../services/auth.service";
+import {TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -41,17 +42,15 @@ export class HomeComponent implements OnInit {
               private calendar: NgbCalendar,
               private tableService: TableService,
               private authenService: AuthenService,
-              private datePipe: DatePipe,) {
+              private datePipe: DatePipe,
+              private translate: TranslateService
+  ) {
   }
 
   ngOnInit() {
     // Initialise today
     this._bookingDate = new Date();
 
-    // Parse current number to categorial name
-    this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
-
-    this._currentBookingDate = this._bookingDate;
 
     //Auto change section.
     // 12:00 to 15:00 is afternoon section
@@ -66,6 +65,11 @@ export class HomeComponent implements OnInit {
       this._bookingDate.setDate(this._bookingDate.getDate() + 1);
     }
 
+    // Parse current number to categorial name
+    this._currentSection = this.tableService.sectionNumberToCategorical(parseInt(this._selectedSection, 10));
+
+    this._currentBookingDate = this._bookingDate;
+
     // Set value for datepicker
     this.startDate = {
       year: this._bookingDate.getFullYear(),
@@ -78,7 +82,7 @@ export class HomeComponent implements OnInit {
       this.parseTable(tables);
     });
 
-    // this function will be trigerred when we updateConfirmFooter the selected table
+    // this function will be triggered when we updateConfirmFooter the selected table
     // when user selects a table this function is triggered to open/close footer
     this.tableService.updateConfirmFooter.subscribe((currentRestaurantTables: Table[]) => {
       this.totalCustomers = 0;
@@ -161,16 +165,19 @@ export class HomeComponent implements OnInit {
           count++;
           if (!success) {
             //show message when select table is reserved
-
             let otherReservedTable = this.tableService.getSelectedTableById(response["obj"].data.tableId._id);
             // this.tableService.selectTable(otherReservedTable);
             otherReservedTable.isBooked = true;
             otherReservedTable.selected = false;
             this.tableService.updateSelectedTable(otherReservedTable);
 
-            //TODO show message for table is reseved by other user
-            alert("Table " + response["obj"].data.tableId.name + " is reserved");
-            isFailed = true;
+            this.translate.get("Messages.Error.TableIsReservedByOthers",
+              {tableName: response["obj"].data.tableId.name}).subscribe((res) => {
+              //TODO show message for table is reseved by other user
+              isFailed = true;
+              alert(res);
+            });
+
           } else {
             console.log("table is reserved successfully: " + response["obj"].data);
             reservedSuccessfullyTables.push(response["obj"].data);

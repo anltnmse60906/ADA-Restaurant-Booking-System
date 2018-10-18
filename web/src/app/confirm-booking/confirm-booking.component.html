@@ -1,14 +1,13 @@
 <div class="container">
   <div class="card">
     <div class="card-header text-center text-lg-center">
-      Booking confirmation
+      {{'Header.ConfirmBooking' | translate}}
     </div>
     <div class="card-body">
 
       <div class="row alert alert-warning" role="alert" [ngClass]="{'show-flex':waitForConfirm,'hide':!waitForConfirm}">
         <div class="col-10">
-          <div class="pull-left">Your table is reserved within Please confirm your reservation!!!
-          </div>
+          <div class="pull-left">{{'Messages.Warnings.TenMinsConfirm' | translate}}</div>
         </div>
         <div class="col-2">
           <div class="btn btn-danger pull-right"><b>{{minute}}</b> : <b>{{second}}</b></div>
@@ -16,14 +15,14 @@
       </div>
 
       <div class="alert alert-primary" role="alert" [ngClass]="{'show':bookingSuccess,'hide':!bookingSuccess}">
-        Your table is reserved successfully!!!
+        {{'Messages.Success.TableIsReservedSuccess' | translate}}
       </div>
 
       <div class="text-center header-confirm-booking">
-        <div class="form-group text-center">Booking for
-          <span class="reservation-time">{{getSection()}} </span>on
-          <span class="reservation-time">{{getBookingDate()}}</span> for
-          <span class="reservation-people">{{getPeople()}} people</span>
+        <div class="reservation-time reservation-people"></div>
+        <div class="form-group text-center"
+             [innerHTML]= "'Titles.BookingDateNoOfPeople' | translate:{section:getSection(), date:getBookingDate(), people:getPeople()}"
+        >
         </div>
         <div class="form-group">
           <div class="col">
@@ -34,78 +33,79 @@
       <form [formGroup]="confirmBookingForm" (submit)="onSubmitConfirmBooking()" class="confirm-booking">
         <div class="form-row form-group">
           <div class="col">
-            <label class="label">First name</label>
+            <label class="label">{{'Placeholder.EnterFirstName' | translate}}</label>
             <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
             <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
                  class="alert alert-danger">
               <div *ngIf="firstName.errors.required">
-                First name is required.
+                {{'Messages.Error.FirstNameRequired' | translate}}
               </div>
             </div>
           </div>
           <div class="col">
-            <label class="label">Last name</label>
+            <label class="label">{{'Placeholder.EnterLastName' | translate}}</label>
             <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
             <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
                  class="alert alert-danger">
               <div *ngIf="lastName.errors.required">
-                Last name is required.
+                {{'Messages.Error.LastNameRequired' | translate}}
               </div>
             </div>
           </div>
         </div>
         <div class="form-row  form-group">
           <div class="col">
-            <label class="label">Email</label>
+            <label class="label">{{'Placeholder.EnterEmail' | translate}}</label>
             <input type="text" class="form-control" placeholder="Email" formControlName="email">
             <div *ngIf="email.invalid && (email.dirty || email.touched)"
                        class="alert alert-danger">
-            <div *ngIf="email.errors.required">
-              Email is required.
-            </div>
-            <div *ngIf="email.errors.pattern">
-              Email is invalid.
-            </div>
+              <div *ngIf="email.errors.required">
+                {{'Messages.Error.EmailRequired' | translate}}
+              </div>
+              <div *ngIf="email.errors.pattern">
+                {{'Messages.Error.EmailInvalid' | translate}}
+              </div>
           </div>
           </div>
           <div class="col">
-            <label class="label">Phone number</label>
+            <label class="label">{{'Placeholder.EnterPhoneNumber' | translate}}</label>
             <input type="text" class="form-control" placeholder="Phone number" formControlName="phoneNumber">
             <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
                  class="alert alert-danger">
               <div *ngIf="phoneNumber.errors.required">
-                Email is required.
+                {{'Messages.Error.PhoneNumberRequired' | translate}}
               </div>
               <div *ngIf="phoneNumber.errors.pattern">
-                Australia phone number is not valid 04-XXXXXXXX
+                {{'Messages.Error.PhoneNumberInvalid' | translate}}
               </div>
             </div>
           </div>
         </div>
         <div class="form-row  form-group">
           <div class="col">
-            <label class="label">Special request</label>
+            <label class="label">{{'Placeholder.SpecialRequirement' | translate}}</label>
             <textarea class="form-control" row="1" placeholder="Add a special request"
                       formControlName="requirement"></textarea>
             <div *ngIf="requirement.invalid && (requirement.dirty || requirement.touched)"
                  class="alert alert-danger">
-              <div *ngIf="phoneNumber.errors.maxLength">
-                Requirement is too long (maximum 500 characters)
-              </div>
+              {{'Messages.Error.SpecialRequirementMax' | translate}}
             </div>
           </div>
         </div>
         <div class="form-row  form-group">
           <div class="col text-center" [ngClass]="{'show':confirmSuccess,'hide':!confirmSuccess}">
-            <a type="button" class="btn btn-outline-dark mr-3" (click)="onBackToHomePage()">Back to
-              homepage
+            <a type="button" class="btn btn-outline-dark mr-3" (click)="onBackToHomePage()">
+              {{'Buttons.BackToHomePage' | translate}}
             </a>
-            <a class="btn btn-primary" routerLink="/booking/history">View booking history</a>
+            <a class="btn btn-primary" routerLink="/booking/history">
+              {{'Buttons.ViewBookingHistory' | translate}}
+            </a>
           </div>
           <div class="col text-center" [ngClass]="{'show':!confirmSuccess,'hide':confirmSuccess}">
-            <button type="button" class="btn btn-outline-dark mr-3" (click)="onCancelAllBookingTable(content)">Cancel
+            <button type="button" class="btn btn-outline-dark mr-3" (click)="onCancelAllBookingTable(content)">
+              {{'Buttons.Cancel' | translate}}
             </button>
-            <input type="submit" class="btn btn-primary" value="Complete reservation"
+            <input type="submit" class="btn btn-primary" value="{{'Buttons.CompleteReservation' | translate}}"
                    [disabled]="!confirmBookingForm.valid">
           </div>
         </div>

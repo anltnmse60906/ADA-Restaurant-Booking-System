@@ -12,7 +12,7 @@ import {AuthComponent} from './auth/auth.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {AuthenService} from "./services/auth.service"
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {TableService} from "./services/table.service";
 import {TableElementComponent} from './home/table-element/table-element.component';
 import {AuthGuard} from "./services/auth-guard.service";
@@ -24,7 +24,13 @@ import { BookingHistoryComponent } from './booking-history/booking-history.compo
 import {NgxPaginationModule} from "ngx-pagination";
 import { BookingHistoryElementComponent } from './booking-history/booking-history-element/booking-history-element.component';
 import { SweerAlertService } from './dialog-modal/sweet-alert.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -39,6 +45,7 @@ import { SweerAlertService } from './dialog-modal/sweet-alert.service';
     DialogModalComponent,
     BookingHistoryComponent,
     BookingHistoryElementComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +54,13 @@ import { SweerAlertService } from './dialog-modal/sweet-alert.service';
     ReactiveFormsModule,
     HttpClientModule,
     NgxPaginationModule,
+    TranslateModule.forRoot({
+      loader: {
+      provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
     NgbModule.forRoot(),
   ],
   providers: [

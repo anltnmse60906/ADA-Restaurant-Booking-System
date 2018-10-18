@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent {
   title = 'web';
+  constructor( translate: TranslateService){
+    translate.setDefaultLang("en");
+    translate.use("en")
+  }
 }

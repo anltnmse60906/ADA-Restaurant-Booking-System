@@ -5,10 +5,10 @@
       <div class="form-group">
         <select class="form-control" [ngModel]="_selectedSection" name="section" #selectedSection
                 (ngModelChange)="onChangeSection($event)">
-          <option value="" disabled>Select the type of meal</option>
-          <option [id]="1" [value]="1">Breakfast</option>
-          <option [id]="2" [value]="2">Lunch</option>
-          <option [id]="3" [value]="3">Dinner</option>
+          <option value="" disabled>{{'Placeholder.SelectSection' | translate}}</option>
+          <option [id]="1" [value]="1">{{'Placeholder.Breakfast' | translate}}</option>
+          <option [id]="2" [value]="2">{{'Placeholder.Lunch' | translate}}</option>
+          <option [id]="3" [value]="3">{{'Placeholder.Dinner' | translate}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -29,7 +29,7 @@
                 (click)="onSubmitFindTable(_bookingDate,selectedSection)"><i
           class="fa fa-search"
           aria-hidden="true"></i>
-          Search
+          {{'Buttons.Search' | translate}}
         </button>
       </div>
     </div>
@@ -39,9 +39,8 @@
 
 <div class="p-3" style="border: 1px solid">
   <div class="col">
-    <div class="mt-2 text-center text-lg-center">
-      <!--Tables for <b>{{selectedSection.options[selectedSection.selectedIndex].text}}</b>-->
-      Tables for <b>{{_currentSection}}</b> on <b>{{_currentBookingDate | date:"fullDate"}}</b>
+    <div class="mt-2 text-center text-lg-center"
+         [innerHTML]= "'Titles.TablesForPeople' | translate:{section:_currentSection, date:_currentBookingDate | date:'fullDate'}">
     </div>
   </div>
 </div>
@@ -55,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="col-1  text-vertical text-lg-center">Entrance</div>
+    <div class="col-1  text-vertical text-lg-center">{{'Location.Entrance' | translate}}</div>
     <div class="col-6">
       <div
         style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
@@ -67,10 +66,10 @@
   </div>
   <div class="row justify-content-around">
     <div class="col-6" style="border: 1px solid">
-      Bar area
+      {{'Location.BarArea' | translate}}
     </div>
     <div class="col-1 text-vertical text-lg-center">
-      Entrance
+      {{'Location.Entrance' | translate}}
     </div>
     <div class="col-5">
       <div
@@ -84,7 +83,7 @@
 
   <div class="row">
     <div class="col-6 offset-md-6">
-      <span><----- Toilet</span>
+      <span><----- {{'Location.Toilet' | translate}}</span>
     </div>
   </div>
   <div class="row">
@@ -96,7 +95,7 @@
         </div>
       </div>
     </div>
-    <div class="col-1 text-vertical text-lg-center">Entrance</div>
+    <div class="col-1 text-vertical text-lg-center">{{'Location.Entrance' | translate}}</div>
     <div class="col-3">
       <div
         style="flex-direction: row; display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%;">
@@ -107,7 +106,7 @@
     </div>
   </div>
   <div class="row text-lg-center">
-    <div class="col"><span>Kitchen</span></div>
+    <div class="col"><span>{{'Location.Kitchen' | translate}}</span></div>
   </div>
   <hr/>
   <br/>
@@ -117,7 +116,7 @@
 <nav class="navbar navbar-expand navbar-light bg-light fixed-bottom" *ngIf="selectedTables.length >0">
   <div class="navbar-brand"></div>
   <div class="mr-3">
-    <span>Selected tables <b>({{selectedTables.length}})</b>: <b>{{totalCustomers}} people</b></span>
+    <span [innerHTML]= "'Titles.SelectedTable' | translate:{noSelectedTables:selectedTables.length, totalCustomers:totalCustomers}"></span>
   </div>
-  <button class="btn btn-primary" (click)="onConfirmBooking()">Confirm Booking</button>
+  <button class="btn btn-primary" (click)="onConfirmBooking()">{{'Buttons.ConfirmBooking' | translate}}</button>
 </nav>

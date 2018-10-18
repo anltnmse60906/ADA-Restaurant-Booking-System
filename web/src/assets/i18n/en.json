@@ -1,0 +1,79 @@
+{
+  "Header": {
+    "Title": "Restaurant Booking System",
+    "SignIn": "Log In",
+    "SignUp": "Sign up",
+    "LogOut": "Logout",
+    "BookingHistory": "Booking history",
+    "ConfirmBooking": "Booking confirmation",
+    "ConfirmBookingList": "Your booking history"
+  },
+  "Placeholder":{
+    "EnterEmail" : "Email",
+    "EnterPassword" : "Password",
+    "EnterFirstName":"First name",
+    "EnterLastName":"Last name",
+    "EnterPhoneNumber":"Phone number",
+    "SelectSection":"Select the type of meal",
+    "Breakfast":"Breakfast",
+    "Lunch":"Lunch",
+    "Dinner":"Dinner",
+    "SpecialRequirement":"Special requirement"
+  },
+  "Messages":{
+    "Error":{
+      "EmailInvalid":"Email is invalid",
+      "EmailRequired":"Email is required",
+      "PasswordRequired":"Password is required.",
+      "PasswordMin":"Password must be greater than 6 characters",
+      "PasswordMax":"Password must be smaller than 300 characters",
+      "FirstNameRequired":"First Name is required.",
+      "LastNameRequired":"Last name is required.",
+      "PhoneNumberRequired":"Phone number is required",
+      "PhoneNumberInvalid":"Australia phone number is not valid 04-XXXXXXXX",
+      "SignInFailed" : "Failed to sign in",
+      "SignUpFailed": "Failed to register new account",
+      "SignUpDuplicatedEmail":"Email has been registered",
+      "TableIsReservedByOthers" : "Table {{tableName}} is reserved",
+      "SpecialRequirementMax":"Requirement is too long (maximum 500 characters)",
+      "PageNotFound": "Page not found"
+    },
+    "Warnings":{
+      "TenMinsConfirm":"Your table is reserved within 10 minutes Please confirm your reservation!!!"
+    },
+    "Success":{
+      "SignUpSuccess": "Register new account successfully",
+      "TableIsReservedSuccess":"Your table is reserved successfully!!!"
+    }
+  },
+  "Titles":{
+    "Information":"Information",
+    "CreateAccount":"Create Account",
+    "SignInError" : "Sign In Error",
+    "SignUpError" : "Sign up Error",
+    "SignUpSuccess" : "Sign up Success",
+    "TablesForPeople": "Tables for <b>{{section}}</b> on <b>{{date}}</b>",
+    "SelectedTable": "<span>Selected tables <b>({{noSelectedTables}})</b>: <b>{{totalCustomers}} people</b></span>",
+    "BookingDateNoOfPeople": "Booking for<span class='reservation-time'>{{section}} </span>on<span class=\"reservation-time\">{{date}}</span> for<span class=\"reservation-people\">{{people}} people</span>",
+    "BookingForSection": "Booking for {{section}}",
+    "BookingForMaxPeople": "Reservation for maximum {{noPeople}} people",
+    "ReturnToHomePage":"Click here to return to homepage!!!"
+  },
+  "Buttons":{
+    "Register": "Register",
+    "Search": "Search",
+    "ConfirmBooking": "Confirm Booking",
+    "BackToHomePage":"Back to homepage",
+    "ViewBookingHistory":"View booking history",
+    "Cancel":"Cancel",
+    "CompleteReservation":"Complete reservation",
+    "View" : "View",
+    "Confirm" : "Confirm"
+  },
+  "Location":{
+    "Entrance":"Entrance",
+    "BarArea" :"Bar Area",
+    "Toilet":"Toilet",
+    "Kitchen" :"Kitchen"
+  }
+}
