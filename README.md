@@ -36,7 +36,7 @@ This application uses web OAUTH 2.0 authorisation to access Google APIs from thi
 In short, what you need to do is that:
 
 1. Go to [Google API Console](https://console.developers.google.com/apis/credentials) to create a web-client
-2. If you don't have any Google project, you have to create a Google project
+2. If you don't have any Google project, you have to create a Google project. If you already have the Google project, go to `step 4` to create a new web-client
 3. You have to make configuration on `OAuth consent screen`
 4. Create new credentials by click on `Create credentials`
 5. Select `OAuth client ID`
