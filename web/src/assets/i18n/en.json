@@ -52,6 +52,7 @@
     "SignInError" : "Sign In Error",
     "SignUpError" : "Sign up Error",
     "SignUpSuccess" : "Sign up Success",
+    "BookingHistoryDetail" : "Booking History Detail",
     "TablesForPeople": "Tables for <b>{{section}}</b> on <b>{{date}}</b>",
     "SelectedTable": "<span>Selected tables <b>({{noSelectedTables}})</b>: <b>{{totalCustomers}} people</b></span>",
     "BookingDateNoOfPeople": "Booking for<span class='reservation-time'>{{section}} </span>on<span class=\"reservation-time\">{{date}}</span> for<span class=\"reservation-people\">{{people}} people</span>",
@@ -62,6 +63,7 @@
   "Buttons":{
     "Register": "Register",
     "Search": "Search",
+    "Close": "Close",
     "ConfirmBooking": "Confirm Booking",
     "BackToHomePage":"Back to homepage",
     "ViewBookingHistory":"View booking history",

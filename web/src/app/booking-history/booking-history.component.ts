@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {TableService} from "../services/table.service";
+import {Table} from "../shared/table.model";
+import {NgbActiveModal, NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-booking-history',
@@ -11,15 +13,28 @@ export class BookingHistoryComponent implements OnInit {
   p: number = 1;
   total: number;
   loading: boolean;
+  currentBooking: object;
+
+  @ViewChild('historyModal') private content;
 
 
   constructor(
-    private tableService: TableService
+    private tableService: TableService,
+    private modalService: NgbModal
   ) {
   }
 
   ngOnInit() {
     this.getPage(1);
+
+    this.tableService.openHistoryBookingModel.subscribe((booking) => {
+      this.currentBooking = booking;
+      this.modalService.open(this.content,{ size: 'lg' });
+
+    })
+  }
+  sectionNumberToCategorial(section: number) {
+    return this.tableService.sectionNumberToCategorical(section);
   }
   // Paging
   getPage(page: number) {
@@ -32,6 +47,5 @@ export class BookingHistoryComponent implements OnInit {
       this.meals = response["obj"].bookings;
 
     });
-
   }
 }

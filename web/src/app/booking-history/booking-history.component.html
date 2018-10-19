@@ -27,3 +27,56 @@
 </div>
 
 
+<ng-template #historyModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{"Titles.BookingHistoryDetail" | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+      Booking for<span class="reservation-time">{{sectionNumberToCategorial(currentBooking['section'])}}</span>
+      <br/>
+      on <span class="reservation-time">{{currentBooking['bookingDate']| date:'fullDate'}}</span> for
+      <span class="reservation-people">{{currentBooking['totalPeople']}} people</span>
+    </div>
+    <hr/>
+    <div class="form-row mb-3">
+      <div class="col text-center">
+        <span class="btn btn-outline-primary mr-1" *ngFor="let i of currentBooking['bookingTables']">{{i}}</span>
+      </div>
+    </div>
+    <hr/>
+    <div class="form-row mb-3">
+      <div class="col-6">
+        <label class="label">{{"Placeholder.EnterFirstName" | translate}}</label>
+        <span class="form-control">{{currentBooking['firstName']}}</span>
+      </div>
+      <div class="col-6">
+        <label class="label">{{"Placeholder.EnterLastName" | translate}}</label>
+        <span class="form-control">{{currentBooking['lastName']}}</span>
+      </div>
+    </div>
+    <div class="form-row  mb-3">
+      <div class="col-6">
+        <label class="label">{{"Placeholder.EnterEmail" | translate}}</label>
+        <span class="form-control">{{currentBooking['email']}}</span>
+      </div>
+      <div class="col-6">
+        <label class="label">{{"Placeholder.EnterPhoneNumber" | translate}}</label>
+        <span class="form-control">{{currentBooking['phoneNumber']}}</span>
+      </div>
+    </div>
+    <div class="form-row  mb-3">
+      <div class="col">
+        <label class="label">{{"Placeholder.SpecialRequirement" | translate}}</label>
+        <span class="form-control">{{currentBooking['requirement']}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">{{"Buttons.Close" | translate}}</button>
+  </div>
+</ng-template>
+

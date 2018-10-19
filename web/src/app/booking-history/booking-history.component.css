@@ -4,3 +4,20 @@
 .history-booking-element{
   background-color: #FFF;
 }
+.reservation-restaurant {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 32px;
+}
+
+.reservation-time {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 24px;
+}
+
+.reservation-people {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 24px;
+}

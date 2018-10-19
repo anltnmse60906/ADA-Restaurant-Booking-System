@@ -129,8 +129,9 @@ router.get("/auth/users-booking-history-list", (req, res) => {
           bookingDate: booking.bookingDate,
           section: booking.section,
           createDate: {$eq: utils.dateAEST(booking.createDate).toISOString()}
-        },"bookingDate confirmDeadline  createDate  createDate  firstName  lastName phoneNumber requirement section _id")
+        },"bookingDate confirmDeadline  createDate  firstName  lastName phoneNumber requirement email section _id")
           .populate("tableId","_id capacity name isSmoking location")
+          .sort([['bookingDate', -1]])
           .exec((err, groupBookings) => {
             count++;
             bookingsGroupByCreateDate.push(groupBookings);

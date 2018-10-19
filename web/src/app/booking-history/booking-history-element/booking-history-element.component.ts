@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TableService} from "../../services/table.service";
 import {Table} from "../../shared/table.model";
 
@@ -10,6 +10,7 @@ import {Table} from "../../shared/table.model";
 export class BookingHistoryElementComponent implements OnInit {
   @Input() bookings: Object[] = [];
   private booking = {};
+
 
   constructor(private tableService: TableService) {
   }
@@ -28,11 +29,19 @@ export class BookingHistoryElementComponent implements OnInit {
     if (this.bookings && this.bookings.length != 0) {
       this.booking = this.bookings[0];
       let total = 0;
+      let tablesNumber = [];
       for (let t of this.bookings) {
         total += t['tableId'].capacity;
+        tablesNumber.push(t['tableId'].name)
       }
+      this.booking["bookingTables"] = tablesNumber;
+      this.booking["totalPeople"] = total;
       return total;
     }
     return 0;
+  }
+
+  orderDetail(){
+    this.tableService.openHistoryBookingModel.emit(this.booking);
   }
 }

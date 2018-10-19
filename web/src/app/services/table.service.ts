@@ -19,6 +19,7 @@ export class TableService {
   currentRestaurantTables: Table[];
   selectedTableBeforeLogin: Table[];
   @Output() updateConfirmFooter: EventEmitter<Table[]> = new EventEmitter<Table[]>();
+  @Output() openHistoryBookingModel: EventEmitter<Object> = new EventEmitter<Object>();
 
 
   constructor(public http: HttpClient) {
@@ -169,6 +170,7 @@ export class TableService {
   updateSelectedTableBeforeLogin(selectedTable: Table[]) {
     this.selectedTableBeforeLogin = selectedTable;
   }
+
 
   sectionNumberToCategorical(section: number) {
     if (section === 1) {
