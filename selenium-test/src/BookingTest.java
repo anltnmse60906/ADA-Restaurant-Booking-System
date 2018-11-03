@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingTest {
-    static WebDriver driver;
-    static String host = "localhost:4200/";
-    List<String> tableNumberLlt = new ArrayList<>();
+    public static WebDriver driver;
+    private int retryCount = 0;
+    private List<String> tableNumberLlt = new ArrayList<>();
 
-    @BeforeMethod(groups = "booking")
     public void selectTable() {
-        driver.get(this.host);
+        driver.get(Config.host);
         int count = 0;
         try {
             Thread.sleep(2000);
@@ -47,14 +46,16 @@ public class BookingTest {
         bookingBtn.click();
     }
 
-    @Test(priority = 3, groups = "booking")
+
+    @Test(priority = 3, groups = {"booking"})
     public void reserveThreeTablesTest() {
+        selectTable();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-//            Check the table name on confirmbooking screen
+//            Check the table name on confirm-booking screen
             List<WebElement> listTables = driver.findElements(
                     By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > div.text-center.header-confirm-booking > div:nth-child(3) > div >*"));
             int cnt = 0;
@@ -69,28 +70,55 @@ public class BookingTest {
         }
     }
 
-
-    @Test(priority = 4)
+    @Test(priority = 4, groups = {"booking"})
     public void confirmBookingTest() {
+        WebElement confirmBtn = driver.findElement(
+                By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > form > div:nth-child(4) > div.col.text-center.show > input"));
+        confirmBtn.click();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            WebElement confirmBtn = driver.findElement(
-                    By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > form > div:nth-child(4) > div.col.text-center.show > input"));
-            confirmBtn.click();
-        }
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            WebElement successMsg = driver.findElement(
-                    By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > div.alert.alert-primary.show"));
-            Assert.assertEquals(successMsg.getText().trim(), "Your table is reserved successfully!!!");
+            // Retry three time for getting the message from server
+            WebElement successMsg = getSuccessMessage();
+            Assert.assertNotNull(successMsg);
         }
     }
+
+    @Test(priority = 5, groups = {"booking"})
+    public void cancelBookingTest(){
+        selectTable();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+
+
+            //Get list reserved tables
+            List<WebElement> listTables = driver.findElements(
+                    By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > div.text-center.header-confirm-booking > div:nth-child(3) > div >*"));
+
+            WebElement cancelElement = driver.findElement(
+                    By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > form > div:nth-child(4) > div.col.text-center.show > button"));
+            cancelElement.click();
+            driver.switchTo().alert().accept();
+
+
+            // Get all tables on current date.
+
+            for (WebElement e: listTables){
+
+                WebElement topRightTable = driver.findElement(
+                        By.xpath("//app-table-element/label/div[text()='"+ e.getText() + "']"));
+            }
+
+
+
+        }
+    }
+
 
 
     @BeforeClass
@@ -103,10 +131,22 @@ public class BookingTest {
         }
     }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDown() throws Exception {
-        if (driver != null) {
-            driver.quit();
-        }
+
+    private WebElement getSuccessMessage(){
+        do {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                return  driver.findElement(
+                        By.cssSelector("body > app-root > div > app-confirm-booking > div > div > div.card-body > div.alert.alert-primary.show"));
+            } catch (Exception ex ){
+                retryCount++;
+                System.out.println("it goes to the catch loop: " + retryCount);
+            }
+        }while (retryCount < 3 );
+        return null;
     }
 }
